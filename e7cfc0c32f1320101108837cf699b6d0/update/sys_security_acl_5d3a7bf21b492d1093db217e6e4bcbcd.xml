@@ -5,9 +5,11 @@
         <advanced>false</advanced>
         <condition/>
         <description/>
+        <local_or_existing/>
         <name>SakonSmokeTest</name>
         <operation display_value="execute">execute</operation>
         <script/>
+        <security_attribute/>
         <sys_class_name>sys_security_acl</sys_class_name>
         <sys_created_by>Shaik.Pullsaida</sys_created_by>
         <sys_created_on>2023-02-20 12:26:15</sys_created_on>

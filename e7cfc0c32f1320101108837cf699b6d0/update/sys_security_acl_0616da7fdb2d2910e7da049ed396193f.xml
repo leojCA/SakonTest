@@ -5,9 +5,11 @@
         <advanced>false</advanced>
         <condition/>
         <description/>
+        <local_or_existing/>
         <name>x_sakon_mobile_SakonSupport</name>
         <operation display_value="execute">execute</operation>
         <script/>
+        <security_attribute/>
         <sys_class_name>sys_security_acl</sys_class_name>
         <sys_created_by>Shaik.Pullsaida</sys_created_by>
         <sys_created_on>2023-03-20 04:28:55</sys_created_on>

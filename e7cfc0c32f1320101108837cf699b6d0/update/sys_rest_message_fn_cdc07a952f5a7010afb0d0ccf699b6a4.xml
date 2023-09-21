@@ -10,9 +10,9 @@
         <lock>false</lock>
         <oauth2_profile/>
         <protocol_name/>
-        <qualified_name>MDM_Devices_REST_Message [ Default GET ]</qualified_name>
+        <qualified_name>MDM Devices REST Message [ Default GET ]</qualified_name>
         <rest_endpoint>https://dev.gsgcloud.net/APIs/inventory/mdm/devices</rest_endpoint>
-        <rest_message display_value="MDM_Devices_REST_Message">4810fa152f5a7010afb0d0ccf699b6e5</rest_message>
+        <rest_message display_value="MDM Devices REST Message">4810fa152f5a7010afb0d0ccf699b6e5</rest_message>
         <sys_class_name>sys_rest_message_fn</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-08-30 05:57:53</sys_created_on>

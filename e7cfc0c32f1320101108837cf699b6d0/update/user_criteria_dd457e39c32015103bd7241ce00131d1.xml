@@ -16,6 +16,7 @@
 * Don't use `gs.getUser()` or  `gs.getUserID()`, 
 * instead use `user_id` which contains the user sys_id against whom the evaluation is happening.
 */]]></script>
+        <short_description/>
         <sys_class_name>user_criteria</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-08 12:07:37</sys_created_on>
@@ -32,4 +33,5 @@
         <sys_updated_on>2022-07-08 12:07:37</sys_updated_on>
         <user/>
     </user_criteria>
+    <sys_translated_text action="delete_multiple" query="documentkey=dd457e39c32015103bd7241ce00131d1"/>
 </record_update>

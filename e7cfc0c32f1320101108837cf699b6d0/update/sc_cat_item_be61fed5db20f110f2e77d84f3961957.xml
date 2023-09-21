@@ -43,7 +43,7 @@
         <omit_price>false</omit_price>
         <order>0</order>
         <ordered_item_link/>
-        <owner display_value="Shaik Pullsaida">4ec66fb6db3d6510e7da049ed3961957</owner>
+        <owner display_value="">4ec66fb6db3d6510e7da049ed3961957</owner>
         <picture/>
         <preview>JavaScript: popupOpenStandard("com.glideapp.servicecatalog_cat_item_view.do?v=1&amp;sysparm_id=be61fed5db20f110f2e77d84f3961957&amp;sysparm_preview=true", "summary");</preview>
         <price>0</price>
@@ -78,6 +78,7 @@
         <type>item</type>
         <use_sc_layout>true</use_sc_layout>
         <vendor/>
+        <version/>
         <visible_bundle>true</visible_bundle>
         <visible_guide>true</visible_guide>
         <visible_standalone>true</visible_standalone>

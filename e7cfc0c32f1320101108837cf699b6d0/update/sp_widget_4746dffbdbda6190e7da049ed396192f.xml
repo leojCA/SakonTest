@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><record_update>
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
-<category>custom</category>
-<client_script><![CDATA[function($rootScope, $scope, $compile) {
+        <category>custom</category>
+        <client_script><![CDATA[function($rootScope, $scope, $compile) {
     /* widget controller */
     var c = this;
     var REQ_REFRESH_OPTIONS = c.data.REQ_REFRESH_OPTIONS;
@@ -163,8 +163,8 @@
 
    c.typeChanged();
 }]]></client_script>
-<controller_as>c</controller_as>
-<css>button[data-target="#myModal"] {
+        <controller_as>c</controller_as>
+        <css>button[data-target="#myModal"] {
   margin-top: 15px;
   margin-bottom: 15px;
 }
@@ -196,22 +196,22 @@
   margin-top: 10px;
   margin-bottom: 15px;
 }</css>
-<data_table>sp_instance</data_table>
-<demo_data/>
-<description/>
-<docs display_value=""/>
-<field_list/>
-<has_preview>false</has_preview>
-<id/>
-<internal>false</internal>
-<link><![CDATA[function link(scope, element, attrs, controller) {
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
   
 }]]></link>
-<name>Sakon Accessory V2</name>
-<option_schema/>
-<public>true</public>
-<roles/>
-<script><![CDATA[(function() {
+        <name>Sakon Accessory V2</name>
+        <option_schema/>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {
     data.models = {
         type: "All",
         category: "",
@@ -463,20 +463,20 @@ if ((input.request | data.REQ_REFRESH_OPTIONS) == input.request) {
 	}
 
 })();]]></script>
-<servicenow>false</servicenow>
-<sys_class_name>sp_widget</sys_class_name>
-<sys_created_by>Shaik.Pullsaida</sys_created_by>
-<sys_created_on>2023-04-26 15:42:00</sys_created_on>
-<sys_id>4746dffbdbda6190e7da049ed396192f</sys_id>
-<sys_mod_count>254</sys_mod_count>
-<sys_name>Sakon Accessory V2</sys_name>
-<sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
-<sys_policy/>
-<sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
-<sys_update_name>sp_widget_4746dffbdbda6190e7da049ed396192f</sys_update_name>
-<sys_updated_by>Shaik.Pullsaida</sys_updated_by>
-<sys_updated_on>2023-07-27 16:38:28</sys_updated_on>
-<template><![CDATA[<div ng-if="[ 'a8db8e78db4ae910e7da049ed396192a' ].indexOf(c.data.params.cat_item_id) != -1">
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>Shaik.Pullsaida</sys_created_by>
+        <sys_created_on>2023-04-26 15:42:00</sys_created_on>
+        <sys_id>4746dffbdbda6190e7da049ed396192f</sys_id>
+        <sys_mod_count>254</sys_mod_count>
+        <sys_name>Sakon Accessory V2</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sp_widget_4746dffbdbda6190e7da049ed396192f</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-07-27 16:38:28</sys_updated_on>
+        <template><![CDATA[<div ng-if="[ 'a8db8e78db4ae910e7da049ed396192a' ].indexOf(c.data.params.cat_item_id) != -1">
     <div class="col-xs-12">
 
         <!-- Button trigger modal -->
@@ -661,5 +661,5 @@ if ((input.request | data.REQ_REFRESH_OPTIONS) == input.request) {
 </div>
 
 ]]></template>
-</sp_widget>
+    </sp_widget>
 </record_update>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="b102571d2f0130101108837cf699b64a" label="Service Lines Table" max_length="40" name="x_sakon_mobile_service_lines" type="collection">
+        <element label="AccountCode" max_length="150" name="accountcode" type="string"/>
+        <element label="Activation Date" max_length="40" name="activation_date" type="glide_date_time"/>
+        <element label="Billing Status" max_length="100" name="billing_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Billing Status ID" max_length="40" name="billing_status_id" type="integer"/>
+        <element label="Business Entity" max_length="150" name="business_entity" type="string"/>
+        <element label="Business Group" max_length="150" name="business_group" type="string"/>
+        <element label="Business Location" max_length="150" name="business_location" type="string"/>
+        <element label="Business Unit" max_length="150" name="business_unit" type="string"/>
+        <element label="Carrier" max_length="100" name="carrier" type="string"/>
+        <element attributes="edge_encryption_enabled=true,format=none" label="Carrier ID" max_length="40" name="carrier_id" type="integer"/>
+        <element label="Carrier User Name" max_length="150" name="carrier_user_name" type="string"/>
+        <element label="Contract End Date" max_length="40" name="contract_end_date" type="glide_date"/>
+        <element label="Contract Start Date" max_length="40" name="contract_start_date" type="glide_date"/>
+        <element label="Cost Center" max_length="150" name="cost_center" type="string"/>
+        <element label="Country Code" max_length="40" name="country_code" type="string"/>
+        <element label="Department" max_length="150" name="department" type="string"/>
+        <element label="Employee ID" max_length="40" name="employee_id" type="string"/>
+        <element label="GLCode" max_length="150" name="glcode" type="string"/>
+        <element label="Operational Status" max_length="100" name="operational_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Operational Status ID" max_length="40" name="operational_status_id" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" label="Optimize" max_length="40" name="optimize" type="boolean"/>
+        <element attributes="edge_encryption_enabled=true" label="Phone Number" max_length="40" name="phone_number" type="longint"/>
+        <element attributes="edge_encryption_enabled=true" display="true" label="Phone Number(Search)" max_length="100" name="phone_number_search" type="string"/>
+        <element label="Primary Plan Name" max_length="200" name="primary_plan_name" type="string"/>
+        <element label="Service Number End Use" max_length="100" name="service_number_end_use" type="string"/>
+        <element label="Service Number Type" max_length="40" name="service_number_type" type="string"/>
+        <element attributes="edge_encryption_enabled=true,format=none" label="Service Number Type ID" max_length="40" name="service_number_type_id" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,format=none" label="Service Status ID" max_length="40" name="service_status_id" type="integer"/>
+        <element label="SIM Card Number" max_length="25" name="sim_card_number" type="string"/>
+        <element label="Status" max_length="100" name="status" type="string"/>
+        <element label="Sub Account Number" max_length="50" name="sub_account_number" type="string"/>
+        <element label="Upgrade Eligibility Date" max_length="40" name="upgrade_eligibility_date" type="glide_date_time"/>
+        <element attributes="edge_encryption_enabled=true" label="User ID" max_length="40" name="user_id" reference="x_sakon_mobile_users" type="reference"/>
+        <element attributes="edge_encryption_enabled=true" label="Wireless Device ID" max_length="40" name="wireless_device_id" type="longint"/>
+        <element attributes="edge_encryption_enabled=true" label="Wireless Service ID" max_length="40" name="wireless_service_id" type="longint"/>
+        <index name="index">
+            <element name="user_id"/>
+        </index>
+    </element>
+</database>

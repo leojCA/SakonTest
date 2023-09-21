@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="f6f32c5c2fe530101108837cf699b6fb" label="Users" max_length="40" name="x_sakon_mobile_users" type="collection">
+        <element attributes="edge_encryption_enabled=true" label="Is Active" max_length="40" name="active_user" type="boolean"/>
+        <element label="Insert DateTime" max_length="40" name="insert_datetime" type="glide_date_time"/>
+        <element label="Modified DateTime" max_length="40" name="modified_datetime" type="glide_date_time"/>
+        <element attributes="edge_encryption_enabled=true" choice="1" default="110" label="Role" max_length="40" name="role" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Admin-HR" sequence="1" value="111"/>
+                <element inactive_on_update="false" label="Non Admin-HR" sequence="2" value="110"/>
+                <element inactive_on_update="false" label="Non - HR" sequence="3" value="112"/>
+            </choice>
+        </element>
+        <element attributes="edge_encryption_enabled=true,format=none" display="true" label="Sakon User ID" max_length="40" name="sakon_user_id" type="integer" unique="true"/>
+        <element attributes="edge_encryption_enabled=true,encode_utf8=false" label="Servicenow User ID" max_length="32" name="servicenow_user_id" reference="sys_user" type="reference"/>
+        <index name="index" unique="true">
+            <element name="sakon_user_id"/>
+        </index>
+        <index name="index2">
+            <element name="servicenow_user_id"/>
+        </index>
+    </element>
+</database>

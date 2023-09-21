@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="io_set_item">
     <io_set_item action="INSERT_OR_UPDATE">
         <order>1000</order>
-        <sc_cat_item display_value="Traveling? Add/Change International Service&#9;">0285387a1b33301096b1ebd5624bcbe8</sc_cat_item>
+        <sc_cat_item display_value="Traveling? Add/Change International Service">0285387a1b33301096b1ebd5624bcbe8</sc_cat_item>
         <sys_class_name>io_set_item</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-11-17 02:38:59</sys_created_on>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="629f32a01bea701096fe0f26624bcb5c" label="Catalog Items Mapping" max_length="40" name="x_sakon_mobile_catalog_items_mapping" type="collection">
+        <element attributes="edge_encryption_enabled=true,encode_utf8=false" label="Catalog Item" mandatory="true" max_length="32" name="catalog_item" reference="sc_cat_item" type="reference" unique="true"/>
+        <element label="Category ID" max_length="40" name="category_id" type="string"/>
+        <element label="Category Name" max_length="40" name="category_name" type="string"/>
+        <element label="Component ID" max_length="40" name="component_id" type="string"/>
+        <element label="Component Name" max_length="40" name="component_name" type="string"/>
+        <element label="SubCategory ID" max_length="40" name="subcategory_id" type="string"/>
+        <element label="SubCategory Name" max_length="40" name="subcategory_name" type="string"/>
+        <index name="index">
+            <element name="catalog_item"/>
+        </index>
+    </element>
+</database>
