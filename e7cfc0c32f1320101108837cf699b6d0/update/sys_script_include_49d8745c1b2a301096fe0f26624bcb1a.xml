@@ -245,8 +245,11 @@ TicketsSyncScript.prototype = {
 // 								}
                                 
                                 for (var k = sakonToSnow.length - 1; k >= 0; k--) {
-                                    grComments.comments = 'SakonComments:'+sakonToSnow[k];
+									if(grComments.comments.getJournalEntry(-1).toString().indexOf(sakonToSnow[k])<0){
+										grComments.comments = 'SakonComments:'+sakonToSnow[k];
                                     grComments.update();
+									}
+                                    
                                 }
                             }
 //                             var gr1 = new GlideRecordSecure('sys_script');
@@ -335,30 +338,34 @@ TicketsSyncScript.prototype = {
             var reqItemSysID;
             var logger = new LogUtilities();
             var logSource = 'TicketSyncScript - getSnowComments';
-            var grReqItem = new GlideRecordSecure('sc_req_item');
+            var grReqItem = new GlideRecord('sc_req_item');
             grReqItem.addQuery('number', TicketID);
             grReqItem.query();
             while (grReqItem.next()) {
                 reqItemSysID = grReqItem.sys_id;
+				comments=grReqItem.comments.getJournalEntry(-1);
             }
 
-            var gr = new GlideRecordSecure('sys_journal_field');
-            gr.addQuery('element_id', reqItemSysID);
-            gr.addQuery('name', 'sc_req_item');
-            gr.addQuery('element', 'comments');
-            gr.orderBy('sys_created_on');
-            gr.query();
-            while (gr.next()) {
-                comments += gr.value + '**';
-            }
-            commentsStr = comments.split('**');
+//             var gr = new GlideRecordSecure('sys_journal_field');
+//             gr.addQuery('element_id', reqItemSysID);
+//             gr.addQuery('name', 'sc_req_item');
+//             gr.addQuery('element', 'comments');
+//             gr.orderBy('sys_created_on');
+//             gr.query();
+//             while (gr.next()) {
+//                 comments += gr.value + '**';
+//             }
+            commentsStr = comments.split('\n\n');
 
-            if (commentsStr.length > 0) {
-                for (var i = 0; i < commentsStr.length; i++) {
-                    snowComments.push(commentsStr[i]);
+            if (commentsStr.length > 1) {
+                for (var i = 0; i < commentsStr.length-1; i++) {
+					if(commentsStr[i].toString().indexOf('SakonComments')<0){
+						snowComments.push(commentsStr[i]);
+					}
+					
                 }
             }
-            snowComments.join();
+            //snowComments.join();
             logger.writeInfo(logSource, 'Snow Comments for ' + TicketID + ' - ' + snowComments);
 
             return snowComments;
@@ -384,13 +391,20 @@ TicketsSyncScript.prototype = {
             if (SakonID > 0) {
                 sakonComments = this.getSakonComments(SakonID);
                 snowComments = this.getSnowComments(TicketID);
+				
+				gs.info('sakonComments : '+sakonComments.toString());
+				
+				gs.info('snowComments : '+snowComments.toString());
+				
                 snowToSakon = this.getArrayDiff(snowComments, sakonComments);
+				gs.info('snowToSakon : '+snowToSakon.toString()+'\nlength'+snowToSakon.length);
+				
                 //                 logger.writeInfo(logSource, "Comments to be synced from Snow to Sakon " + TicketID + "-" + SyncID + '-' + snowToSakon);
                 logger.writeInfo(logSource, "Comments to be synced from Snow to Sakon " + TicketID + "-" + SyncID + '-' + snowToSakon);
 
 
                 //Push Comments from Snow to Sakon
-                if (snowToSakon.length > 1) {
+                if (snowToSakon.length > 0) {
                     for (var i = 0; i < snowToSakon.length; i++) {
                         var requestBody = {};
                         if (!gs.nil(snowToSakon[i])) {
@@ -546,13 +560,13 @@ TicketsSyncScript.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-09-08 04:55:56</sys_created_on>
         <sys_id>49d8745c1b2a301096fe0f26624bcb1a</sys_id>
-        <sys_mod_count>566</sys_mod_count>
+        <sys_mod_count>577</sys_mod_count>
         <sys_name>TicketsSyncScript</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>sys_script_include_49d8745c1b2a301096fe0f26624bcb1a</sys_update_name>
         <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
-        <sys_updated_on>2023-03-23 13:54:21</sys_updated_on>
+        <sys_updated_on>2023-03-24 17:02:39</sys_updated_on>
     </sys_script_include>
 </record_update>
