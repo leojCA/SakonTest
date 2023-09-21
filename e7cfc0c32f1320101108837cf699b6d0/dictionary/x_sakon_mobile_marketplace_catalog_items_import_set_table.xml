@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="be40f8cb2f400110831952172799b6c4" extends="sys_import_set_row" label="Sakon Marketplace Catalog Items Import Set Table" max_length="40" name="x_sakon_mobile_marketplace_catalog_items_import_set_table" type="collection">
+        <element attributes="edge_encryption_enabled=true" label="Category ID" max_length="40" name="category_id" type="integer"/>
+        <element label="Category Name" max_length="40" name="category_name" type="string"/>
+        <element label="Color" max_length="40" name="color" type="string"/>
+        <element label="Currency" max_length="40" name="currency" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Currency ID" max_length="40" name="currency_id" type="integer"/>
+        <element label="Eligibility Level" max_length="40" name="eligibility_level" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="ID" max_length="40" name="id" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" default="False" label="Is Active" max_length="40" name="is_active" type="boolean"/>
+        <element label="Last Modified DateTime" max_length="40" name="last_modified_datetime" type="glide_date_time"/>
+        <element label="Memory" max_length="40" name="memory" type="string"/>
+        <element label="Model" max_length="100" name="model" type="string"/>
+        <element label="Name" max_length="500" name="name" type="string"/>
+        <element label="Network Provider" max_length="40" name="network_provider" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Network Provider ID" max_length="40" name="network_provider_id" type="integer"/>
+        <element label="Order Type" max_length="40" name="order_type" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Order Type ID" max_length="40" name="order_type_id" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" label="Parent ID" max_length="40" name="parent_id" type="integer"/>
+        <element label="Price" max_length="40" name="price" type="string"/>
+        <element label="Recurring Charge" max_length="40" name="recurring_charge" type="string"/>
+        <element label="Servicenow Catalog Item ID" max_length="40" name="servicenow_catalog_item_id" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Service Provider ID" max_length="40" name="service_provider_id" type="integer"/>
+        <element label="Service Provider Name" max_length="40" name="service_provider_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Subcategory ID" max_length="40" name="subcategory_id" type="integer"/>
+        <element label="Subcategory Name" max_length="40" name="subcategory_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Thumbnail File ID" max_length="40" name="thumbnail_file_id" type="integer"/>
+    </element>
+</database>

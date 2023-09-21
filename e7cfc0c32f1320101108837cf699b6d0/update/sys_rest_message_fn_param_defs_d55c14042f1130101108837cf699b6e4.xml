@@ -2,7 +2,7 @@
     <sys_rest_message_fn_param_defs action="INSERT_OR_UPDATE">
         <name>$top</name>
         <order>100</order>
-        <rest_message_function display_value="">f45c50802f1130101108837cf699b685</rest_message_function>
+        <rest_message_function display_value="GetDevices">f45c50802f1130101108837cf699b685</rest_message_function>
         <sys_class_name>sys_rest_message_fn_param_defs</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-07-07 04:55:50</sys_created_on>

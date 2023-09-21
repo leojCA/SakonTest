@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message_headers">
     <sys_rest_message_headers action="INSERT_OR_UPDATE">
         <name>Content-Type</name>
-        <rest_message display_value="MDM_Devices_REST_Message">4810fa152f5a7010afb0d0ccf699b6e5</rest_message>
+        <rest_message display_value="MDM Devices REST Message">4810fa152f5a7010afb0d0ccf699b6e5</rest_message>
         <sys_class_name>sys_rest_message_headers</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-08-30 05:57:53</sys_created_on>

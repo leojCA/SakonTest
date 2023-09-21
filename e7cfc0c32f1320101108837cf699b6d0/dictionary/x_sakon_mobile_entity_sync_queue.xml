@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="152082222fd530101108837cf699b6d0" label="Entity Sync Queue" max_length="40" name="x_sakon_mobile_entity_sync_queue" type="collection">
+        <element label="Comments" max_length="1000" name="comments" type="string"/>
+        <element label="Entity Type" max_length="40" name="entity_type" type="string"/>
+        <element label="Insert DateTime" max_length="40" name="insert_datetime" type="glide_date_time"/>
+        <element label="Last Retry DateTime" max_length="40" name="last_retry_datetime" type="glide_date_time"/>
+        <element label="Modified DateTime" max_length="40" name="modified_datetime" type="glide_date_time"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Sync ID" max_length="40" name="number" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Retry Count Setting" max_length="40" name="retry_count_setting" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,format=none" label="Sakon Entity ID" max_length="40" name="sakon_entity_id" type="integer"/>
+        <element label="Sakon Sync Action" max_length="40" name="sakon_sync_action" type="string"/>
+        <element label="ServiceNow Entity ID" max_length="40" name="servicenow_entity_id" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Sync Counter" max_length="40" name="sync_counter" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" label="Sync Status" max_length="40" name="sync_status" type="integer"/>
+        <element label="Event Type" max_length="40" name="sync_type" type="string"/>
+    </element>
+</database>

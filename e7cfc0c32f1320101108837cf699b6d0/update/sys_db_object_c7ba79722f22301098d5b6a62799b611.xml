@@ -9,7 +9,6 @@
         <create_access>false</create_access>
         <create_access_controls>true</create_access_controls>
         <delete_access>false</delete_access>
-        <extension_model/>
         <is_extendable>false</is_extendable>
         <label>Workflow Stage Mapping</label>
         <live_feed_enabled>false</live_feed_enabled>
@@ -18,10 +17,8 @@
         <provider_class/>
         <read_access>true</read_access>
         <scriptable_table>false</scriptable_table>
-        <super_class display_value="Application File" name="sys_metadata">8f14321371332010304c2a55d4002e58</super_class>
-        <sys_class_code/>
+        <super_class display_value="Application File" name="sys_metadata">b2791303b4232110320f8dc279c8048c</super_class>
         <sys_class_name>sys_db_object</sys_class_name>
-        <sys_class_path/>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-09-16 04:09:30</sys_created_on>
         <sys_id>c7ba79722f22301098d5b6a62799b611</sys_id>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="f85f1c842f1130101108837cf699b641" label="Devices Table" max_length="40" name="x_sakon_mobile_devices_table" type="collection">
+        <element label="AccountCode" max_length="150" name="accountcode" type="string"/>
+        <element label="Business Entity" max_length="150" name="business_entity" type="string"/>
+        <element label="Business Group" max_length="150" name="business_group" type="string"/>
+        <element label="Business Location" max_length="150" name="business_location" type="string"/>
+        <element label="Business Unit" max_length="150" name="business_unit" type="string"/>
+        <element label="Carrier" max_length="100" name="carrier" type="string"/>
+        <element attributes="edge_encryption_enabled=true,format=none" label="Carrier ID" max_length="40" name="carrier_id" type="integer"/>
+        <element label="Cost Center" max_length="150" name="cost_center" type="string"/>
+        <element label="Department" max_length="150" name="department" type="string"/>
+        <element label="Device Activation Date" max_length="40" name="device_activation_date" type="glide_date_time"/>
+        <element label="Device Bluetooth" max_length="25" name="device_bluetooth" type="string"/>
+        <element label="Device Cellular" max_length="25" name="device_cellular" type="string"/>
+        <element label="Device Manufacturer" max_length="25" name="device_manufacturer" type="string"/>
+        <element label="Device Memory" max_length="25" name="device_memory" type="string"/>
+        <element label="Device Model" max_length="100" name="device_model" type="string"/>
+        <element label="Device Model Number" max_length="25" name="device_model_number" type="string"/>
+        <element label="Device Name" max_length="25" name="device_name" type="string"/>
+        <element label="Device OS" max_length="25" name="device_os" type="string"/>
+        <element label="Device OS Version" max_length="25" name="device_os_version" type="string"/>
+        <element label="Device Ownership" max_length="25" name="device_ownership" type="string"/>
+        <element label="Device Status" max_length="100" name="device_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true,format=none" label="Device Status Id" max_length="40" name="device_status_id" type="integer"/>
+        <element label="Device Tag" max_length="25" name="device_tag" type="string"/>
+        <element label="Device Type" max_length="25" name="device_type" type="string"/>
+        <element label="Device Wi-Fi" max_length="25" name="device_wi_fi" type="string"/>
+        <element label="Employee ID" max_length="150" name="employee_id" type="string"/>
+        <element label="GLCode" max_length="150" name="glcode" type="string"/>
+        <element display="true" label="IMEI" max_length="25" name="imei" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Phone Number" max_length="40" name="phone_number" type="longint"/>
+        <element label="Purchased By" max_length="25" name="purchased_by" type="string"/>
+        <element label="Purchased From" max_length="25" name="purchased_from" type="string"/>
+        <element label="Purchase Date" max_length="40" name="purchase_date" type="glide_date"/>
+        <element label="Serial Number" max_length="25" name="serial_number" type="string"/>
+        <element attributes="edge_encryption_enabled=true,encode_utf8=false" label="User ID" max_length="32" name="user_id" reference="x_sakon_mobile_users" type="reference"/>
+        <element label="Warranty Doc ID" max_length="25" name="warranty_doc_id" type="string"/>
+        <element label="Warranty End Date" max_length="40" name="warranty_end_date" type="glide_date"/>
+        <element label="Warranty Provider Name" max_length="40" name="warranty_provider_name" type="string"/>
+        <element label="Warranty Start Date" max_length="40" name="warranty_start_date" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true" label="Wireless Device ID" max_length="40" name="wireless_device_id" type="longint"/>
+        <element attributes="edge_encryption_enabled=true" label="Wireless Service ID" max_length="40" name="wireless_service_id" type="longint"/>
+        <index name="index">
+            <element name="imei"/>
+            <element name="serial_number"/>
+            <element name="wireless_device_id"/>
+        </index>
+        <index name="index2">
+            <element name="user_id"/>
+        </index>
+    </element>
+</database>
