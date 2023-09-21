@@ -18,9 +18,17 @@ DevicesSyncScript.prototype = {
             logger.writeInfo(logSource, 'Start - ' + logSource);
             var apiResponse;
             var currentScope = gs.getCurrentScopeName();
-			var utcNow = new CommonUtilities().getUTCDateTime();
-            var last_sync_date = gs.getProperty(currentScope + '.' + 'device_last_sync');
-            var filter = 'lastModifiedDateTime ge ' + last_sync_date;
+            var utcNow = new CommonUtilities().getUTCDateTime();
+
+            var sync_line = new GlideRecord('x_sakon_mobile_entity_sync_queue');
+            sync_line.get(gs.getProperty(currentScope + '.' + 'device_last_sync'));
+
+            var filter = 'lastModifiedDateTime ge ' + sync_line.servicenow_entity_id;
+
+            // var last_sync_date = gs.getProperty(currentScope + '.' + 'device_last_sync');
+
+
+            //var filter = 'lastModifiedDateTime ge ' + last_sync_date;
             var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
             var top = pageSize;
             var skip = 0;
@@ -57,6 +65,7 @@ DevicesSyncScript.prototype = {
                     newRec.u_device_bluetooth = apiResponse.data[i].bluetooth;
                     newRec.u_device_type = apiResponse.data[i].type;
                     newRec.u_device_activation_date = apiResponse.data[i].activationDate;
+                    newRec.source_status = apiResponse.data[i].sourceStatus;
                     if (!gs.nil(apiResponse.data[i].carrier)) {
                         newRec.u_carrier_id = apiResponse.data[i].carrier.id;
                         newRec.u_carrier = apiResponse.data[i].carrier.name;
@@ -65,6 +74,7 @@ DevicesSyncScript.prototype = {
                         newRec.u_warranty_doc_id = apiResponse.data[i].warrantyInfo.docId;
                         newRec.u_warranty_start_date = apiResponse.data[i].warrantyInfo.startDate;
                         newRec.u_warranty_end_date = apiResponse.data[i].warrantyInfo.endDate;
+
                     }
                     if (!gs.nil(apiResponse.data[i].warrantyInfo.Provider)) {
                         newRec.u_warranty_provider_name = apiResponse.data[i].warrantyInfo.provider.name;
@@ -107,16 +117,21 @@ DevicesSyncScript.prototype = {
 
             //Update Last_sync system property with current date(UTC))
             //gs.setProperty(currentScope + '.' + 'device_last_sync', utcNow);
-			
-			var gt_devicesync =new GlideRecord('sys_properties');
-			gt_devicesync.addQuery('sys_id','524bdc002f1130101108837cf699b663');//x_sakon_mobile.device_last_sync--Property
-			gt_devicesync.query();
-			if(gt_devicesync.next()){
-			gt_devicesync.value=utcNow;
-			gt_devicesync.update();	
-			}
-			
-			
+            sync_line.servicenow_entity_id = utcNow;
+            sync_line.update();
+
+            /*
+
+            var gt_devicesync = new GlideRecord('sys_properties');
+            gt_devicesync.addQuery('sys_id', '524bdc002f1130101108837cf699b663'); //x_sakon_mobile.device_last_sync--Property
+            gt_devicesync.query();
+            if (gt_devicesync.next()) {
+                gt_devicesync.value = utcNow;
+                gt_devicesync.update();
+            }*/
+
+
+
             logger.writeInfo(logSource, 'End - ' + logSource);
 
         } catch (ex) {
@@ -125,20 +140,20 @@ DevicesSyncScript.prototype = {
             throw ex;
         }
     },
-	
+
     type: 'DevicesSyncScript'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-07-08 02:43:36</sys_created_on>
         <sys_id>58e789902f1130101108837cf699b627</sys_id>
-        <sys_mod_count>33</sys_mod_count>
+        <sys_mod_count>38</sys_mod_count>
         <sys_name>DevicesSyncScript</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>sys_script_include_58e789902f1130101108837cf699b627</sys_update_name>
-        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
-        <sys_updated_on>2023-02-20 11:00:17</sys_updated_on>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-18 16:41:30</sys_updated_on>
     </sys_script_include>
 </record_update>

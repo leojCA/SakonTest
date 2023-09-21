@@ -1,28 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new_set">
+<?xml version="1.0" encoding="UTF-8"?><record_update>
     <item_option_new_set action="INSERT_OR_UPDATE">
-        <create_roles/>
-        <description>Shipping Details for Marketplace Orders</description>
-        <display_title>false</display_title>
-        <internal_name>order_shipping_details_variable_set</internal_name>
-        <layout>normal</layout>
-        <name/>
-        <order>200</order>
-        <read_roles/>
-        <set_attributes/>
-        <sys_class_name>item_option_new_set</sys_class_name>
-        <sys_created_by>admin</sys_created_by>
-        <sys_created_on>2021-12-08 05:18:02</sys_created_on>
-        <sys_id>e18665e12f504110831952172799b6a0</sys_id>
-        <sys_mod_count>16</sys_mod_count>
-        <sys_name>Order Shipping Details Variable Set</sys_name>
-        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
-        <sys_policy/>
-        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
-        <sys_update_name>item_option_new_set_e18665e12f504110831952172799b6a0</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2021-12-27 10:03:23</sys_updated_on>
-        <title>Order Shipping Details Variable Set</title>
-        <type>one_to_one</type>
-        <write_roles/>
-    </item_option_new_set>
+<create_roles/>
+<description>Shipping Details for Marketplace Orders</description>
+<display_title>false</display_title>
+<internal_name>order_shipping_details_variable_set</internal_name>
+<layout>normal</layout>
+<name/>
+<order>200</order>
+<read_roles/>
+<set_attributes/>
+<sys_class_name>item_option_new_set</sys_class_name>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2021-12-08 05:18:02</sys_created_on>
+<sys_id>e18665e12f504110831952172799b6a0</sys_id>
+<sys_mod_count>82</sys_mod_count>
+<sys_name>Order Shipping Details Variable Set</sys_name>
+<sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+<sys_policy/>
+<sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+<sys_update_name>item_option_new_set_e18665e12f504110831952172799b6a0</sys_update_name>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2023-09-18 17:09:42</sys_updated_on>
+<title>Order Shipping Details Variable Set</title>
+<type>one_to_one</type>
+<version>66</version>
+<write_roles/>
+</item_option_new_set>
 </record_update>

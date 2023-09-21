@@ -18,9 +18,15 @@ ServiceLinesSyncScript.prototype = {
             logger.writeInfo(logSource, 'Start - ' + logSource);
             var apiResponse;
             var currentScope = gs.getCurrentScopeName();
-			var utcNow = new CommonUtilities().getUTCDateTime();
-            var last_sync_date = gs.getProperty(currentScope + '.' + 'service_last_sync');
-            var filter = 'lastModifiedDateTime ge ' + last_sync_date;
+            var utcNow = new CommonUtilities().getUTCDateTime();
+
+            var sync_line = new GlideRecord('x_sakon_mobile_entity_sync_queue');
+            sync_line.get(gs.getProperty(currentScope + '.' + 'service_last_sync'));
+
+            var filter = 'lastModifiedDateTime ge ' + sync_line.servicenow_entity_id;
+
+            //var filter = 'lastModifiedDateTime ge ' + gs.getProperty(currentScope + '.' + 'service_last_sync');
+
             var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
             var top = pageSize;
             var skip = 0;
@@ -36,7 +42,7 @@ ServiceLinesSyncScript.prototype = {
                 //Load API response to Import Set table		
                 for (var i = 0; i < apiResponse.data.length; i++) {
 
-                    var newRec = new GlideRecordSecure(currentScope + '_' + 'service_lines_import');
+                    var newRec = new GlideRecord(currentScope + '_' + 'service_lines_import');
                     newRec.initialize();
                     newRec.u_wireless_service_id = apiResponse.data[i].id;
                     newRec.u_phone_number = apiResponse.data[i].phoneNumber;
@@ -70,7 +76,7 @@ ServiceLinesSyncScript.prototype = {
                     }
                     if (!gs.nil(apiResponse.data[i].user)) {
                         newRec.u_employee_id = apiResponse.data[i].user.employeeId;
-                        var gr = new GlideRecordSecure('x_sakon_mobile_users');
+                        var gr = new GlideRecord('x_sakon_mobile_users');
                         gr.addQuery('sakon_user_id', apiResponse.data[i].user.id);
                         gr.query();
                         while (gr.next()) {
@@ -99,22 +105,26 @@ ServiceLinesSyncScript.prototype = {
             } while (skip < totalRec);
 
             //Update Last_sync system property with current date(UTC)   
-			
-			var gt_servicesync =new GlideRecord('sys_properties');
-			gt_servicesync.addQuery('sys_id','558c8b512f0130101108837cf699b6dd');//x_sakon_mobile.service_last_sync--Property
-			gt_servicesync.query();
-			if(gt_servicesync.next()){
-			gt_servicesync.value=utcNow;
-			gt_servicesync.update();	
-			}
-		
-			
+
+            sync_line.servicenow_entity_id = utcNow;
+            sync_line.update();
+			/*
+            var gt_servicesync = new GlideRecord('sys_properties');
+            gt_servicesync.addQuery('sys_id', '558c8b512f0130101108837cf699b6dd'); //x_sakon_mobile.service_last_sync--Property
+            gt_servicesync.query();
+            if (gt_servicesync.next()) {
+                gt_servicesync.value = utcNow;
+                gt_servicesync.update();
+            }*/
+
+
+
             //gs.setProperty(currentScope + '.' + 'service_last_sync', utcNow);
             logger.writeInfo(logSource, 'End - ' + logSource);
 
         } catch (ex) {
             logger.writeError(logSource, ex);
-            gs.eventQueue('x_sakon_mobile.service.lines.sync.failur', newRec);
+            gs.eventQueue('x_sakon_mobile.service.lines.sync.failure', newRec);
             throw ex;
         }
     },
@@ -125,13 +135,13 @@ ServiceLinesSyncScript.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-06-30 10:49:06</sys_created_on>
         <sys_id>ae29ad752f8530101108837cf699b675</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>18</sys_mod_count>
         <sys_name>ServiceLinesSyncScript</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>sys_script_include_ae29ad752f8530101108837cf699b675</sys_update_name>
-        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
-        <sys_updated_on>2023-02-20 11:03:58</sys_updated_on>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-18 16:42:15</sys_updated_on>
     </sys_script_include>
 </record_update>

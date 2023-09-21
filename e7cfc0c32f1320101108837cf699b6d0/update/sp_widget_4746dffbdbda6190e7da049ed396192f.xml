@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sp_widget action="INSERT_OR_UPDATE">
+<category>custom</category>
+<client_script><![CDATA[function($rootScope, $scope, $compile) {
+    /* widget controller */
+    var c = this;
+    var REQ_REFRESH_OPTIONS = c.data.REQ_REFRESH_OPTIONS;
+    var REQ_POST_FILTER = c.data.REQ_POST_FILTER;
+
+
+    /* Variables */
+    c.g_form = $scope.page.g_form;
+    c.contentLoading = false;
+    c.controlsLoading = 0; // 0 = None; 1 = WIP; 2 = Done/Loaded
+    c.models = c.data.models;
+
+    c.changeTypeFilter = function(value) {
+        c.models.type = value;
+        c.typeChanged();
+    };
+
+    c.typeChanged = function() {	
+			
+			var datatypechg= [];
+			datatypechg.push(c.g_form.getValue('i_want_to_request'));
+			datatypechg.push(c.g_form.getValue('shopping_for'));
+			datatypechg.push(c.g_form.getValue('requested_for_user'));
+			datatypechg.push(c.g_form.getValue('select_eligibility_level'));
+			//console.log('typeChanged====='+datatypechg.toString());
+        c.filterLoading = 1;
+        c.contentLoading = true;
+        c.server.get({
+            filter: c.models,
+            request: REQ_REFRESH_OPTIONS | REQ_POST_FILTER,
+            type: c.models.type,
+					saida:datatypechg.toString()
+        }).then(function(response) {
+            c.filterLoading = 2;
+            c.contentLoading = false;
+            c.models = response.data.models;
+            c.data.options = response.data.options;
+            c.data.items = response.data.items;
+        });
+    };
+
+    c.filterChanged = function() {
+			var datatypechg= [];
+			datatypechg.push(c.g_form.getValue('i_want_to_request'));
+			datatypechg.push(c.g_form.getValue('shopping_for'));
+			datatypechg.push(c.g_form.getValue('requested_for_user'));
+			datatypechg.push(c.g_form.getValue('select_eligibility_level'));
+			//console.log('filterChanged====='+datatypechg.toString());
+        c.contentLoading = true;
+        c.server.get({
+            filter: c.models,
+            request: REQ_POST_FILTER,
+            type: c.models.type,
+					saida:datatypechg.toString()
+        }).then(function(response) {
+            c.contentLoading = false;
+            c.data.items = response.data.items;
+        });
+    };
+
+    c.pickPhone = function(model_sys_id) {
+        if (c.models.phone == model_sys_id) {
+            c.models.phone = '';
+        } else {
+            c.models.phone = model_sys_id;
+        }
+        //alert('model_sys_id'+model_sys_id);
+        c.g_form.setValue('accessories', model_sys_id);
+
+    };
+
+
+    c.pickAccessory = function(model_sys_id) {
+        var selected = null;
+        var newid = model_sys_id;
+        c.models.accessories = [];
+        //alert('model_sys_idmodel_sys_id'+model_sys_id);
+        if (c.models.accessories[model_sys_id]) {
+            delete c.models.accessories[model_sys_id];
+            selected = false;
+        } else {
+            c.models.accessories[model_sys_id] = true;
+            selected = true;
+        }
+        var new_value = Object.keys(c.models.accessories);
+        //alert('sakon_accesories'+new_value);
+        c.g_form.setValue('accessories', new_value);
+    };
+	
+	
+
+    c.openOrderModal = function() {
+     var ordertype=c.g_form.getValue('i_want_to_request');
+			var elg=c.g_form.getValue('shopping_for');
+			var reqfor=c.g_form.getValue('requested_for_user');
+			var elgtype=c.g_form.getValue('select_eligibility_level');
+			
+	var gao = new GlideAjax('x_sakon_mobile.sakon_order_guide');
+      gao.addParam('sysparm_name', 'portal');
+      gao.addParam('sysparm_type_id',ordertype );
+			gao.addParam('sysparm_type',elg );
+			gao.addParam('sysparm_sakon_id', reqfor);
+			gao.addParam('sysparm_elg_id', elgtype);
+      gao.getXML(orderdataresponse);
+			
+			
+//console.log(JSON.stringify(c.data.options));
+					
+ //console.log(JSON.stringify(c.data.items));
+						
+			/*
+        var requested_for = c.g_form.getValue('requested_for_user').trim();
+        if (!requested_for) {
+            alert('Please select "Requested for" before selecting mobile or accessories');
+            return;
+        }*/
+
+        jQuery('#myModal').modal('show');
+    };
+	
+	function orderdataresponse(responsedata) {
+		
+		var answer=responsedata.responseXML.documentElement.getAttribute("answer").split(',');
+		
+		console.log(answer[1]+'\n'+answer[2]);
+	
+		var datav=c.data.items;
+		var datafinal=[];
+		for(var i=0;i<datav.length;i++){
+			if(answer[0].indexOf(datav[i].sys_id)>-1){
+				datafinal.push(datav[i]);
+			}
+		}
+		c.data.options.category=[];
+		
+		var cat=answer[1].split(';');
+		
+		for(var k=0;k<cat.length;k++){			//Category
+			c.data.options.category.push({
+				name:cat[k],
+				value:cat[k],
+			});
+		}
+		
+		c.data.options.subcategory=[];
+		var subcat=answer[2].split(';');
+		
+		for(var k=0;k<subcat.length;k++){			//Subcategory
+			c.data.options.subcategory.push({
+				name:subcat[k],
+				value:subcat[k],
+			});
+		}
+		
+	console.log(JSON.stringify(c.data.options));
+	c.data.items=datafinal;
+	
+	}
+
+   c.typeChanged();
+}]]></client_script>
+<controller_as>c</controller_as>
+<css>button[data-target="#myModal"] {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.item-grid {
+  height: 325px;
+  overflow: hidden;
+}
+.btn-lg{
+ color: #fff;
+   background-color: #0071e3;
+}
+
+.item-grid:hover {
+  background-color: #fff;
+   outline: 1px solid #0c1828;
+}
+.item-grid[data-selected="true"] {
+  background-color: #7d7d7d;
+  color: #fff;
+  outline: 1px solid #0c1828;
+  box-sizing: border-box;
+}
+.item-grid img {
+  height: 200px;
+}
+
+.item-grid .caption {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}</css>
+<data_table>sp_instance</data_table>
+<demo_data/>
+<description/>
+<docs display_value=""/>
+<field_list/>
+<has_preview>false</has_preview>
+<id/>
+<internal>false</internal>
+<link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+<name>Sakon Accessory V2</name>
+<option_schema/>
+<public>true</public>
+<roles/>
+<script><![CDATA[(function() {
+    data.models = {
+        type: "All",
+        category: "",
+        subcategory: "",
+        carrier: "",
+        model: "",
+        memory: "",
+        phone: "",
+				choice:"",
+        accessories: {}
+    };
+    data.items = [];
+
+	  	
+    // Request type flags
+    data.REQ_REFRESH_OPTIONS = 100;
+    data.REQ_POST_FILTER = 200;
+
+    data.ORDER_TYPE = "New Line"; // Static value from Dante's work
+    data.params = {
+        cat_item_id: $sp.getParameter('sys_id'),
+        page_id: $sp.getParameter('id')
+    };
+
+    data.options = {
+        category: [],
+        subcategory: [],
+        carriers: [],
+        models: [],
+        memories: []
+    };
+
+	
+    if (input == null) {
+        return;
+    }
+
+      if (input && input.request) {	
+        // Set default response values
+        data.success = false;
+        data.message = "Something went wrong";
+        data.models = input.filter;
+
+        // Start processing request when type is provided
+  if (input.type) {		
+	//	$sp.log('4777777 input===='+input.type+'==subcat===='+data.models.subcategory+input.saida+'===='+data.options.subcategory)
+		var ordertype='';
+		if(input.saida){
+		if(input.saida.split(',')[0]==''){
+			ordertype='All';
+		}else{
+			ordertype=input.saida.split(',')[0];
+		}
+		}else{
+			ordertype='All';
+		}
+		var subcategory = getDistinctsubcategory(input.type,ordertype);
+		
+	/*	data.options.subcategory.push({
+      name: 'All',
+      value: 'All'
+      });*/
+		
+    for (var i = 0; i < subcategory.length; i++) {
+    data.options.subcategory.push({
+    name: subcategory[i],
+    value: subcategory[i]
+     });
+    }
+		
+
+	if((input.request | data.REQ_POST_FILTER) == input.request) {
+		//$sp.log('6222222 input===='+input.type+'==subcat===='+data.models.subcategory+input.saida+'===='+data.options.subcategory)
+		
+		//I want to request,Shopping for,RequestedFor,Elgleveltype,category,subcategory
+		
+		var catalogids='';
+		if (input.type == 'All') {
+		catalogids=getcatalogids('','',input.saida.split(',')[2],'','','');
+		}else {
+			catalogids=getcatalogids(input.saida.split(',')[0],input.saida.split(',')[1],input.saida.split(',')[2],input.saida.split(',')[3],input.type,data.models.subcategory);
+		}
+		
+		$sp.log('85555555 input===='+input.type+'==subcat===='+data.models.subcategory+'=====input=='+input.saida+'====catalogids=='+catalogids);
+   // if (input.type == 'All') {											
+					var all=new GlideRecord('sc_cat_item');
+					//all.addEncodedQuery('category.parent.title=Manage Mobile Devices and Services^category!=3bd0ee81dbc2e910f2e77d84f39619d9^category!=d6389a4a1ba00110864a0d82604bcb2d');
+					all.addEncodedQuery('sys_idIN'+catalogids.toString());
+					all.orderBy('name');
+					all.query();
+					while(all.next()){
+								data.items.push({
+								 sys_id: String(all.sys_id),
+								 image_src: all.picture.getDisplayValue(),
+								 name: all.name.getDisplayValue(),
+								 short_description: all.short_description.getDisplayValue(),
+								 carrier:getindviprice(all.sys_id)
+								 });
+						}
+     //    }
+		
+	//	else{
+	//			$sp.log('7999999999 input===='+input.type+'==subcat===='+data.models.subcategory+input.saida);
+		//		 }
+	}
+
+if ((input.request | data.REQ_REFRESH_OPTIONS) == input.request) {
+
+		var category = getuniquecategory();
+		
+			if(input.saida){
+			category = getuniquecategory(input.saida.split(',')[0]);
+			}else{
+				category = getuniquecategory('All');
+					data.options.category.push({
+						name: 'All',
+						value: 'All'
+				});
+				}
+		
+			for (var k = 0; k < category.length; k++) {									 								
+						data.options.category.push({
+						name: category[k],
+						value: category[k]
+							});
+					}
+			}				
+					
+			 data.request = input.request;
+			 data.success = true;
+			 data.message = "Success!";
+		
+ 		}
+	}
+	
+	
+	function getcatalogids(requesttype,shopping,requestedfor,elgtype,category,subcategory){
+		
+		 var usergroupsysids = [];
+     var grgroups = new GlideRecord('sys_user_grmember'); ///Collecting list of users groups
+				if(elgtype!='my'){
+					 grgroups.addQuery('user', requestedfor);
+				}else{
+					grgroups.addQuery('user', gs.getUserID());
+				}
+        grgroups.query();
+        while (grgroups.next()) {
+            usergroupsysids.push(grgroups.group.toString());
+        }
+		$sp.log('usergroupsysids======'+usergroupsysids)
+		
+				var criteriavalue = [];
+        
+        for (var i = 0; i < usergroupsysids.length; i++) {
+            var gt_user = new GlideRecord('user_criteria'); //Collecting User Criteria
+            gt_user.addEncodedQuery('groupLIKE' + usergroupsysids[i]);
+            gt_user.query();
+            while (gt_user.next()) {
+                criteriavalue.push(gt_user.sys_id.toString());
+            }
+        }
+	$sp.log('criteriavalue======'+criteriavalue);
+		 var catlist = [];
+		 var gt_criteria = new GlideAggregate('sc_cat_item_user_criteria_mtom'); ///Collection cat items for Device/Accessories
+        gt_criteria.addEncodedQuery('sc_cat_item.active=true^user_criteria.sys_idIN' + criteriavalue); //
+        gt_criteria.groupBy('sc_cat_item');
+        gt_criteria.query();
+        while (gt_criteria.next()) {
+            catlist.push(gt_criteria.sc_cat_item.toString());
+        }
+		
+		$sp.log('catlist======'+catlist);
+		
+		var cat=[];
+		var raw = new GlideAggregate('x_sakon_mobile_sakon_marketplace_catalog_items_table'); //category_name=Devices^subcategory_name=Laptopsorder_type=N/A^name= BT Headset
+        raw.addEncodedQuery('servicenow_catalog_item_idIN' + catlist.toString());
+				if(requesttype!=''){
+					raw.addQuery('order_type',requesttype);
+				}
+			if(category!=''){
+					raw.addQuery('category_name',category);
+				}
+			if(subcategory!=''){
+					raw.addQuery('subcategory_name',subcategory);
+				}
+        raw.groupBy('servicenow_catalog_item_id');
+        raw.query();
+        while (raw.next()) {
+            cat.push(raw.servicenow_catalog_item_id.toString());
+        }
+		$sp.log('cat======'+cat);
+		return cat;
+		
+	}
+	
+	function getDistinctsubcategory(category,ordertype){
+		
+		var subcatarr=[];
+		var cat=	new GlideAggregate('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+		cat.addNotNullQuery('servicenow_catalog_item_id');
+		cat.addQuery('category_name',category);
+		if(ordertype!='All'){
+			cat.addQuery('order_type',ordertype);
+		}
+		cat.groupBy('subcategory_name');
+		cat.query();
+		while(cat.next()){
+			subcatarr.push(cat.subcategory_name.toString());
+		}
+		return subcatarr;
+	}
+	
+	
+	function getuniquecategory(data){
+	var catarr=[];
+	var cat=	new GlideAggregate('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+		if(data!='All'){
+		cat.addQuery('order_type',data);
+		}
+		cat.addNotNullQuery('servicenow_catalog_item_id');
+		cat.groupBy('category_name');
+		cat.query();
+		while(cat.next()){
+			catarr.push(cat.category_name.toString());
+		}
+		return catarr;
+	}
+	
+	function getindviprice(devicesysid){
+		
+		var gt_price = new GlideRecord('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+        gt_price.addQuery('servicenow_catalog_item_id', devicesysid);
+				//gt_price.addQuery('category_name',category);
+        gt_price.query();
+        if (gt_price.next()) {
+          return gt_price.price.toString();
+        }
+	}
+	
+	function getprice(devicesysid,category){
+		
+		var gt_price = new GlideRecord('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+        gt_price.addQuery('servicenow_catalog_item_id', devicesysid);
+				gt_price.addQuery('category_name',category);
+        gt_price.query();
+        if (gt_price.next()) {
+          return gt_price.price.toString();
+        }
+	}
+
+})();]]></script>
+<servicenow>false</servicenow>
+<sys_class_name>sp_widget</sys_class_name>
+<sys_created_by>Shaik.Pullsaida</sys_created_by>
+<sys_created_on>2023-04-26 15:42:00</sys_created_on>
+<sys_id>4746dffbdbda6190e7da049ed396192f</sys_id>
+<sys_mod_count>254</sys_mod_count>
+<sys_name>Sakon Accessory V2</sys_name>
+<sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+<sys_policy/>
+<sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+<sys_update_name>sp_widget_4746dffbdbda6190e7da049ed396192f</sys_update_name>
+<sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+<sys_updated_on>2023-07-27 16:38:28</sys_updated_on>
+<template><![CDATA[<div ng-if="[ 'a8db8e78db4ae910e7da049ed396192a' ].indexOf(c.data.params.cat_item_id) != -1">
+    <div class="col-xs-12">
+
+        <!-- Button trigger modal -->
+         
+      <br/>
+     <small><strong>*Click on below button to Select Device (or) Accessory</strong></small>
+      	<br/>
+      <br/>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" ng-click="c.openOrderModal()">
+          	<span class="glyphicon glyphicon-shopping-cart" ></span>
+          	&nbsp;
+            Select Device
+        </button>
+      	<!--<br/>
+      	<small>*Select Device (or) Accessory by clicking this button</small>
+      	<br/>-->
+      	<br/>
+      <br/>
+     <small><strong></strong></small>
+     <br/>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document" style="width: 90%; max-width: 100%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">List of Device (or) Accessory which you are Eligible For</h4>
+                    </div>
+
+                    <!-- Modal body starts here -->
+                  
+                    <div class="modal-body">
+
+                        <div id="m_controls">
+                          <label>
+                                Category:
+                                <select class="form-control" ng-change="c.typeChanged()" ng-model="c.models.type">
+                                  <option ng-repeat="category in c.data.options.category" value="{{category.value}}">{{category.name }}</option>
+                                  <!--<option value="">-- None --</option>
+                                  <option value="Phone">Phone</option>
+                                  <option value="Accessories">Accessories</option>-->
+                                </select>
+                            </label>
+                            
+                            <label>
+                                Subcategory:
+                                <select class="form-control" ng-change="c.filterChanged()" ng-model="c.models.subcategory">
+                                  <option ng-repeat="subcategory in c.data.options.subcategory" value="{{subcategory.value}}">{{subcategory.name }}</option>
+                                 </select>
+                            </label>
+                          <!--
+                           			<label>
+                                    Carrier:
+                                  <select class="form-control" ng-change="c.filterChanged()" ng-model="c.models.carrier">
+                                        <option ng-repeat="carrier in c.data.options.carriers" value="{{carrier.value}}">{{carrier.name }}</option>
+                                   </select>
+                                 </label>
+																<label>
+                                    Memory:
+                                    <select class="form-control" ng-change="c.filterChanged()" ng-model="c.models.memory">
+                                        <option ng-repeat="memory in c.data.options.memories" value="{{memory.value}}">{{memory.name}}</option>
+                                    </select>
+                                </label>-->
+                            <span ng-if="c.models.type == 'All' && c.filterLoading === 1">
+                                <h5>(Loading controls)</h5>
+                            </span>
+                            <span ng-if="c.models.type == 'All' && c.filterLoading === 2">
+                               <!--
+                                <label>
+                                    Select Carrier
+                                    <select class="form-control" ng-change="c.filterChanged()" ng-model="c.models.carrier">
+                                        <option ng-repeat="carrier in c.data.options.carriers" value="{{carrier.value}}">{{ carrier.name }}</option>
+                                    </select>
+                                </label>-->
+                               <!--
+                                <label>
+                                    Select Phone
+                                    <select class="form-control" ng-change="c.filterChanged()" ng-model="c.models.model">
+                                        <option ng-repeat="model in c.data.options.models" value="{{model.value}}">{{model.name}}</option>
+                                    </select>
+                                </label>-->
+                                <!--
+                                <label>
+                                    Select Memory
+                                    <select class="form-control" ng-change="c.filterChanged()" ng-model="c.models.memory">
+                                        <option ng-repeat="memory in c.data.options.memories" value="{{memory.value}}">{{memory.name}}</option>
+                                    </select>
+                                </label>	-->
+                              <!--
+                              	<button ng-if="c.models.phone && c.models.type != 'Accessories'"
+                                        ng-click="c.changeTypeFilter('Accessories')"
+                                        class="btn btn-info"
+                                        type="button">
+                                  	Select accessories <span class="glyphicon glyphicon-th"></span>  
+                              	</button>
+                              	<!-- 
+                              	<button class="btn btn-success" type="button" data-dismiss="modal">
+                                  	Done &nbsp; <span class="glyphicon glyphicon-ok"></span>
+                                </button>
+								-->
+                            </span>
+                          <span ng-if="c.models.type == 'All' && c.filterLoading === 3">
+                                <h5>(Loading controls)</h5>
+                            </span>
+                           <span ng-if="c.models.type == 'All' && c.filterLoading === 4">
+                                <h5>(Loading controls)</h5>
+                            </span>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div ng-if="c.models.type" id="m_contents" class="container">
+                        <div ng-if="c.contentLoading" align="center" class="row">
+                            <div class="col-xs-12" style="height: 80%; padding-top: 100px; padding-bottom: 100px;">
+                              	<img src="ajax-loader.gif" width="100" height="100"/>
+                                <!-- <h3>Please wait...</h3> -->
+                            </div>
+                        </div>
+
+                       <!-- Phones -->
+                        <div ng-if="c.models.type == 'All' && !c.contentLoading" class="row">
+                            <div ng-repeat="item in c.data.items" ng-click="c.pickPhone(item.sys_id)" class="col-xs-3 item-grid" align="center" data-selected="{{ c.models.phone == item.sys_id }}">
+                                <img src="{{ item.image_src }}" class="img img-responsive" />
+                                <br/>
+                                <div class="caption">
+                                    <b>{{ item.name }}</b>
+                                    <br/>
+                                    {{ item.short_description }}
+                                    <br/>
+                                  <span ng-if="c.models.type == 'All'"><strong>Price : ${{ item.carrier }}</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Phones -->
+                        <div ng-if="c.models.type == 'Devices' && !c.contentLoading" class="row">
+                            <div ng-repeat="item in c.data.items" ng-click="c.pickPhone(item.sys_id)" class="col-xs-3 item-grid" align="center" data-selected="{{ c.models.phone == item.sys_id }}">
+                                <img src="{{ item.image_src }}" class="img img-responsive" />
+                                <br/>
+                                <div class="caption">
+                                    <b>{{ item.name }}</b>
+                                    <br/>
+                                    {{ item.short_description }}
+                                    <br/>
+                                  <span ng-if="c.models.type == 'Devices'"><strong>Price : ${{ item.carrier }}</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accessories -->
+                        <div ng-if="c.models.type == 'Accessories' && !c.contentLoading" class="row">
+                            <div ng-repeat="item in c.data.items" ng-click="c.pickAccessory(item.sys_id)" class="col-xs-3 item-grid" align="center" data-selected="{{ c.models.accessories[item.sys_id] }}">
+                                <img src="{{ item.image_src }}" class="img img-responsive" />
+                                <br/>
+                                <div class="caption">
+                                    <b>{{ item.name }}</b>
+                                    <br/>
+                                    {{ item.short_description }}
+                                    <br/>
+                                 <span ng-if="c.models.type == 'Accessories'">Price: ${{ item.carrier }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of Modal body -->
+
+                    <div class="modal-footer">
+                      	<button name="dismiss-modal"
+                                [attr.disabled]="true"
+                                type="button"
+                                class="btn btn-default"
+                                data-dismiss="modal">
+                      		Done &nbsp; <span class="glyphicon glyphicon-ok"></span>
+                      	</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- End of Modal -->
+
+</div>
+
+]]></template>
+</sp_widget>
+</record_update>

@@ -17,21 +17,40 @@
         <messages/>
         <name>Hide Default Fields of New | Existing</name>
         <order/>
+        <published_ref/>
         <script><![CDATA[function onLoad() {
-   //Type appropriate comment here, and begin script below
-   
+  
 	g_form.setMandatory('select_your_preferred_carrier',false);
-	g_form.setVisible('select_your_preferred_carrier',false);
+	g_form.setDisplay('select_your_preferred_carrier',false);
 	g_form.setMandatory('new_device_type',false);
-	g_form.setVisible('new_device_type',false);
+	g_form.setDisplay('new_device_type',false);
 	g_form.setMandatory('select_device_model',false);
-	g_form.setVisible('select_device_model',false);
-	g_form.setVisible('requested_by',false);
-	g_form.setVisible('order_for',false);
-	g_form.setVisible('service_category',false);
-	g_form.setVisible('phone_numbernew',false);
-	g_form.setVisible('upgrade_type',false);
-	g_form.setVisible('price',false);
+	g_form.setDisplay('select_device_model',false);
+	g_form.setDisplay('requested_by',false);
+	g_form.setDisplay('order_for',false);
+	g_form.setDisplay('service_category',false);
+	g_form.setDisplay('phone_numbernew',false);
+	g_form.setDisplay('upgrade_type',false);
+	g_form.setDisplay('price',false);
+	g_form.setReadOnly('requested_for', true);
+	g_form.setDisplay('device_accessory', false);
+	g_form.setDisplay('color', false);
+	g_form.setDisplay('memory', false);
+	g_form.setDisplay('services', false);
+	g_form.setDisplay('i_want_to_request', false);
+	
+	
+	
+    var ga = new GlideAjax('x_sakon_mobile.sakon_order_guide');
+    ga.addParam('sysparm_name', 'userisadmin');
+    ga.getXML(userresponse);
+
+    function userresponse(serverResponse) {
+        var respose = serverResponse.responseXML.documentElement.getAttribute("answer");
+        if (respose == 'YES') {
+            g_form.setReadOnly('requested_for', false);
+        }
+    }
 }]]></script>
         <sys_class_name>catalog_script_client</sys_class_name>
         <sys_created_by>admin</sys_created_by>
@@ -39,7 +58,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>7d98099107d121100df8f1e08c1ed04b</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>Hide Default Fields of New | Existing</sys_name>
         <sys_overrides/>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
@@ -47,7 +66,7 @@
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>catalog_script_client_7d98099107d121100df8f1e08c1ed04b</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-02-27 17:53:42</sys_updated_on>
+        <sys_updated_on>2023-09-17 12:43:45</sys_updated_on>
         <table/>
         <type>onLoad</type>
         <ui_type>10</ui_type>

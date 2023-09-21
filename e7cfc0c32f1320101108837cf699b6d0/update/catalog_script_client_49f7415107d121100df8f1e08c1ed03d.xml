@@ -17,127 +17,144 @@
         <messages/>
         <name>On Change Device Model</name>
         <order/>
+        <published_ref/>
         <script><![CDATA[function onChange(control, oldValue, newValue, isLoading) {
     if (isLoading || newValue == '') {
-
         if (g_form.getValue('select_device_model') != '') {
-			g_form.setVisible('image', true);
-            g_form.setVisible('select_your_preferred_carrier', true);
+            g_form.setDisplay('image', true);
+            g_form.setDisplay('select_your_preferred_carrier', true);
             g_form.setMandatory('select_your_preferred_carrier', true);
-            
-            orderselection(g_form.getValue('select_device_model'));
+            deviceimage(g_form.getValue('select_device_model'));
+            //orderselection(g_form.getValue('select_device_model'));
         } else {
-            g_form.setVisible('image', false);
+            g_form.setDisplay('image', false);
             g_form.clearValue('price');
             g_form.clearValue('select_your_preferred_carrier');
-            g_form.setVisible('price', false);
+            g_form.setDisplay('price', false);
             if (g_form.getValue('service_category') == '') {
                 g_form.clearValue('order_for');
                 g_form.clearValue('select_your_preferred_carrier');
                 g_form.setMandatory('select_your_preferred_carrier', false);
-                g_form.setVisible('select_your_preferred_carrier', false);
+                g_form.setDisplay('select_your_preferred_carrier', false);
             }
         }
         return;
     }
 
 
-    if (newValue) {
-        if (g_form.getValue('service_category') == '' && g_form.getValue('selection_type') == 'New_Device') {
-           // g_form.clearValue('order_for');
-            g_form.clearValue('select_your_preferred_carrier');
-            g_form.setVisible('select_your_preferred_carrier', true);
-            g_form.setMandatory('select_your_preferred_carrier', true);
-        }
-        g_form.setVisible('image', true);
-		
-		
-        orderselection(newValue,g_form.getValue('order_for'));
+    deviceimage(newValue);
+    g_form.clearValue('select_your_preferred_carrier');
+    g_form.setDisplay('select_your_preferred_carrier', true);
+    g_form.setMandatory('select_your_preferred_carrier', true);
 
-        if (g_form.getValue('phone_numbernew') != '') {
-            getcarrier(g_form.getValue('phone_numbernew'));
-        }
-    }
-
-    function orderselection(value,category) {
+    function deviceimage(catitem) {
         var ga = new GlideAjax('x_sakon_mobile.sakon_order_guide');
-        ga.addParam('sysparm_name', 'getOrderTypevalue');
-        ga.addParam('sysparm_cat_id', value);
-		ga.addParam('sysparm_category_id', category);
+        ga.addParam('sysparm_name', 'getcatimage');
+        ga.addParam('sysparm_cat_id', catitem);
         ga.getXML(deviceresponse);
     }
 
     function deviceresponse(serverResponse) {
-        var respose = serverResponse.responseXML.documentElement.getAttribute("answer").split(',');
-		//alert(respose);
-        if (g_form.getValue('service_category') == '' && g_form.getValue('selection_type') == 'New_Device') {
-			//alert('clear');
-            g_form.setValue('order_for', 'New Line');
-        }
-
-        if (respose.length == 2) {
-            itamUpdateImage(respose[1] + ".iix");
-        } else if (g_form.getValue('selection_type') == 'Accessory') {
-            itamUpdateImage(respose[0] + ".iix");
-            getpricevalue(newValue);
+        var respose = serverResponse.responseXML.documentElement.getAttribute("answer");
+        if (respose == 'NA') {
+            g_form.setDisplay('image', false);
         } else {
-            g_form.setVisible('image', false);
-        }
-		
-		if (g_form.getValue('service_category') == 'UpgradeMyDevice') {
-            getprice(g_form.getValue('select_your_preferred_carrier'), newValue, g_form.getValue('order_for'));
+            g_form.setDisplay('image', true);
+            itamUpdateImage(respose + ".iix");
         }
     }
 
-    function getprice(carrier, model, orderfor) {
-        var ga = new GlideAjax('x_sakon_mobile.sakon_order_guide');
-        ga.addParam('sysparm_name', 'getprice');
-        ga.addParam('sysparm_carrier_id', carrier);
-        ga.addParam('sysparm_model_id', model);
-        ga.addParam('sysparm_orderfor_id', orderfor);
-        ga.getXML(getpriceresponsec);
-    }
 
-    function getpriceresponsec(serverResponse) {
-        var respose = serverResponse.responseXML.documentElement.getAttribute("answer");
-        g_form.setVisible('price', true);
-        g_form.setValue('price', respose);
-        g_form.setReadOnly('price', true);
+    //     if (newValue) {
 
-    }
+    //         g_form.clearValue('select_your_preferred_carrier');
+    //         g_form.setDisplay('select_your_preferred_carrier', true);
+    //         g_form.setMandatory('select_your_preferred_carrier', true);
+    //         g_form.setDisplay('image', true);
+    //         orderselection(newValue);
+
+    //         if (g_form.getValue('phone_numbernew') != '') {
+    //             getcarrier(g_form.getValue('phone_numbernew'));
+    //         }
+    //     }
+
+    //     function orderselection(value, category) {
+    //         var ga = new GlideAjax('x_sakon_mobile.sakon_order_guide');
+    //         ga.addParam('sysparm_name', 'getOrderTypevalue');
+    //         ga.addParam('sysparm_cat_id', value);
+    //         ga.addParam('sysparm_category_id', category);
+    //         ga.getXML(deviceresponse);
+    //     }
+
+    //     function deviceresponse(serverResponse) {
+    //         var respose = serverResponse.responseXML.documentElement.getAttribute("answer").split(',');
+
+    //         if (g_form.getValue('service_category') == '' && (g_form.getValue('selection_type') == 'Device' || g_form.getValue('selection_type') == 'Devices')) {
+    //             g_form.setValue('order_for', 'New Line');
+    //         }
+
+    //         if (respose.length == 2) {
+    //             itamUpdateImage(respose[1] + ".iix");
+    //         } else if (g_form.getValue('selection_type') == 'Accessories') {
+    //             itamUpdateImage(respose[0] + ".iix");
+    //             getpricevalue(newValue);
+    //         } else {
+    //             g_form.setDisplay('image', false);
+    //         }
+
+    //         if (g_form.getValue('service_category') == 'UpgradeMyDevice') {
+    //             getprice(g_form.getValue('select_your_preferred_carrier'), newValue, g_form.getValue('order_for'));
+    //         }
+    //     }
+
+    //     function getprice(carrier, model, orderfor) {
+    //         var ga = new GlideAjax('x_sakon_mobile.sakon_order_guide');
+    //         ga.addParam('sysparm_name', 'getprice');
+    //         ga.addParam('sysparm_carrier_id', carrier);
+    //         ga.addParam('sysparm_model_id', model);
+    //         ga.addParam('sysparm_orderfor_id', orderfor);
+    //         ga.getXML(getpriceresponsec);
+    //     }
+
+    //     function getpriceresponsec(serverResponse) {
+    //         var respose = serverResponse.responseXML.documentElement.getAttribute("answer");
+    //         g_form.setDisplay('price', true);
+    //         g_form.setValue('price', respose);
+    //         g_form.setReadOnly('price', true);
+
+    //     }
 
 
-    function getcarrier(value) {
-        var ga = new GlideAjax('x_sakon_mobile.sakon_order_guide');
-        ga.addParam('sysparm_name', 'getNetworkTypevalue');
-        ga.addParam('sysparm_phone_id', value);
-        ga.getXML(carrierresponse);
-    }
+    //     function getcarrier(value) {
+    //         var ga = new GlideAjax('x_sakon_mobile.sakon_order_guide');
+    //         ga.addParam('sysparm_name', 'getNetworkTypevalue');
+    //         ga.addParam('sysparm_phone_id', value);
+    //         ga.getXML(carrierresponse);
+    //     }
 
-    function getpricevalue(model) {
-        var ga = new GlideAjax('x_sakon_mobile.sakon_order_guide');
-        ga.addParam('sysparm_name', 'getpricevalue');
-        ga.addParam('sysparm_model_id', model);
-        ga.getXML(getpriceresponse);
-    }
+    //     function getpricevalue(model) {
+    //         var ga = new GlideAjax('x_sakon_mobile.sakon_order_guide');
+    //         ga.addParam('sysparm_name', 'getpricevalue');
+    //         ga.addParam('sysparm_model_id', model);
+    //         ga.getXML(getpriceresponse);
+    //     }
 
-    function carrierresponse(serverResponse) {
-        var respose = serverResponse.responseXML.documentElement.getAttribute("answer");
-        //alert('-----respose----'+respose);
-        if (g_form.getValue('service_category' != 'ChangeCarrierPort')) {
-            g_form.setValue('select_your_preferred_carrier', respose);
-        }
+    //     function carrierresponse(serverResponse) {
+    //         var respose = serverResponse.responseXML.documentElement.getAttribute("answer");
+    //         if (g_form.getValue('service_category' != 'ChangeCarrierPort')) {
+    //             g_form.setValue('select_your_preferred_carrier', respose);
+    //         }
 
-    }
+    //     }
 
-    function getpriceresponse(serverResponse) {
-        var respose = serverResponse.responseXML.documentElement.getAttribute("answer");
-        g_form.setVisible('price', true);
-        g_form.setValue('price', respose);
-        g_form.setReadOnly('price', true);
+    //     function getpriceresponse(serverResponse) {
+    //         var respose = serverResponse.responseXML.documentElement.getAttribute("answer");
+    //         g_form.setDisplay('price', true);
+    //         g_form.setValue('price', respose);
+    //         g_form.setReadOnly('price', true);
 
-    }
-    //Type appropriate comment here, and begin script below
+    //     }
+
 
 }]]></script>
         <sys_class_name>catalog_script_client</sys_class_name>
@@ -146,15 +163,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>49f7415107d121100df8f1e08c1ed03d</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>On Change Device Model</sys_name>
         <sys_overrides/>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>catalog_script_client_49f7415107d121100df8f1e08c1ed03d</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-02-27 18:13:58</sys_updated_on>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-20 01:08:02</sys_updated_on>
         <table/>
         <type>onChange</type>
         <ui_type>10</ui_type>

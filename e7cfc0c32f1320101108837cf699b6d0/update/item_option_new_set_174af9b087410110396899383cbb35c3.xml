@@ -13,16 +13,17 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-01-12 05:38:19</sys_created_on>
         <sys_id>174af9b087410110396899383cbb35c3</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>55</sys_mod_count>
         <sys_name>Phone Number Variable Set Marketplace</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>item_option_new_set_174af9b087410110396899383cbb35c3</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2022-01-12 08:00:33</sys_updated_on>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2023-09-18 17:53:34</sys_updated_on>
         <title>Phone Number Variable Set Marketplace</title>
         <type>one_to_one</type>
+        <version>54</version>
         <write_roles/>
     </item_option_new_set>
 </record_update>

@@ -321,19 +321,19 @@ SakonMobileMapCatalogItems.prototype = {
 
         if (category == devicesCategorySysId) {
             var grVariableSet = new GlideRecord('item_option_new_set');
-            grVariableSet.addEncodedQuery('internal_name=mp_catalog_item_variable_set^ORinternal_name=order_shipping_details_variable_set^ORinternal_name=order_shipment_tracking_variable_set^ORinternal_name=phone_number_variable_set_marketplace^ORinternal_name=order_for_user_variable_set^ORinternal_name=marketplace_order_comments');
+            grVariableSet.addEncodedQuery('internal_name=mp_catalog_item_variable_set^ORinternal_name=order_shipping_details_variable_set^ORinternal_name=order_shipment_tracking_variable_set^ORinternal_name=phone_number_variable_set_marketplace^ORinternal_name=order_for_user_variable_set^ORinternal_name=marketplace_order_comments^ORinternal_name=sakon_requested_for');
             grVariableSet.query();
             while (grVariableSet.next()) {
-                variableSetArray.push(grVariableSet.sys_id.toString());
+                variableSetArray.push(grVariableSet.sys_id.toString()+'-'+grVariableSet.order);
             }
 
             return variableSetArray;
         } else {
             grVariableSet = new GlideRecord('item_option_new_set');
-            grVariableSet.addEncodedQuery('internal_name=order_shipping_details_variable_set^ORinternal_name=order_shipment_tracking_variable_set^ORinternal_name=order_for_user_variable_set^ORinternal_name=marketplace_order_comments');
+            grVariableSet.addEncodedQuery('internal_name=order_shipping_details_variable_set^ORinternal_name=order_shipment_tracking_variable_set^ORinternal_name=order_for_user_variable_set^ORinternal_name=marketplace_order_comments^ORinternal_name=sakon_requested_for');
             grVariableSet.query();
             while (grVariableSet.next()) {
-                variableSetArray.push(grVariableSet.sys_id.toString());
+                variableSetArray.push(grVariableSet.sys_id.toString()+'-'+grVariableSet.order);
             }
             return variableSetArray;
         }
@@ -367,12 +367,13 @@ SakonMobileMapCatalogItems.prototype = {
 
                     // var cat_item_sys_id = 'bd6fa75a4f334200086eeed18110c79e'; // catalog item - iPhone 6s
                     //  var variable_set_sys_id = 'e01cab1a4f334200086eeed18110c71f'; // variable set - Standard Employee Questions
-                    var app_scope = 'e7cfc0c32f1320101108837cf699b6d0'; // sys_id id Sakon scoped app
+                    var app_scope = gs.getProperty('x_sakon_mobile.u_scope_sysid'); // sys_id id Sakon scoped app
                     var varset = new sn_sc.CatalogItemVariableSetM2M();
                     var attr = {
-                        'variable_set': variableSetArray[i], // required
+                        'variable_set': variableSetArray[i].split('-')[0], // required
                         'sc_cat_item': catItemSysID, // required
                         'sys_scope': app_scope, // optional
+						'order':Number(variableSetArray[i].split('-')[1]),
                         };
                     varset.setAttributes(attr);
                     var m2mRec = varset.create(true);
@@ -394,17 +395,17 @@ SakonMobileMapCatalogItems.prototype = {
 
     //Get Sys_id for 'Devices' category
     getDevicesCategorySysID: function() {
-        return "b0a568352fc00110831952172799b6d4";
+        return gs.getProperty('x_sakon_mobile.u_sc_cat_category_device');
     },
 
     //Get Sys_id for 'Accessories' category
     getAccessoriesCategorySysID: function() {
-        return "8322606207a0411008defe4f7c1ed0fb";
+        return gs.getProperty('x_sakon_mobile.u_sc_cat_category_accessories');
     },
 
     //Get Sys_id for 'Manage Mobile Devices and Services' category
     getParentCategorySysID: function() {
-        return "7a3a89181b6a301096fe0f26624bcb1c";
+        return gs.getProperty('x_sakon_mobile.u_sc_cat_category_parent');
     },
 
     getServiceCatalogSysId: function() {
@@ -484,13 +485,13 @@ SakonMobileMapCatalogItems.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-11-30 07:58:02</sys_created_on>
         <sys_id>0a6e7cc72f800110831952172799b6fe</sys_id>
-        <sys_mod_count>242</sys_mod_count>
+        <sys_mod_count>245</sys_mod_count>
         <sys_name>SakonMobileMapCatalogItems</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>sys_script_include_0a6e7cc72f800110831952172799b6fe</sys_update_name>
-        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
-        <sys_updated_on>2023-03-24 05:04:22</sys_updated_on>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-18 17:21:53</sys_updated_on>
     </sys_script_include>
 </record_update>

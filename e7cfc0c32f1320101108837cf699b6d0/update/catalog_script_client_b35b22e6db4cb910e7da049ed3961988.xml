@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <catalog_script_client action="INSERT_OR_UPDATE">
+<active>true</active>
+<applies_catalog>true</applies_catalog>
+<applies_extended>false</applies_extended>
+<applies_req_item>true</applies_req_item>
+<applies_sc_task>true</applies_sc_task>
+<applies_target_record>false</applies_target_record>
+<applies_to>item</applies_to>
+<cat_item display_value="Shop Now Order Guide">a8db8e78db4ae910e7da049ed396192a</cat_item>
+<cat_variable>IO:b6231b3bdbda6190e7da049ed39619d9</cat_variable>
+<condition/>
+<description/>
+<field/>
+<global>true</global>
+<isolate_script>true</isolate_script>
+<messages/>
+<name>On Change Phone Number</name>
+<order/>
+<script><![CDATA[function onChange(control, oldValue, newValue, isLoading) {
+    if (isLoading || newValue == '') {
+        return;
+    }
+
+    checkupgradetype(newValue);
+
+    g_form.setDisplay('phone', true);
+
+    function checkupgradetype(phoneid) {
+        var ga = new GlideAjax('sakon_order_guide');
+        ga.addParam('sysparm_name', 'checkupgradetype');
+        ga.addParam('sysparm_phoneid', phoneid);
+        ga.getXML(HelloWorldParse);
+    }
+
+    function HelloWorldParse(response) {
+        var answer = response.responseXML.documentElement.getAttribute("answer").split(',');
+        //         alert(answer);
+        g_form.clearMessages();
+        if (answer[0] == 'Upgrade Eligible') {
+            g_form.setValue('order_type', 'Upgrade Eligible');
+            g_form.setDisplay('buttonaccessory', true);
+            g_form.setMandatory('buttonaccessory', true);
+        } else {
+            g_form.setValue('order_type', 'Upgrade Full Price');
+            g_form.showFieldMsg('phone_number', 'You are ordering a device at full price. The price will come down upon your upgrade date ' + answer[1].split(' ')[0] + '.');
+            g_form.setDisplay('buttonaccessory', true);
+            g_form.setMandatory('buttonaccessory', true);
+        }
+    }
+}]]></script>
+<sys_class_name>catalog_script_client</sys_class_name>
+<sys_created_by>Shaik.Pullsaida</sys_created_by>
+<sys_created_on>2023-07-18 15:35:30</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>b35b22e6db4cb910e7da049ed3961988</sys_id>
+<sys_mod_count>4</sys_mod_count>
+<sys_name>On Change Phone Number</sys_name>
+<sys_overrides display_value=""/>
+<sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+<sys_policy/>
+<sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+<sys_update_name>catalog_script_client_b35b22e6db4cb910e7da049ed3961988</sys_update_name>
+<sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+<sys_updated_on>2023-07-18 15:51:10</sys_updated_on>
+<table/>
+<type>onChange</type>
+<ui_type>10</ui_type>
+<variable_set display_value=""/>
+<view/>
+</catalog_script_client>
+</record_update>

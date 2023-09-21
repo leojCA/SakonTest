@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_metadata_link">
+    <sys_metadata_link action="INSERT_OR_UPDATE">
+        <directory>update</directory>
+        <documentkey>4dce35d547d131104523b3ee436d4336</documentkey>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="x_sakon_mobile_entity_sync_queue">
+    <x_sakon_mobile_entity_sync_queue action="INSERT_OR_UPDATE">
+        <comments/>
+        <entity_type>MDMSync</entity_type>
+        <insert_datetime/>
+        <last_retry_datetime/>
+        <modified_datetime/>
+        <number>SYNCMDM</number>
+        <retry_count_setting/>
+        <sakon_entity_id/>
+        <sakon_sync_action>MDMSync</sakon_sync_action>
+        <servicenow_entity_id>1901-01-01</servicenow_entity_id>
+        <sync_counter/>
+        <sync_status>0</sync_status>
+        <sync_type>MDMSync</sync_type>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-09-14 18:01:15</sys_created_on>
+        <sys_id>4dce35d547d131104523b3ee436d4336</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-18 16:23:44</sys_updated_on>
+    </x_sakon_mobile_entity_sync_queue>
+</record_update>
+]]></payload>
+        <sys_class_name>sys_metadata_link</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-09-17 12:02:16</sys_created_on>
+        <sys_id>df5940124799b1104523b3ee436d4324</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>SYNCMDM</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_metadata_link_df5940124799b1104523b3ee436d4324</sys_update_name>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-18 16:23:54</sys_updated_on>
+        <tablename>x_sakon_mobile_entity_sync_queue</tablename>
+    </sys_metadata_link>
+</record_update>

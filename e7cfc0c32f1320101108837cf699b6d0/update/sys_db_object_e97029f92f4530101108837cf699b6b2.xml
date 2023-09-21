@@ -9,6 +9,7 @@
         <create_access>false</create_access>
         <create_access_controls>true</create_access_controls>
         <delete_access>false</delete_access>
+        <extension_model/>
         <is_extendable>false</is_extendable>
         <label>Service Lines Import Set Table</label>
         <live_feed_enabled>false</live_feed_enabled>
@@ -17,8 +18,10 @@
         <provider_class/>
         <read_access>true</read_access>
         <scriptable_table>false</scriptable_table>
-        <super_class display_value="Import Set Row" name="sys_import_set_row">88d993c3b4232110320f8dc279c8042b</super_class>
+        <super_class display_value="Import Set Row" name="sys_import_set_row">e14506b7b8202010304ceb7d5057e7a1</super_class>
+        <sys_class_code/>
         <sys_class_name>sys_db_object</sys_class_name>
+        <sys_class_path/>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-06-30 10:06:21</sys_created_on>
         <sys_id>e97029f92f4530101108837cf699b6b2</sys_id>

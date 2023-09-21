@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new">
     <item_option_new action="INSERT_OR_UPDATE">
         <active>true</active>
-        <attributes>ref_auto_completer=AJAXTableCompleter,ref_ac_display_value=false,ref_ac_columns=imei;device_status;serial_number;phone_number;device_model,ref_ac_order_by=device_model,ref_ac_columns_search=true</attributes>
+        <attributes>ref_auto_completer=AJAXTableCompleter,ref_ac_display_value=false,ref_ac_columns=imei;device_status;serial_number;phone_number_search;device_model,ref_ac_order_by=device_model,ref_ac_columns_search=true</attributes>
         <cat_item/>
         <category/>
         <choice_direction>down</choice_direction>
@@ -71,14 +71,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-11-17 01:14:31</sys_created_on>
         <sys_id>ed55a8b62f3330109eb12ea62799b6cf</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>Device</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>item_option_new_ed55a8b62f3330109eb12ea62799b6cf</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2021-11-23 14:26:43</sys_updated_on>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-18 13:38:41</sys_updated_on>
         <table/>
         <tooltip/>
         <type>8</type>

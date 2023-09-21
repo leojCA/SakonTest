@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <catalog_script_client action="INSERT_OR_UPDATE">
+<active>true</active>
+<applies_catalog>true</applies_catalog>
+<applies_extended>false</applies_extended>
+<applies_req_item>false</applies_req_item>
+<applies_sc_task>false</applies_sc_task>
+<applies_target_record>false</applies_target_record>
+<applies_to>item</applies_to>
+<cat_item display_value="Shop Now Order Guide">a8db8e78db4ae910e7da049ed396192a</cat_item>
+<cat_variable/>
+<condition/>
+<description/>
+<field/>
+<global>true</global>
+<isolate_script>true</isolate_script>
+<messages/>
+<name>On Load | Hide Variables</name>
+<order/>
+<script><![CDATA[function onLoad() {
+    //Type appropriate comment here, and begin script below
+
+    g_form.setDisplay('requested_by_user', false);
+    g_form.setDisplay('requested_for_user', false);
+    g_form.setDisplay('shopping_for', true);
+    g_form.setMandatory('shopping_for', true);
+    g_form.setDisplay('select_service_required', false);
+    g_form.setDisplay('accessories', false);
+    g_form.setDisplay('display_image_data', false);
+    g_form.setDisplay('display_image_data_price', false);
+    g_form.setDisplay('display_image', false);
+    g_form.setDisplay('buttonaccessory', false);
+    g_form.setDisplay('devices_or_accessory', false);
+    g_form.setDisplay('phone', false);
+    g_form.setDisplay('rich_label', false);
+    g_form.setMandatory('i_want_to_request', false);
+    g_form.setDisplay('i_want_to_request', false);
+    g_form.setDisplay('select_eligibility_level', false);
+    g_form.setDisplay('phone_number', false);
+    g_form.setDisplay('deviceonlybutton', false);
+    g_form.setDisplay('newlinebutton', false);
+    g_form.setDisplay('carrier', false);
+    g_form.setDisplay('order_type', false);
+
+
+    var ga = new GlideAjax('sakon_order_guide');
+    ga.addParam('sysparm_name', 'userprivilege');
+    ga.getXML(HelloWorldParse);
+
+
+    function HelloWorldParse(response) {
+        if (response.responseXML.documentElement.getAttribute("answer") == 'NO') {
+            g_form.setValue('shopping_for', 'Myself');
+            g_form.setReadOnly('shopping_for', true);
+            g_form.setDisplay('phone', true);
+            g_form.setMandatory('phone', true);
+        }
+    }
+
+}]]></script>
+<sys_class_name>catalog_script_client</sys_class_name>
+<sys_created_by>Shaik.Pullsaida</sys_created_by>
+<sys_created_on>2023-04-05 12:47:21</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>d63562c5dbc2e910f2e77d84f39619aa</sys_id>
+<sys_mod_count>31</sys_mod_count>
+<sys_name>On Load | Hide Variables</sys_name>
+<sys_overrides display_value=""/>
+<sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+<sys_policy/>
+<sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+<sys_update_name>catalog_script_client_d63562c5dbc2e910f2e77d84f39619aa</sys_update_name>
+<sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+<sys_updated_on>2023-07-20 11:10:39</sys_updated_on>
+<table/>
+<type>onLoad</type>
+<ui_type>10</ui_type>
+<variable_set display_value=""/>
+<view/>
+</catalog_script_client>
+</record_update>

@@ -19,8 +19,14 @@ MDMDevicesSyncScript.prototype = {
             var apiResponse;
             var currentScope = gs.getCurrentScopeName();
             var utcNow = new CommonUtilities().getUTCDateTime();
-            var last_sync_date = gs.getProperty(currentScope + '.' + 'mdm_device_last_sync');
-            var filter = 'updateDateTime ge ' + last_sync_date;
+
+            var sync_line = new GlideRecord('x_sakon_mobile_entity_sync_queue');
+            sync_line.get(gs.getProperty(currentScope + '.' + 'mdm_device_last_sync'));
+
+            var filter = 'updateDateTime ge ' + sync_line.servicenow_entity_id;
+
+            // var last_sync_date = gs.getProperty(currentScope + '.' + 'mdm_device_last_sync');
+            // var filter = 'updateDateTime ge ' + last_sync_date;
             var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
             var top = pageSize;
             var skip = 0;
@@ -93,13 +99,16 @@ MDMDevicesSyncScript.prototype = {
 
             //Update Last_sync system property with current date(UTC) 
 
+            sync_line.servicenow_entity_id = utcNow;
+            sync_line.update();
+            /*
             var gt_mdmsync = new GlideRecord('sys_properties');
             gt_mdmsync.addQuery('sys_id', 'e7c6f21d2f5a7010afb0d0ccf699b65d'); //x_sakon_mobile.mdm_device_last_sync--Property
             gt_mdmsync.query();
             if (gt_mdmsync.next()) {
                 gt_mdmsync.value = utcNow;
                 gt_mdmsync.update();
-            }
+            }*/
 
 
             //gs.setProperty(currentScope + '.' + 'mdm_device_last_sync', utcNow); Commented to pass certification tests
@@ -120,13 +129,13 @@ MDMDevicesSyncScript.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-08-30 07:39:25</sys_created_on>
         <sys_id>ebc7b6d92f5a7010afb0d0ccf699b60a</sys_id>
-        <sys_mod_count>92</sys_mod_count>
+        <sys_mod_count>97</sys_mod_count>
         <sys_name>MDMDevicesSyncScript</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>sys_script_include_ebc7b6d92f5a7010afb0d0ccf699b60a</sys_update_name>
-        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
-        <sys_updated_on>2023-02-20 11:02:58</sys_updated_on>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-18 16:42:45</sys_updated_on>
     </sys_script_include>
 </record_update>

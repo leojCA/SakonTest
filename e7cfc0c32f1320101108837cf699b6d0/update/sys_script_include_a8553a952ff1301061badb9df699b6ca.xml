@@ -59,7 +59,7 @@ UserUtilities.prototype = {
     getSakonID: function(userID) {
         var currentScope = gs.getCurrentScopeName();
         var grUsers = new GlideRecordSecure(currentScope + '_' + 'users');
-        grUsers.addQuery('servicenow_user_id.name', userID);
+        grUsers.addQuery('servicenow_user_id', userID);
         grUsers.query();
         while (grUsers.next()) {
             sakonID = grUsers.sakon_user_id;
@@ -131,13 +131,13 @@ UserUtilities.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-08-05 09:46:40</sys_created_on>
         <sys_id>a8553a952ff1301061badb9df699b6ca</sys_id>
-        <sys_mod_count>70</sys_mod_count>
+        <sys_mod_count>71</sys_mod_count>
         <sys_name>UserUtilities</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>sys_script_include_a8553a952ff1301061badb9df699b6ca</sys_update_name>
-        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
-        <sys_updated_on>2023-03-23 13:47:05</sys_updated_on>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-18 07:42:12</sys_updated_on>
     </sys_script_include>
 </record_update>

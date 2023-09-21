@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_category">
     <sc_cat_item_category action="INSERT_OR_UPDATE">
         <sc_cat_item display_value="Add/Change Domestic Plan">1af145361b73301096b1ebd5624bcb6b</sc_cat_item>
-        <sc_category display_value="Services">d6389a4a1ba00110864a0d82604bcb2d</sc_category>
+        <sc_category display_value="Service Desk Tickets">d6389a4a1ba00110864a0d82604bcb2d</sc_category>
         <sys_class_name>sc_cat_item_category</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-12-22 08:30:54</sys_created_on>

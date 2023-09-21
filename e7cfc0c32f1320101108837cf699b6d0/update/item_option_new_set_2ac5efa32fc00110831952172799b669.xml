@@ -13,16 +13,17 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-12-02 09:26:08</sys_created_on>
         <sys_id>2ac5efa32fc00110831952172799b669</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>58</sys_mod_count>
         <sys_name>MP Catalog Item Variable Set</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>item_option_new_set_2ac5efa32fc00110831952172799b669</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2022-05-13 10:18:00</sys_updated_on>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2023-09-18 18:10:18</sys_updated_on>
         <title>MP Catalog Item Variable Set</title>
         <type>one_to_one</type>
+        <version>55</version>
         <write_roles/>
     </item_option_new_set>
 </record_update>

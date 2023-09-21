@@ -15,35 +15,70 @@
         <global>true</global>
         <isolate_script>true</isolate_script>
         <messages/>
-        <name>On Change Device Category Type</name>
+        <name>On Change Device  SubCategory Type</name>
         <order/>
+        <published_ref/>
         <script><![CDATA[function onChange(control, oldValue, newValue, isLoading) {
     if (isLoading || newValue == '') {
-
         if (g_form.getValue('new_device_type') == '') {
             g_form.setMandatory('select_device_model', false);
-            g_form.setVisible('select_device_model', false);
+            g_form.setDisplay('select_device_model', false);
         } else {
-            g_form.setVisible('select_device_model', true);
-            g_form.setMandatory('select_device_model', true);
-
+            deviceselection(g_form.getValue('requested_for'), 'Devices', g_form.getValue('new_device_type'));
         }
-
         return;
     }
+    g_form.setMandatory('memory', false);
+    g_form.setDisplay('memory', false);
+    g_form.setMandatory('color', false);
+    g_form.setDisplay('color', false);
 
-    g_form.clearValue('select_device_model');
-    g_form.clearValue('select_your_preferred_carrier');
-    //g_form.clearValue('order_for');
+    g_form.clearOptions('memory');
+    g_form.clearOptions('color');
+	g_form.clearValue('memory');
+	g_form.clearValue('color');
+	g_form.clearValue('select_device_model');
+	g_form.setValue('order_for',g_form.getValue('selection_type'));
+    deviceselection(g_form.getValue('requested_for'), 'Devices', newValue);
+}
 
-    if (newValue != '') {
-        g_form.setVisible('select_device_model', true);
+function deviceselection(user, type, subtype) {
+    var ga = new GlideAjax('x_sakon_mobile.sakon_order_guide');
+    ga.addParam('sysparm_name', 'getcolor');
+    ga.addParam('sysparm_sakon_id', user);
+    ga.addParam('sysparm_type_id', type);
+    ga.addParam('sysparm_subtype_id', subtype);
+    ga.getXML(deviceresponse);
+}
+
+function deviceresponse(serverResponse) {
+    var respose = serverResponse.responseXML.documentElement.getAttribute("answer");
+
+    var rawdata = respose.split(',');
+    if (respose.toString().indexOf('color') > -1) {
+
+        g_form.setDisplay('color', true);
+        g_form.setMandatory('color', true);
+        g_form.addOption('color', '', '-- None --', 0);
+
+        for (var i = 0; i < rawdata.length; i++) {
+            if (rawdata[i].toString().indexOf('color') > -1) {
+                g_form.addOption('color', rawdata[i].split(':')[1], rawdata[i].split(':')[1], i + 1);
+            }
+        }
+    } else if (respose.toString().indexOf('memory') > -1) {
+        g_form.setDisplay('memory', true);
+        g_form.setMandatory('memory', true);
+        g_form.addOption('memory', '', '-- None --', 0);
+        for (var k = 0; k < rawdata.length; k++) {
+            if (rawdata[k].toString().indexOf('memory') > -1) {
+                g_form.addOption('memory', rawdata[k].split(':')[1], rawdata[k].split(':')[1], k + 1);
+            }
+        }
+    } else {
+        g_form.setDisplay('select_device_model', true);
         g_form.setMandatory('select_device_model', true);
-		g_form.setValue('order_for','New Line');
     }
-
-    //Type appropriate comment here, and begin script below
-
 }]]></script>
         <sys_class_name>catalog_script_client</sys_class_name>
         <sys_created_by>admin</sys_created_by>
@@ -51,15 +86,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>b118055107d121100df8f1e08c1ed0a6</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name>On Change Device Category Type</sys_name>
+        <sys_mod_count>29</sys_mod_count>
+        <sys_name>On Change Device  SubCategory Type</sys_name>
         <sys_overrides/>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>catalog_script_client_b118055107d121100df8f1e08c1ed0a6</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-02-27 17:52:03</sys_updated_on>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-20 01:05:35</sys_updated_on>
         <table/>
         <type>onChange</type>
         <ui_type>10</ui_type>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <catalog_script_client action="INSERT_OR_UPDATE">
+<active>true</active>
+<applies_catalog>true</applies_catalog>
+<applies_extended>false</applies_extended>
+<applies_req_item>false</applies_req_item>
+<applies_sc_task>false</applies_sc_task>
+<applies_target_record>false</applies_target_record>
+<applies_to>item</applies_to>
+<cat_item display_value="Shop Now Order Guide">a8db8e78db4ae910e7da049ed396192a</cat_item>
+<cat_variable>IO:35a8ec92db2ba110e7da049ed39619fc</cat_variable>
+<condition/>
+<description/>
+<field/>
+<global>true</global>
+<isolate_script>true</isolate_script>
+<messages/>
+<name>On Change I want to request</name>
+<order/>
+<script><![CDATA[function onChange(control, oldValue, newValue, isLoading) {
+    if (isLoading || newValue == '') {
+
+        if (g_form.getValue('i_want_to_request') == 'Device Only') {
+            g_form.setMandatory('phone_number', false);
+            g_form.setDisplay('phone_number', false);
+
+            g_form.setDisplay('phone', true);
+            g_form.setDisplay('buttonaccessory', true);
+            g_form.setMandatory('buttonaccessory', true);
+
+            g_form.setValue('order_type', 'Device Only');
+            g_form.setDisplay('order_type', false);
+
+        } else if (g_form.getValue('i_want_to_request') == 'New Line') {
+
+            g_form.setMandatory('phone_number', false);
+            g_form.setDisplay('phone_number', false);
+
+            g_form.setDisplay('buttonaccessory', true);
+            g_form.setMandatory('buttonaccessory', true);
+
+            g_form.setDisplay('phone', true);
+            g_form.setValue('order_type', 'New Line');
+            g_form.setDisplay('order_type', false);
+			
+        } else if (g_form.getValue('i_want_to_request') == 'Upgrade Device' || g_form.getValue('i_want_to_request') == 'Port Number') {
+			
+            getphonenumbers(g_form.getValue('requested_for_user'));
+            g_form.setMandatory('buttonaccessory', false);
+            g_form.setDisplay('buttonaccessory', false);
+
+            g_form.setDisplay('phone', false);
+            g_form.setDisplay('accessories', false);
+
+            g_form.setDisplay('phone_number', true);
+            g_form.setMandatory('phone_number', true);
+        }
+        return;
+    }
+
+    g_form.clearValue('accessories');
+    g_form.clearValue('carrier');
+
+
+    if (newValue == 'Device Only') {
+        g_form.setMandatory('phone_number', false);
+        g_form.setDisplay('phone_number', false);
+
+        g_form.setDisplay('phone', true);
+        g_form.setDisplay('buttonaccessory', true);
+        g_form.setMandatory('buttonaccessory', true);
+
+        //g_form.setDisplay('accessories', true);
+        g_form.setValue('order_type', newValue);
+        g_form.setDisplay('order_type', false);
+
+    } else if (newValue == 'New Line') {
+
+        g_form.setMandatory('phone_number', false);
+        g_form.setDisplay('phone_number', false);
+
+        g_form.setDisplay('buttonaccessory', true);
+        g_form.setMandatory('buttonaccessory', true);
+
+        g_form.setDisplay('phone', true);
+        //         g_form.setDisplay('accessories', true);
+        g_form.setValue('order_type', newValue);
+        g_form.setDisplay('order_type', false);
+    } else {
+        getphonenumbers(g_form.getValue('requested_for_user'));
+        g_form.setMandatory('buttonaccessory', false);
+        g_form.setDisplay('buttonaccessory', false);
+
+        g_form.setDisplay('phone', false);
+        g_form.setDisplay('accessories', false);
+
+        g_form.setDisplay('phone_number', true);
+        g_form.setMandatory('phone_number', true);
+    }
+
+    function getphonenumbers(userid) {
+        var ga = new GlideAjax('sakon_order_guide');
+        ga.addParam('sysparm_name', 'getphonenumbersdata');
+        ga.addParam('sysparm_userid', userid);
+        ga.getXML(HelloWorldParse);
+    }
+
+    function HelloWorldParse(response) {
+        var answer = response.responseXML.documentElement.getAttribute("answer").split(',');
+        g_form.clearOptions('phone_number');
+        g_form.clearMessages();
+        g_form.addOption('phone_number', '', '-- None --', 0);
+        if (answer) {
+            for (var i = 0; i < answer.length; i++) {
+                g_form.addOption('phone_number', answer[i], answer[i], i + 1);
+            }
+        } else {
+            g_form.showFieldMsg('phone_number', 'No Assigned Service Lines for ' + g_form.getDisplayValue('requested_for_user'), 'error');
+        }
+    }
+
+}]]></script>
+<sys_class_name>catalog_script_client</sys_class_name>
+<sys_created_by>Shaik.Pullsaida</sys_created_by>
+<sys_created_on>2023-06-30 12:11:59</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>aab555b0dbb76110e7da049ed39619bd</sys_id>
+<sys_mod_count>22</sys_mod_count>
+<sys_name>On Change I want to request</sys_name>
+<sys_overrides display_value=""/>
+<sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+<sys_policy/>
+<sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+<sys_update_name>catalog_script_client_aab555b0dbb76110e7da049ed39619bd</sys_update_name>
+<sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+<sys_updated_on>2023-07-20 11:28:16</sys_updated_on>
+<table/>
+<type>onChange</type>
+<ui_type>10</ui_type>
+<variable_set display_value=""/>
+<view/>
+</catalog_script_client>
+</record_update>

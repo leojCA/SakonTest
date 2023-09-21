@@ -17,8 +17,6 @@
         <do_not_select_first>false</do_not_select_first>
         <dynamic_default_value/>
         <dynamic_ref_qual/>
-        <dynamic_value_dot_walk_path/>
-        <dynamic_value_field/>
         <enable_also_request_for>false</enable_also_request_for>
         <example_text/>
         <field/>
@@ -43,7 +41,6 @@
         <mask_use_encryption>false</mask_use_encryption>
         <name>city</name>
         <order>200</order>
-        <post_insert_script/>
         <price_if_checked>0</price_if_checked>
         <pricing_implications>false</pricing_implications>
         <published_ref/>
@@ -86,7 +83,7 @@
         <unique>false</unique>
         <use_dynamic_default>false</use_dynamic_default>
         <use_reference_qualifier>simple</use_reference_qualifier>
-        <validate_regex display_value="Don't allow special characters 2">8dce20761b33301096b1ebd5624bcb2b</validate_regex>
+        <validate_regex display_value="Don't allow special characters">8dce20761b33301096b1ebd5624bcb2b</validate_regex>
         <variable_name/>
         <variable_set display_value="Shipping  Address Variable set">5e50fc761b33301096b1ebd5624bcb3d</variable_set>
         <variable_width>25</variable_width>

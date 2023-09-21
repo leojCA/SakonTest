@@ -17,17 +17,30 @@
         <messages/>
         <name>HideShowPhoneNumber</name>
         <order/>
+        <published_ref/>
         <script><![CDATA[function onLoad() {
+
     var cat_item_sys_id = g_form.getUniqueValue();
 
-    //If catalog item is a device, make phone number read only until network provider is selected	
-    var ga = new GlideAjax('CommonUtilities_ClientCallable');
-    ga.addParam('sysparm_name', 'isDevice');
-    ga.addParam('cat_item_sys_id', cat_item_sys_id);
-    ga.getXMLAnswer(CategoryParse);
+    var url = top.location.href;
+
+    if (g_form.getValue('order_type') == "New Line" || g_form.getValue('order_type') == 'Device Only') {
+        g_form.setVisible('phone_number_mp', false);
+    }
+
+    if (url.indexOf('sc_cat_item_guide') > -1) {
+        g_form.setMandatory('phone_number_mp', false);
+        g_form.setReadOnly('phone_number_mp', true);
+    } else {
+        //If catalog item is a device, make phone number read only until network provider is selected	
+        var ga = new GlideAjax('CommonUtilities_ClientCallable');
+        ga.addParam('sysparm_name', 'isDevice');
+        ga.addParam('cat_item_sys_id', cat_item_sys_id);
+        ga.getXMLAnswer(CategoryParse);
+    }
 
     function CategoryParse(response) {
-        if (response == 'true') {           
+        if (response == 'true') {
             g_form.setMandatory('phone_number_mp', false);
             g_form.setReadOnly('phone_number_mp', true);
         }
@@ -40,15 +53,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>cc9635ae1bf881106a8aebd5624bcb91</sys_id>
-        <sys_mod_count>17</sys_mod_count>
+        <sys_mod_count>18</sys_mod_count>
         <sys_name>HideShowPhoneNumber</sys_name>
         <sys_overrides/>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>catalog_script_client_cc9635ae1bf881106a8aebd5624bcb91</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2022-01-12 07:28:35</sys_updated_on>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-18 17:53:34</sys_updated_on>
         <table/>
         <type>onLoad</type>
         <ui_type>10</ui_type>

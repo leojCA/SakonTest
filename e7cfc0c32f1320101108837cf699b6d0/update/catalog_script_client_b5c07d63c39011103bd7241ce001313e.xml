@@ -17,23 +17,34 @@
         <messages/>
         <name>Show Order For</name>
         <order/>
+        <published_ref/>
         <script><![CDATA[function onLoad() {
     //Get logged in user sysID
     var userSysId = g_user.userID;
-	//Get sakon mobile admins group system id
+    //Get sakon mobile admins group system id
     var adminGroupSysId = '';
     var ga = new GlideAjax('CommonUtilities_ClientCallable');
     ga.addParam('sysparm_name', 'isAdminGroupUser');
     ga.addParam('sys_user_id', userSysId);
-    ga.getXML(function(response) {
+    ga.getXML(userresponse);
+
+
+    function userresponse(response) {
         var answer = response.responseXML.documentElement.getAttribute("answer");
         answer = JSON.parse(answer);
         if (answer.isAdmin == 'true') {
+
             g_form.setMandatory('order_for_user', false);
             g_form.setVisible('order_for_user', true);
 
         }
-    });
+    }
+
+    var url = top.location.href;
+    if (url.indexOf('sc_cat_item_guide') > -1) {
+        g_form.setReadOnly('order_for_user', true);
+    }
+
 }]]></script>
         <sys_class_name>catalog_script_client</sys_class_name>
         <sys_created_by>admin</sys_created_by>
@@ -41,15 +52,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>b5c07d63c39011103bd7241ce001313e</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>Show Order For</sys_name>
         <sys_overrides/>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>catalog_script_client_b5c07d63c39011103bd7241ce001313e</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2022-07-01 11:35:29</sys_updated_on>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-19 18:46:10</sys_updated_on>
         <table/>
         <type>onLoad</type>
         <ui_type>10</ui_type>

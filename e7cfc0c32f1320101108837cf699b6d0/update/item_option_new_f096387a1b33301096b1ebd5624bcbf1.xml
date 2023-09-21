@@ -2,7 +2,7 @@
     <item_option_new action="INSERT_OR_UPDATE">
         <active>true</active>
         <attributes>max_length=10</attributes>
-        <cat_item display_value="Traveling? Add/Change International Service">0285387a1b33301096b1ebd5624bcbe8</cat_item>
+        <cat_item display_value="Traveling? Add/Change International Service&#9;">0285387a1b33301096b1ebd5624bcbe8</cat_item>
         <category/>
         <choice_direction>down</choice_direction>
         <choice_field/>
@@ -17,8 +17,6 @@
         <do_not_select_first>false</do_not_select_first>
         <dynamic_default_value/>
         <dynamic_ref_qual/>
-        <dynamic_value_dot_walk_path/>
-        <dynamic_value_field/>
         <enable_also_request_for>false</enable_also_request_for>
         <example_text/>
         <field/>
@@ -43,7 +41,6 @@
         <mask_use_encryption>false</mask_use_encryption>
         <name>how_frequently_do_you_travel</name>
         <order>300</order>
-        <post_insert_script/>
         <price_if_checked>0</price_if_checked>
         <pricing_implications>false</pricing_implications>
         <published_ref/>

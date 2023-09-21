@@ -17,141 +17,52 @@
         <messages/>
         <name>On Requested For Change</name>
         <order/>
+        <published_ref/>
         <script><![CDATA[function onChange(control, oldValue, newValue, isLoading) {
     if (isLoading || newValue == '') {
         var req_for = g_form.getValue('requested_for');
         if (req_for != '') {
             deviceselection(g_form.getValue('requested_for'));
-        } else {
-            g_form.clearOptions('selection_type');
-            g_form.hideFieldMsg('selection_type');
-            g_form.clearValue('selection_type');
-            g_form.clearValue('new_device_type');
-            g_form.clearValue('service_category');
-            g_form.clearValue('phone_numbernew');
-            g_form.clearValue('select_device_model');
-            g_form.clearValue('upgrade_type');
-            g_form.clearValue('order_for');
-            g_form.clearValue('select_your_preferred_carrier');
-            g_form.setMandatory('service_category', false);
-            g_form.setVisible('service_category', false);
-            g_form.setMandatory('phone_numbernew', false);
-            g_form.setVisible('phone_numbernew', false);
-            g_form.setVisible('order_for', false);
-            g_form.setMandatory('select_your_preferred_carrier', false);
-            g_form.setVisible('select_your_preferred_carrier', false);
-            g_form.setMandatory('select_device_model', false);
-            g_form.setVisible('select_device_model', false);
-
         }
         return;
     }
 
     if (newValue != '') {
-
-        g_form.clearValue('phone_numbernew');
-        g_form.clearOptions('phone_numbernew');
-        g_form.clearValue('service_category');
-        g_form.clearValue('selection_type');
-        g_form.setMandatory('phone_numbernew', false);
-        g_form.setVisible('phone_numbernew', false);
-        g_form.setMandatory('service_category', false);
-        g_form.setVisible('service_category', false);
         deviceselection(g_form.getValue('requested_for'));
     }
 
 
     function deviceselection(value) {
         var ga = new GlideAjax('x_sakon_mobile.sakon_order_guide');
-        ga.addParam('sysparm_name', 'getcriteriacheck');
+        ga.addParam('sysparm_name', 'getordertype');
         ga.addParam('sysparm_sakon_id', value);
         ga.getXML(deviceresponse);
     }
 
     function deviceresponse(serverResponse) {
-        var respose = serverResponse.responseXML.documentElement.getAttribute("answer").split(','); //devices,services,accessories
+        var respose = serverResponse.responseXML.documentElement.getAttribute("answer").split(',');
+        g_form.clearOptions('selection_type');
+        g_form.hideFieldMsg('selection_type', true);
+        g_form.addOption('selection_type', '', '-- None --', 0);
+        if (respose != '') {
 
-        if (respose.length >= 1 && respose != '') {
-            g_form.setReadOnly('selection_type', false);
-            g_form.setMandatory('selection_type', true);
-            g_form.clearOptions('selection_type');
-            g_form.hideFieldMsg('selection_type', true);
-            g_form.addOption('selection_type', '', '-- None --', 0);
             for (var i = 0; i < respose.length; i++) {
-                if (respose[i] == 'devices') {
-                    g_form.addOption('selection_type', 'New_Device', 'New Device', 1);
-                } else if (respose[i] == 'services') {
-                    g_form.addOption('selection_type', 'Existing_Device', 'Existing Device', 2);
-                } else {
-                    g_form.addOption('selection_type', 'Accessory', 'Accessory', 3);
+                if (respose[i].toString().indexOf('New') > -1) {
+                    g_form.addOption('selection_type', respose[i], 'Device with Service (New Line)', i + 1);
+                } else if (respose[i].toString().indexOf('Upgrade') > -1) {
+                    g_form.addOption('selection_type', respose[i], 'Upgrade Device ', i + 1);
+                } else if (respose[i].toString() != 'Services') {
+                    g_form.addOption('selection_type', respose[i], respose[i], i + 1);
                 }
             }
-
-            if (g_form.getValue('new_device_type') == '' && g_form.getValue('selection_type') != 'Accessory') {
-
-                g_form.setMandatory('select_device_model', false);
-                g_form.setVisible('select_device_model', false);
+            if (respose.toString().indexOf('Service') > -1) {
+                g_form.addOption('selection_type', 'Service', 'Other Requests for Existing Devices and Services', 500);
             }
-            if (g_form.getValue('selection_type') == 'Accessory' ||g_form.getValue('new_device_type') != '' ) {
-                g_form.setVisible('select_device_model', true);
-                g_form.setMandatory('select_device_model', true);
-				//g_form.setVisible('image', true);
-
-            }
-
-            g_form.setVisible('order_for', false);
-            g_form.setMandatory('select_your_preferred_carrier', false);
-            g_form.setVisible('select_your_preferred_carrier', false);
-
-
         } else {
-            g_form.clearOptions('selection_type');
-            g_form.addOption('selection_type', '', '-- None --', 0);
-            g_form.setVisible('order_for', false);
-            g_form.setMandatory('select_your_preferred_carrier', false);
-            g_form.setVisible('select_your_preferred_carrier', false);
-            g_form.setMandatory('select_device_model', false);
-            g_form.setVisible('select_device_model', false);
             g_form.showFieldMsg('selection_type', 'Requested For User Is Not-Eligible For Device/Service/Accessory Categories', 'error');
             g_form.addErrorMessage('Requested For User Is Not-Eligible For Device/Service/Accessory Categories');
-
         }
-
-
-        /*
-		
-        if (respose.toString().indexOf('devices') > -1 && respose.toString().indexOf('services') > -1) {
-            g_form.setReadOnly('selection_type', false);
-            g_form.setMandatory('selection_type', true);
-            g_form.clearOptions('selection_type');
-            g_form.hideFieldMsg('selection_type', true);
-            g_form.addOption('selection_type', '', '-- None --', 0);
-            g_form.addOption('selection_type', 'New_Device', 'New Device', 1);
-            g_form.addOption('selection_type', 'Existing_Device', 'Existing Device', 2);
-        } else if (respose.toString().indexOf('devices') > -1) {
-            g_form.setReadOnly('selection_type', false);
-            g_form.setMandatory('selection_type', true);
-            g_form.hideFieldMsg('selection_type', true);
-            g_form.clearOptions('selection_type');
-            g_form.addOption('selection_type', '', '-- None --', 0);
-            g_form.addOption('selection_type', 'New_Device', 'New Device', 1);
-        } else if (respose.toString().indexOf('services') > -1) {
-            g_form.setReadOnly('selection_type', false);
-            g_form.setMandatory('selection_type', true);
-            g_form.hideFieldMsg('selection_type');
-            g_form.clearOptions('selection_type');
-            g_form.addOption('selection_type', '', '-- None --', 0);
-            g_form.addOption('selection_type', 'Existing_Device', 'Existing Device', 2);
-        } else {
-            g_form.clearOptions('selection_type');
-            g_form.addOption('selection_type', '', '-- None --', 0);
-            g_form.showFieldMsg('selection_type', 'Requested For User Is Not-Eligible For Devices/Services Categories Of SAKON', 'error');
-            g_form.addErrorMessage('Requested For User Is Not-Eligible For Devices/Services Categories Of SAKON');
-
-        }*/
     }
-    //Type appropriate comment here, and begin script below
-
 }]]></script>
         <sys_class_name>catalog_script_client</sys_class_name>
         <sys_created_by>admin</sys_created_by>
@@ -159,15 +70,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>ddc7455107d121100df8f1e08c1ed0c9</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>26</sys_mod_count>
         <sys_name>On Requested For Change</sys_name>
         <sys_overrides/>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>catalog_script_client_ddc7455107d121100df8f1e08c1ed0c9</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-02-27 18:14:44</sys_updated_on>
+        <sys_updated_by>Shaik</sys_updated_by>
+        <sys_updated_on>2023-09-19 18:15:39</sys_updated_on>
         <table/>
         <type>onChange</type>
         <ui_type>10</ui_type>

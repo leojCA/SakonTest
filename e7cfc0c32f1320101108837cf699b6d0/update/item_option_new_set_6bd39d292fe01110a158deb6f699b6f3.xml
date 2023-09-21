@@ -13,16 +13,17 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-07 10:27:36</sys_created_on>
         <sys_id>6bd39d292fe01110a158deb6f699b6f3</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>67</sys_mod_count>
         <sys_name>Marketplace Order Comments</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>item_option_new_set_6bd39d292fe01110a158deb6f699b6f3</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2022-07-07 10:27:36</sys_updated_on>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2023-09-18 18:41:56</sys_updated_on>
         <title>Marketplace Order Comments</title>
         <type>one_to_one</type>
+        <version>67</version>
         <write_roles/>
     </item_option_new_set>
 </record_update>
