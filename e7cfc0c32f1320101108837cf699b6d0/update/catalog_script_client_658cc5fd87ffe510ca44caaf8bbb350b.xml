@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="catalog_script_client">
+    <catalog_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_catalog>true</applies_catalog>
+        <applies_extended>false</applies_extended>
+        <applies_req_item>false</applies_req_item>
+        <applies_sc_task>false</applies_sc_task>
+        <applies_target_record>false</applies_target_record>
+        <applies_to>set</applies_to>
+        <cat_item/>
+        <cat_variable>IO:d06b09fd87ffe510ca44caaf8bbb358c</cat_variable>
+        <condition/>
+        <description/>
+        <field/>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>For Region Autopopulate shipping details</name>
+        <order/>
+        <script><![CDATA[function onChange(control, oldValue, newValue, isLoading) {
+    if (isLoading || newValue == '') {
+		g_form.setValue("first_name", g_user.firstName);
+		g_form.setValue("last_name", g_user.lastName);
+        return;
+    } else {
+        g_form.clearValue("different_shipping_address", true);
+        g_form.setValue("contact_number", "0");
+        if (newValue == "Americas") {
+            g_form.setValue("country", "Americas");
+            g_form.setValue("address_line_1", "20 Rockefeller Center, 5th Floor");
+            g_form.setValue("city", "New York");
+            g_form.setValue("state", "NY");
+            g_form.setValue("zip_code", "10020");
+            //g_form.setValue("country_id", "52123291");
+            g_form.setValue("attention_name", "IT Support");
+        } else if (newValue == "France") {
+            g_form.setValue("select_region", "France");
+            g_form.setValue("address_line_1", "9 Avenue Matignon");
+            g_form.setValue("city", "Paris");
+            g_form.setValue("state", "PAR");
+            g_form.setValue("zip_code", "75008");
+            //g_form.setValue("country", "594000105");
+            g_form.setValue("attention_name", "IT Support");
+        } else if (newValue == "Hong Kong") {
+            g_form.setValue("country", "Hong Kong");
+            g_form.setValue("address_line_1", "22/F, Alexandra House, Central");
+            g_form.setValue("city", "Hong Kong");
+            g_form.setValue("state", "HK");
+            g_form.setValue("zip_code", "999077");
+            //g_form.setValue("country_id", "594135407");
+            g_form.setValue("attention_name", "IT Support");
+        } else if (newValue == "Switzerland (Geneva)") {
+            g_form.setValue("country", "Switzerland (Geneva)");
+            g_form.setValue("address_line_1", "8 Place de la Taconnerie");
+            g_form.setValue("city", "Genève");
+            g_form.setValue("state", "GNV");
+            g_form.setValue("zip_code", "1204");
+            //g_form.setValue("country_id", "52258589");
+            g_form.setValue("attention_name", "IT Support");
+        } else if (newValue == "Switzerland (Zurich)") {
+            g_form.setValue("country", "Switzerland (Zurich)");
+            g_form.setValue("address_line_1", "26 Steinwiesstrasse");
+            g_form.setValue("city", "Zürich");
+            g_form.setValue("state", "ZH");
+            g_form.setValue("zip_code", "8032");
+            //g_form.setValue("country_id", "52258589");
+            g_form.setValue("attention_name", "IT Support");
+            //} else if (newValue == "EMEA") {
+            //  g_form.setValue("country", "EMEA");
+        } else if (newValue == "United Kingdom") {
+            g_form.setValue("country", "United Kingdom");
+            g_form.setValue("address_line_1", "8 King Street, St. James's");
+            g_form.setValue("city", "London");
+            g_form.setValue("state", "LDN");
+            g_form.setValue("zip_code", "SW1Y 6QT");
+            //g_form.setValue("country_id", "52123292");
+            g_form.setValue("attention_name", "Praveen Iyar");
+        } else if (newValue == "Other Region") {
+            g_form.clearValue("country");
+            g_form.clearValue("address_line_1");
+            g_form.clearValue("city");
+            g_form.clearValue("state");
+            g_form.clearValue("zip_code");
+            //g_form.clearValue("country_id");
+            g_form.clearValue("attention_name");
+        }
+    }
+}]]></script>
+        <sys_class_name>catalog_script_client</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-07-03 14:12:00</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>658cc5fd87ffe510ca44caaf8bbb350b</sys_id>
+        <sys_mod_count>16</sys_mod_count>
+        <sys_name>For Region Autopopulate shipping details</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>catalog_script_client_658cc5fd87ffe510ca44caaf8bbb350b</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-08-09 10:59:14</sys_updated_on>
+        <table/>
+        <type>onChange</type>
+        <ui_type>10</ui_type>
+        <variable_set display_value="Order Shipping Details Variable Set">e18665e12f504110831952172799b6a0</variable_set>
+        <view/>
+    </catalog_script_client>
+</record_update>

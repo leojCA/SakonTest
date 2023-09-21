@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_user_criteria_mtom">
+    <sc_cat_item_user_criteria_mtom action="INSERT_OR_UPDATE">
+        <sc_cat_item display_value="Transfer of Liability (Personal to Corporate)">5dd44db61b73301096b1ebd5624bcb5b</sc_cat_item>
+        <sys_class_name>sc_cat_item_user_criteria_mtom</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-08-09 06:27:11</sys_created_on>
+        <sys_id>03a6c2e18764b110ca44caaf8bbb3555</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Transfer of Liability (Personal to Corporate).Sakon Mobile Admin User Criteria</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sc_cat_item_user_criteria_mtom_03a6c2e18764b110ca44caaf8bbb3555</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-08-09 06:27:11</sys_updated_on>
+        <user_criteria display_value="Sakon Mobile Admin User Criteria">36ef36b587e3a150ca44caaf8bbb351a</user_criteria>
+    </sc_cat_item_user_criteria_mtom>
+</record_update>

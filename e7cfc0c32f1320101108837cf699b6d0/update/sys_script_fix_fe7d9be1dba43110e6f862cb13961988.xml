@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_fix">
+    <sys_script_fix action="INSERT_OR_UPDATE">
+        <before>false</before>
+        <description>Sakon Phone number Fix</description>
+        <name>Sakon Phone number Fix</name>
+        <record_for_rollback>true</record_for_rollback>
+        <script><![CDATA[var gt_services = new GlideRecord('x_sakon_mobile_service_lines');
+//gt_services.setLimit(1);
+gt_services.addEncodedQuery('phone_number!=^u_phone_number_searchISEMPTY');
+gt_services.query();
+while(gt_services.next()){
+	gt_services.u_phone_number_search = gt_services.phone_number;
+	gt_services.update();
+}]]></script>
+        <sys_class_name>sys_script_fix</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-08-09 12:52:04</sys_created_on>
+        <sys_id>fe7d9be1dba43110e6f862cb13961988</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Sakon Phone number Fix</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_fix_fe7d9be1dba43110e6f862cb13961988</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-08-09 12:52:04</sys_updated_on>
+        <unloadable>false</unloadable>
+    </sys_script_fix>
+</record_update>

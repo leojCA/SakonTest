@@ -41,13 +41,13 @@
         <map_to_field>false</map_to_field>
         <mask_use_confirmation>false</mask_use_confirmation>
         <mask_use_encryption>false</mask_use_encryption>
-        <name>select_request_option</name>
-        <order>200</order>
+        <name>business_justification</name>
+        <order>500</order>
         <post_insert_script/>
         <price_if_checked>0</price_if_checked>
         <pricing_implications>false</pricing_implications>
         <published_ref/>
-        <question_text>Select Request Option</question_text>
+        <question_text>Business Justification</question_text>
         <read_only>false</read_only>
         <read_roles/>
         <read_script/>
@@ -71,14 +71,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-11-17 02:26:20</sys_created_on>
         <sys_id>56c5387a1b33301096b1ebd5624bcb46</sys_id>
-        <sys_mod_count>2</sys_mod_count>
-        <sys_name>Select Request Option</sys_name>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Business Justification</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>item_option_new_56c5387a1b33301096b1ebd5624bcb46</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2021-11-17 02:32:02</sys_updated_on>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-06-07 09:31:27</sys_updated_on>
         <table/>
         <tooltip/>
         <type>5</type>

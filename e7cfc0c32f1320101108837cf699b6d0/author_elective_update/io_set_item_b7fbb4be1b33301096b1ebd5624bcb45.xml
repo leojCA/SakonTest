@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="io_set_item">
+    <io_set_item action="DELETE">
+        <order>400</order>
+        <sc_cat_item display_value="Re-Activate Phone Number">773b3cbe1b33301096b1ebd5624bcbea</sc_cat_item>
+        <sys_class_name>io_set_item</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-17 02:52:47</sys_created_on>
+        <sys_id>b7fbb4be1b33301096b1ebd5624bcb45</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Contact-Number Variable set.Re-Activate Phone Number</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>io_set_item_b7fbb4be1b33301096b1ebd5624bcb45</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-17 02:53:04</sys_updated_on>
+        <variable_set display_value="Contact-Number Variable set">488274f61b33301096b1ebd5624bcb5e</variable_set>
+    </io_set_item>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</application>
+        <file_path/>
+        <instance_id>ec36987bdb430154b847ac44d4961985</instance_id>
+        <instance_name>dev127395</instance_name>
+        <name>io_set_item_b7fbb4be1b33301096b1ebd5624bcb45</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="io_set_item"><io_set_item action="INSERT_OR_UPDATE"><order>400</order><sc_cat_item display_value="Re-Activate Phone Number">773b3cbe1b33301096b1ebd5624bcbea</sc_cat_item><sys_class_name>io_set_item</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2021-11-17 02:52:47</sys_created_on><sys_id>b7fbb4be1b33301096b1ebd5624bcb45</sys_id><sys_mod_count>2</sys_mod_count><sys_name>Contact-Number Variable set.Re-Activate Phone Number</sys_name><sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package><sys_policy/><sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope><sys_update_name>io_set_item_b7fbb4be1b33301096b1ebd5624bcb45</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2021-11-17 02:53:04</sys_updated_on><variable_set display_value="Contact-Number Variable set">488274f61b33301096b1ebd5624bcb5e</variable_set></io_set_item></record_update>]]></payload>
+        <payload_hash>1275781517</payload_hash>
+        <record_name>Contact-Number Variable set.Re-Activate Phone Number</record_name>
+        <reverted_from/>
+        <source>215338a7979531100f4435dfe153aff6</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-09-21 12:19:15</sys_created_on>
+        <sys_id>5b93382b979531100f4435dfe153af5d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>18ab7ae1b740000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-09-21 12:19:15</sys_updated_on>
+        <type>Catalog Variable Set</type>
+        <update_guid>fb0c3cfe33333010a877986384733ca7</update_guid>
+        <update_guid_history>fb0c3cfe33333010a877986384733ca7:1275781517,fb0c3cfe33333010a877986384733ca7:1275781517,fb0c3cfe33333010a877986384733ca7:1275781517,bffbf8fe0d33301039351d2cb2ff079e:-815936822</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-09-21 14:36:46</sys_created_on>
+        <sys_db_object display_value="" name="io_set_item">io_set_item</sys_db_object>
+        <sys_id>03c9ef96a00f46f6bc048c03daf56a41</sys_id>
+        <sys_metadata>b7fbb4be1b33301096b1ebd5624bcb45</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Contact-Number Variable set.Re-Activate Phone Number</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_scope_delete display_value="">3403c08f62754be89ff52b0da9f6c610</sys_scope_delete>
+        <sys_update_name>io_set_item_b7fbb4be1b33301096b1ebd5624bcb45</sys_update_name>
+        <sys_update_version display_value="io_set_item_b7fbb4be1b33301096b1ebd5624bcb45">5b93382b979531100f4435dfe153af5d</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-09-21 14:36:46</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

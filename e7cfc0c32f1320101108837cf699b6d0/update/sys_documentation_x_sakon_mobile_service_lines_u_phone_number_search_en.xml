@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_phone_number_search" label="Phone Number(Search)" language="en" table="x_sakon_mobile_service_lines">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_phone_number_search</element>
+            <help/>
+            <hint/>
+            <label>Phone Number(Search)</label>
+            <language>en</language>
+            <name>x_sakon_mobile_service_lines</name>
+            <plural>Phone Number(Search)</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>DhruvM</sys_created_by>
+            <sys_created_on>2023-08-04 07:56:05</sys_created_on>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Phone Number(Search)</sys_name>
+            <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+            <sys_update_name>sys_documentation_x_sakon_mobile_service_lines_u_phone_number_search_en</sys_update_name>
+            <sys_updated_by>DhruvM</sys_updated_by>
+            <sys_updated_on>2023-08-04 07:56:05</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

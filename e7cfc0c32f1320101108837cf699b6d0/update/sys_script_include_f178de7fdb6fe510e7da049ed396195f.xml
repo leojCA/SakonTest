@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.UsersSyncScript_Update</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>UsersSyncScript_Update</name>
+        <script><![CDATA[var UsersSyncScript_Update = Class.create();
+UsersSyncScript_Update.prototype = {
+    initialize: function() {
+        var currentScope = gs.getCurrentScopeName();
+    },
+
+    loadData: function(UserID, SyncType, SyncID, SakonID) {
+        try {
+            var logger = new LogUtilities();
+            var logSource = 'UsersSyncScript_Update Script Include - loadData';
+            logger.writeInfo(logSource, 'Start - ' + logSource);
+            if (SyncType == 'INSERT') {
+                logger.writeInfo(logSource, 'Calling CreateUser function');
+                this.createUser(UserID, SyncID);
+            } else if (SyncType == 'UPDATE') {
+                logger.writeInfo(logSource, 'Calling UpdateUser function');
+                this.updateUser(UserID, SyncID, SakonID);
+            } else if (SyncType == 'DELETE') {
+                logger.writeInfo(logSource, 'Calling DeleteUser function');
+                this.deleteUser(UserID, SyncID, SakonID);
+            }
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, ' Error Line Number ' + ex.lineNumber);
+            throw ex;
+        }
+    },
+
+    getUserAsJson: function(UserID, SakonID,type) {
+        try {
+            var EligibilityID;
+            var emp_id_field = gs.getProperty(gs.getCurrentScopeName() + '.' + 'employee_id_field');
+            var apiResponse = new APIUtilities().getData(currentScope + '.' + 'Users REST Message', 'GetUserEligibility');
+            for (i = 0; i < apiResponse.length; i++) {
+                if (apiResponse[i].name.toString().toLowerCase() === 'el-snow') {
+                    EligibilityID = apiResponse[i].id;
+                    break;
+                }
+            }
+			
+            var newRec = new GlideRecord('sys_user');
+            newRec.addQuery('user_name', UserID);
+            newRec.query();
+            while (newRec.next()) {
+                var requestBody = {};
+                requestBody.firstName = newRec.first_name.toString();
+                requestBody.lastName = newRec.last_name.toString();
+                requestBody.title = newRec.title.toString();
+                requestBody.email = newRec.email.toString();
+                requestBody.employeeId = newRec.getDisplayValue(emp_id_field).toString();
+                requestBody.phone = parseInt((newRec.phone.toString()).replace(/[^\n\d]+/g, ''));
+                requestBody.mobile = parseInt((newRec.mobile_phone.toString()).replace(/[^\n\d]+/g, ''));
+				requestBody.address1 = newRec.street.toString();
+                requestBody.city = newRec.city.toString();
+				requestBody.state = newRec.state.toString();
+                requestBody.ZipCode = newRec.zip.toString();
+                requestBody.country = newRec.country.toString();
+				requestBody.managerEmployeeId = newRec["manager"][emp_id_field].toString();
+                requestBody.statusId = newRec.active.toString() == 'true' ? 138 : 139;
+				
+				if(type=='CREATE'){
+					requestBody.typeId = 110;
+				}else{
+					var roleR=new GlideRecord('x_sakon_mobile_users');
+					roleR.addQuery('servicenow_user_id',newRec.sys_id);
+					roleR.query();
+					if(roleR.next()){
+						requestBody.typeId =Number(roleR.role);
+					}else{
+						requestBody.typeId = 110;
+					}
+										
+				}
+				
+                
+                requestBody.hierarchyTypeId = 108;
+                requestBody.eligibilityId = EligibilityID;
+                requestBody.vip = Boolean(newRec.vip.toString());
+                requestBody.allocationInfo = {};
+                requestBody.allocationInfo.department = newRec.department.getDisplayValue();
+                requestBody.allocationInfo.costCenter = newRec.cost_center.getDisplayValue();
+                requestBody.allocationInfo.businessEntity = "";
+                requestBody.allocationInfo.businessUnit = "";
+                requestBody.allocationInfo.businessGroup = "";
+                requestBody.allocationInfo.businessLocation = "";
+                requestBody.allocationInfo.accountCode = "";
+                requestBody.allocationInfo.glCode = "";
+                requestBody.sakonID = SakonID;
+				
+				/* Give preference to address info in Location object */
+				if(newRec.location)
+				{
+					if(newRec.location.street)
+						requestBody.address1 = newRec.location.street.toString();
+					
+					if(newRec.location.city)
+						requestBody.city = newRec.location.city.toString();
+					
+					if(newRec.location.state)
+						requestBody.state = newRec.location.state.toString();
+					
+					if(newRec.location.zip)
+						requestBody.zipCode = newRec.location.zip.toString();
+					
+					if(newRec.location.country)
+						requestBody.country = newRec.location.country.toString();
+				}
+				
+                requestBody = JSON.stringify(requestBody);
+                logger.writeInfo('User API Request body: ', requestBody);
+                return requestBody;
+            }
+
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, ' Error Line Number ' + ex.lineNumber);
+            throw ex;
+        }
+    },
+
+    createUser: function(UserID, SyncID) {
+        try {
+            logger.writeInfo(logSource, 'Start - UsersSyncScript_Update - Create User');
+            var SyncCounter = gs.getProperty(currentScope + '.' + 'user_sync_retry_count');
+            var requestBody = this.getUserAsJson(UserID, -1,'CREATE');
+            var currentScope = gs.getCurrentScopeName();
+            var apiResponse;
+            apiResponse = new APIUtilities().postData(currentScope + '.' + 'Users REST Message', 'CreateUser', requestBody);
+            logger.writeInfo(logSource, 'CreateUser - Response status from APIUtilities: ' + apiResponse[0]);
+
+            //Get Sakon ID from API Response
+            var startIndex = apiResponse[1].indexOf('"id:"') + 7;
+            var endIndex = apiResponse[1].lastIndexOf('}');
+            var sakonID = apiResponse[1].slice(startIndex, endIndex);
+
+            //Update Sync Status, Last Retry DateTime and Retry Counter in Entity Sync Queue Table if User Creation is successful
+            var gr = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+            gr.addQuery('servicenow_entity_id', UserID);
+            gr.query();
+            while (gr.next()) {
+                if (apiResponse[0] == 200) {
+                    logger.writeInfo(logSource, 'User ' + UserID + ' created in Sakon, Sakon ID: ' + sakonID);
+                    gr.sync_status = 2;
+                    gr.sakon_entity_id = sakonID;
+                    gr.comments = 'User Sync Successful';
+                    gr.update();
+
+                    //Insert a record into Sakon Mobile Users table for this user
+                    new UserUtilities().addSakonUser(UserID, sakonID);
+
+                } else if (apiResponse[0] == 409) {
+                    logger.writeInfo(logSource, 'Response Body for insert conflict' + apiResponse[1]);
+                    //Get Sakon ID from API Response
+                    var start = apiResponse[1].indexOf('(Id') + 4;
+                    var end = apiResponse[1].lastIndexOf(').');
+                    var sakonIDUpdate = apiResponse[1].slice(start, end);
+                    logger.writeInfo(logSource, 'sakonIDUpdate' + sakonIDUpdate);
+
+                    //Call UpdateUser function
+                    this.updateUser(UserID, SyncID, sakonIDUpdate);
+                    logger.writeInfo(logSource, 'Insert Conflict - User already exists, user details updated');
+
+                    //Update Entity Sync Queue
+                    var gres = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+                    gres.addQuery('servicenow_entity_id', UserID);
+                    gres.addQuery('number', SyncID);
+                    gres.query();
+                    while (gres.next()) {
+                        gres.comments = 'Insert Conflict - User already exists, user details updated';
+                        gres.sync_counter = Number(gres.getValue('sync_counter')) - 1;
+                        gres.sync_status = -1;
+                        gres.sakon_entity_id = sakonIDUpdate;
+                        gres.update();
+                    }
+                    //Add the user in Sakon Users table
+                    new UserUtilities().addSakonUser(UserID, sakonIDUpdate);
+                } else {
+                    //Update comments in Entity Sync Queue
+                    var gres1 = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+                    gres1.addQuery('servicenow_entity_id', UserID);
+                    gres1.addQuery('number', SyncID);
+                    gres1.query();
+                    while (gres1.next()) {
+                        gres1.comments = 'Exception: ' + apiResponse[1];
+                        gres1.update();
+                    }
+                }
+            }
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, ' Error Line Number ' + ex.lineNumber);
+            throw ex;
+        } finally {
+            var res = new UserUtilities().updateEntitySyncQueue(UserID, SyncID);
+            if (res[0] == SyncCounter && res[1] == 0) {
+                gs.eventQueue('x_sakon_mobile.user.sync.failure', res[2]);
+            }
+            logger.writeInfo(logSource, 'End - UsersSyncScript_Update - Create User');
+        }
+    },
+
+    updateUser: function(UserID, SyncID, SakonID) {
+        try {
+            logger.writeInfo(logSource, 'Start - UsersSyncScript_Update - Update User');
+            var apiResponse;
+            var today = new GlideDateTime();
+            var SyncCounter = gs.getProperty(currentScope + '.' + 'user_sync_retry_count');
+            var requestBody = this.getUserAsJson(UserID, SakonID,'UPDATE');
+            apiResponse = new APIUtilities().postData(currentScope + '.' + 'Users REST Message', 'UpdateUser', requestBody, SakonID);
+            logger.writeInfo(logSource, 'UpdateUser - Response status from APIUtilities: ' + apiResponse[0] + ' ' + apiResponse[1]);
+
+            //Update Sync Status, Last Retry DateTime and Retry Counter in Entity Sync Queue Table if User Update is successful
+            var gres = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+            gres.addQuery('servicenow_entity_id', UserID);
+            gres.addQuery('number', SyncID);
+            gres.query();
+            while (gres.next()) {
+                if (apiResponse[0] == 200) {
+                    logger.writeInfo(logSource, 'User Update Successful');
+                    gres.sync_status = 2;
+                    gres.comments = 'User Sync Successful';
+                    gres.update();
+
+                    //Mark the user as Active in Sakon Users Table
+                    var grUsers = new GlideRecordSecure(currentScope + '_' + 'users');
+                    grUsers.addQuery('servicenow_user_id.name', UserID);
+                    grUsers.query();
+                    var req = JSON.parse(requestBody);
+                    var IsActive = req['statusId'] == "138" ? "true" : "false";
+                    while (grUsers.next()) {
+                        grUsers.active_user = IsActive;
+                        grUsers.modified_datetime = today;
+                        grUsers.update();
+                    }
+                } 
+				else if (apiResponse[0] == 409) {
+                    gres.sync_status = -2;
+                    gres.comments = 'Update Conflict - Email ID already exists';
+                    gres.update();
+                    logger.writeInfo(logSource, 'Sending notification for user update failure ' + SyncID);
+                    gs.eventQueue('x_sakon_mobile.user.sync.update', gres);
+                } else {
+                    //Update comments in Entity Sync Queue
+                    var gres1 = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+                    gres1.addQuery('servicenow_entity_id', UserID);
+                    gres1.addQuery('number', SyncID);
+                    gres1.query();
+                    while (gres1.next()) {
+                        gres1.comments = 'Exception: ' + apiResponse[1];
+                        gres1.update();
+                    }
+                }
+            }
+
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, ' Error Line Number ' + ex.lineNumber);
+            throw (ex);
+        } finally {
+            var res = new UserUtilities().updateEntitySyncQueue(UserID, SyncID);
+            if (res[0] == SyncCounter && res[1] == 0) {
+                gs.eventQueue('x_sakon_mobile.user.sync.failure', res[2]);
+            }
+            logger.writeInfo(logSource, 'End - UsersSyncScript_Update - Update User');
+        }
+    },
+
+    deleteUser: function(UserID, SyncID, SakonID) {
+        try {
+            logger.writeInfo(logSource, 'Start - Delete User');
+            apiResponse = new APIUtilities().deleteData(currentScope + '.' + 'Users REST Message', 'DeleteUser', SakonID);
+            logger.writeInfo(logSource, 'DeleteUser - Response status from APIUtilities: ' + apiResponse);
+
+            if (apiResponse == 200) {
+                //Update Sync Status in Entity Sync Queue table
+                var gr2 = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+                gr2.addQuery('servicenow_entity_id', UserID);
+                gr2.addQuery('number', SyncID);
+                gr2.query();
+                while (gr2.next()) {
+                    gr2.sync_status = 2;
+                    gr2.comments = 'User Sync Successful';
+                    gr2.update();
+                }
+
+                //Mark the user as Inactive in Sakon Users table
+                var now = new GlideDateTime();
+                var grUser = new GlideRecordSecure(currentScope + '_users');
+                grUser.addQuery('servicenow_user_id.name', UserID);
+                grUser.query();
+                while (grUser.next()) {
+                    grUser.active_user = false;
+                    grUser.modified_datetime = now;
+                    grUser.update();
+                }
+            } else {
+                //Update comments in Entity Sync Queue
+                var gr3 = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+                gr3.addQuery('servicenow_entity_id', UserID);
+                gr3.addQuery('number', SyncID);
+                gr3.query();
+                while (gr3.next()) {
+                    gr3.comments = 'Exception: ' + apiResponse[1];
+                    gr3.update();
+                }
+            }
+
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, ' Error Line Number ' + ex.lineNumber);
+            throw ex;
+        } finally {
+            var res = new UserUtilities().updateEntitySyncQueue(UserID, SyncID);
+        }
+    },
+    type: 'UsersSyncScript_Update'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>Shaik.Pullsaida</sys_created_by>
+        <sys_created_on>2023-06-27 14:28:29</sys_created_on>
+        <sys_id>f178de7fdb6fe510e7da049ed396195f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>UsersSyncScript_Update</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_f178de7fdb6fe510e7da049ed396195f</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-06-27 14:28:29</sys_updated_on>
+    </sys_script_include>
+</record_update>

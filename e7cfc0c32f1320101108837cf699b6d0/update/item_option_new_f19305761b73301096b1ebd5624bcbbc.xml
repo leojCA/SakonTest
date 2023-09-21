@@ -24,7 +24,7 @@
         <field/>
         <global>false</global>
         <help_tag>More information</help_tag>
-        <help_text/>
+        <help_text>Prior to submitting this request, please call your wireless Carrier to authorize the release of your number to your company's financial responsibility. Please note, we cannot process this request until the above has been completed. Please complete form below once done.</help_text>
         <hidden>false</hidden>
         <include_none>false</include_none>
         <instructions/>
@@ -41,13 +41,13 @@
         <map_to_field>false</map_to_field>
         <mask_use_confirmation>false</mask_use_confirmation>
         <mask_use_encryption>false</mask_use_encryption>
-        <name>shipping_address_where_you_would_like_a_box_sent_for_returning_your_mobile_device</name>
-        <order>300</order>
+        <name>note</name>
+        <order>100</order>
         <post_insert_script/>
         <price_if_checked>0</price_if_checked>
         <pricing_implications>false</pricing_implications>
         <published_ref/>
-        <question_text>Shipping address where you would like a box sent for returning your mobile device</question_text>
+        <question_text>Note</question_text>
         <read_only>false</read_only>
         <read_roles/>
         <read_script/>
@@ -63,22 +63,22 @@
         <save_script/>
         <scale_max>5</scale_max>
         <scale_min>0</scale_min>
-        <show_help>false</show_help>
-        <show_help_on_load>false</show_help_on_load>
+        <show_help>true</show_help>
+        <show_help_on_load>true</show_help_on_load>
         <sp_widget/>
         <summary_macro/>
         <sys_class_name>item_option_new</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-11-17 03:26:24</sys_created_on>
         <sys_id>f19305761b73301096b1ebd5624bcbbc</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name>Shipping address where you would like a box sent for returning your mobile device</sys_name>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Note</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>item_option_new_f19305761b73301096b1ebd5624bcbbc</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2021-11-17 03:26:24</sys_updated_on>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-06-09 01:57:36</sys_updated_on>
         <table/>
         <tooltip/>
         <type>11</type>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="io_set_item">
+    <io_set_item action="INSERT_OR_UPDATE">
+        <order>500</order>
+        <sc_cat_item display_value="Bulk New Line Order">0f4c1b39db1b2510e6f862cb139619ad</sc_cat_item>
+        <sys_class_name>io_set_item</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-06-09 04:01:19</sys_created_on>
+        <sys_id>934c9b39db1b2510e6f862cb13961978</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Description Variable set.Copy of Bulk Upgrade Request</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>io_set_item_934c9b39db1b2510e6f862cb13961978</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-06-09 04:01:19</sys_updated_on>
+        <variable_set display_value="Description Variable set">6ddd24361b33301096b1ebd5624bcb67</variable_set>
+    </io_set_item>
+</record_update>

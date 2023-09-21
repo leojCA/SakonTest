@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_item_variable_assignment">
+    <sc_item_variable_assignment action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <guide_variable display_value="Select your preferred Carrier">77f4d471877fe510ca44caaf8bbb35e7</guide_variable>
+        <item_variable display_value="Carrier">9919e36f2fc00110831952172799b69d</item_variable>
+        <rule display_value="">f7cec7e8dbccb110e6f862cb139619b0</rule>
+        <sys_class_name>sc_item_variable_assignment</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-07-25 11:40:05</sys_created_on>
+        <sys_id>407eb9fcdb54b150e6f862cb1396190e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>9919e36f2fc00110831952172799b69d</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sc_item_variable_assignment_407eb9fcdb54b150e6f862cb1396190e</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-07-25 11:40:05</sys_updated_on>
+        <type>order_guide_variable</type>
+        <value/>
+    </sc_item_variable_assignment>
+</record_update>

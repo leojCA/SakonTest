@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="catalog_script_client">
+    <catalog_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_catalog>false</applies_catalog>
+        <applies_extended>false</applies_extended>
+        <applies_req_item>true</applies_req_item>
+        <applies_sc_task>false</applies_sc_task>
+        <applies_target_record>false</applies_target_record>
+        <applies_to>set</applies_to>
+        <cat_item/>
+        <cat_variable/>
+        <condition/>
+        <description/>
+        <field/>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Make Carrier field editable for approver</name>
+        <order/>
+        <script><![CDATA[function onLoad() {
+    //Type appropriate comment here, and begin script below
+    var ga = new GlideAjax('x_sakon_mobile.sakon_customization');
+    ga.addParam('sysparm_name', 'userisApprover');
+    ga.getXML(isApprover);
+
+    function isApprover(serverResponse) {
+        var answer = serverResponse.responseXML.documentElement.getAttribute("answer");
+        if (answer == 'YES') {
+            g_form.setVariablesReadOnly(true);
+            g_form.setReadOnly('carrier', false);
+			g_form.addOption('carrier', 'Verizon', 'Verizon');
+            g_form.setReadOnly('note', false);
+        } else {
+            g_form.setVariablesReadOnly(true);
+        }
+    }
+
+}]]></script>
+        <sys_class_name>catalog_script_client</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-07-03 09:37:13</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>ccee043d873fe510ca44caaf8bbb355a</sys_id>
+        <sys_mod_count>20</sys_mod_count>
+        <sys_name>Make Carrier field editable for approver</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>catalog_script_client_ccee043d873fe510ca44caaf8bbb355a</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-08-03 10:54:14</sys_updated_on>
+        <table/>
+        <type>onLoad</type>
+        <ui_type>10</ui_type>
+        <variable_set display_value="Marketplace Order Comments">6bd39d292fe01110a158deb6f699b6f3</variable_set>
+        <view/>
+    </catalog_script_client>
+</record_update>

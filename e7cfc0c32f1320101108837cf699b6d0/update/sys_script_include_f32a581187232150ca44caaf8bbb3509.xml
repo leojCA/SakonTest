@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.sakon_customization</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>sakon_customization</name>
+        <script><![CDATA[var sakon_customization = Class.create();
+sakon_customization.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+
+    userisadmin: function() {
+        var gt = new GlideRecord('sys_user_grmember');
+        gt.addQuery('group', '87c1a2922fa730109e6d70682799b656'); //Group=Sakon Mobile Admins
+        gt.addQuery('user', gs.getUserID());
+        gt.query();
+        if (!gt.next()) {
+            return 'NO';
+        } else {
+            return 'YES';
+        }
+    },
+
+    userisApprover: function() {
+        var gt = new GlideRecord('sys_user_grmember');
+        gt.addQuery('group', '08207423db55cf00789f7999bf9619eb'); //Group=Christies - IT Managers
+        gt.addQuery('user', gs.getUserID());
+        gt.query();
+        if (!gt.next()) {
+            return 'NO';
+        } else {
+            return 'YES';
+        }
+    },
+
+    checkElig: function(user) {
+        /*if(gs.getUser().isMemberOf("Sakon Mobile Admins")){
+        	user = gs.getUserByID();
+        }*/
+        var usergroupsysids = [];
+        var grgroups = new GlideRecord('sys_user_grmember'); //Collecting list of users groups
+        grgroups.addQuery('user', user);
+        grgroups.query();
+        while (grgroups.next()) {
+            usergroupsysids.push(grgroups.group.toString());
+        }
+
+        var criteriavalue = [];
+        for (var i = 0; i < usergroupsysids.length; i++) {
+            var gt_user = new GlideRecord('user_criteria'); //Collecting list of user-criterias for users groups
+            gt_user.addEncodedQuery('groupLIKE' + usergroupsysids[i]);
+            gt_user.query();
+            while (gt_user.next()) {
+                criteriavalue.push(gt_user.sys_id.toString());
+            }
+        }
+
+        var catalogvalue = [];
+        for (var j = 0; j < criteriavalue.length; j++) {
+            var gt_cat = new GlideRecord('sc_cat_item_user_criteria_mtom');
+            gt_cat.addEncodedQuery('sc_cat_item.category=d6389a4a1ba00110864a0d82604bcb2d^sc_cat_item.active=true^user_criteria=' + criteriavalue[j]);
+            //gt_cat.addQuery('user_criteria', criteriavalue[i]);
+            gt_cat.query();
+            while (gt_cat.next()) {
+                catalogvalue.push(gt_cat.sc_cat_item.toString());
+            }
+        }
+        return catalogvalue;
+    },
+
+    getNetworkProvidersclient: function() {
+        var cat_item_id = this.getParameter('cat_item_id');
+        var order_type = this.getParameter('order_type');
+        var networkProviders = [];
+        var grCatItem = new GlideRecordSecure('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+        grCatItem.addQuery('servicenow_catalog_item_id', cat_item_id);
+        grCatItem.addQuery('order_type', order_type);
+        grCatItem.addQuery('is_active', 'true');
+        grCatItem.query();
+        while (grCatItem.next()) {
+            networkProviders.push(grCatItem.network_provider.toString());
+        }
+        return networkProviders.toString();
+    },
+
+    getNetworkProviders: function(cat_item_id, order_type, phonenumber, category) {
+        var networkProviders = [];
+        var query;
+        if (phonenumber) {
+            gs.info('---getNetworkProviders' + phonenumber);
+            var gt_service_line = new GlideRecord('x_sakon_mobile_service_lines');
+            gt_service_line.addQuery('phone_number', phonenumber);
+            gt_service_line.query();
+            if (gt_service_line.next()) {
+                gs.info('---getNetworkProviders' + phonenumber + '------' + gt_service_line.carrier);
+                var grCatItemphone = new GlideRecord('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+                if (category == 'UpgradeMyDevice') {
+                    grCatItemphone.addQuery('network_provider_id', gt_service_line.carrier_id);
+					grCatItemphone.addQuery('network_provider', "!=", 'Verizon');
+                } else {
+                    grCatItemphone.addQuery('network_provider_id', '!=', gt_service_line.carrier_id);
+                }
+
+                grCatItemphone.addQuery('order_type', order_type);
+                grCatItemphone.addQuery('is_active', 'true');
+                grCatItemphone.query();
+                while (grCatItemphone.next()) {
+                    networkProviders.push(grCatItemphone.network_provider.toString());
+                }
+            }
+            query = 'network_providerIN' + networkProviders + '^order_typeIN' + order_type;
+            gs.info('---getNetworkProviders1' + phonenumber + '------' + gt_service_line.carrier + '-------' + query);
+
+        } else {
+            gs.info('---getNetworkProviders' + cat_item_id + '------' + order_type + '-------');
+            var grCatItem = new GlideRecord('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+            grCatItem.addQuery('servicenow_catalog_item_id', cat_item_id);
+            grCatItem.addQuery('order_type', order_type);
+            grCatItem.addQuery('network_provider', "!=", 'Verizon');
+            grCatItem.addQuery('is_active', 'true');
+            grCatItem.query();
+            while (grCatItem.next()) {
+                networkProviders.push(grCatItem.network_provider.toString());
+            }
+            query = 'network_providerIN' + networkProviders + '^servicenow_catalog_item_id=' + cat_item_id + '^order_typeIN' + order_type;
+            gs.info('---getNetworkProviders1' + cat_item_id + '------' + order_type + '-------' + query);
+        }
+        return query;
+    },
+
+    deviceModel: function(type, number, user, selection, existing, order) {
+        var query = '';
+        if (selection == 'Accessory') {
+            query = 'active=true^category=8322606207a0411008defe4f7c1ed0fb';
+        } else {
+            if (type == 'SmartPhone') {
+                query = 'active=true^category=b0a568352fc00110831952172799b6d4^nameLIKEphone';
+            } else if (type == 'Tablet') {
+                query = 'active=true^category=b0a568352fc00110831952172799b6d4^nameLIKEipad';
+            } else if (type == 'HotspotMiFi') {
+                query = 'active=true^category=b0a568352fc00110831952172799b6d4^nameLIKEhot^ORnameLIKEmifi';
+            } else if (type == 'Other') {
+                query = 'active=true^category=b0a568352fc00110831952172799b6d4^nameNOT LIKEphone^nameNOT LIKEipad^nameNOT LIKEhot^nameNOT LIKEmifi';
+            } else {
+                if (existing == 'UpgradeMyDevice') {
+                    var sysid = [];
+                    var gt_model = new GlideAggregate('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+                    gt_model.addQuery('order_type', order);
+                    gt_model.addQuery('subcategory_name', 'Phones');
+                    gt_model.groupBy('servicenow_catalog_item_id');
+                    gt_model.query();
+                    while (gt_model.next()) {
+                        sysid.push(gt_model.servicenow_catalog_item_id.toString());
+                    }
+                    query = 'active=true^category=b0a568352fc00110831952172799b6d4^sys_idIN' + sysid.toString();
+                } else {
+                    var sysids = [];
+                    var gt_sline = new GlideRecord('x_sakon_mobile_service_lines');
+                    gt_sline.addQuery('phone_number', number);
+                    gt_sline.query();
+                    if (gt_sline.next()) {
+                        var gt_models = new GlideAggregate('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+                        gt_models.addQuery('order_type', 'Port Number');
+                        gt_models.addQuery('network_provider', '!=', gt_sline.carrier);
+                        gt_models.addQuery('subcategory_name', 'Phones');
+                        gt_models.groupBy('servicenow_catalog_item_id');
+                        gt_models.query();
+                        while (gt_models.next()) {
+                            sysids.push(gt_models.servicenow_catalog_item_id.toString());
+                        }
+                    }
+                    query = 'active=true^category=b0a568352fc00110831952172799b6d4^sys_idIN' + sysids.toString();
+                }
+            }
+        }
+        gs.info('devicetype----' + type + '\n' + query, 'SAKON-ORDER');
+        return query;
+    },
+
+    getuserinfo: function() {
+        var result = [];
+        var userid = this.getParameter('sysparm_sakon_id');
+        gs.info('--------SAKON userid: ' + userid);
+        var gt_user = new GlideRecord('sys_user');
+        gt_user.addQuery('sys_id', userid);
+        gt_user.query();
+        if (gt_user.next()) {
+            result.push(gt_user.first_name);
+            result.push(gt_user.last_name);
+            result.push(gt_user.phone.toString().replaceAll('+', '').replaceAll('-', '').replaceAll('(', '').replaceAll(')', '').replaceAll(' ', ''));
+
+            result.push(gt_user.location.street.toString());
+            result.push(gt_user.location.city.toString());
+            result.push(gt_user.location.country.toString());
+            result.push(gt_user.location.state.toString());
+            result.push(gt_user.location.zip.toString());
+            result.push(gt_user.email.toString());
+            result.push(gt_user.employee_number.toString());
+        }
+        return result.toString();
+    },
+
+    getQuery: function(user_sys_id, entity, module) {
+        var emp_id;
+        var phoneNumbers;
+        var queryParamter;
+        var emp_id_field;
+        emp_id_field = gs.getProperty(gs.getCurrentScopeName() + '.' + 'employee_id_field');
+
+        if (gs.getUser().isMemberOf("Sakon Mobile Admins")) {
+            return '';
+        } else {
+            //Get the employee id using sys id of the user
+            var grUser = new GlideRecord('sys_user');
+            grUser.addQuery('sys_id', user_sys_id);
+            grUser.query();
+            while (grUser.next()) {
+                emp_id = grUser.getDisplayValue(emp_id_field);
+            }
+            phoneNumbers = new x_sakon_mobile.CommonUtilities().getMyReportees(user_sys_id, emp_id, entity, module);
+            var finalNumbers = phoneNumbers.toString();
+            if (entity == 'number') {
+                queryParamter = 'phone_numberIN';
+            } else if (entity == 'device') {
+                queryParamter = 'imeiIN';
+            }
+            return queryParamter + finalNumbers;
+        }
+    },
+
+    type: 'sakon_customization'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-06-19 10:56:58</sys_created_on>
+        <sys_id>f32a581187232150ca44caaf8bbb3509</sys_id>
+        <sys_mod_count>31</sys_mod_count>
+        <sys_name>sakon_customization</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_f32a581187232150ca44caaf8bbb3509</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-08-09 12:33:36</sys_updated_on>
+    </sys_script_include>
+</record_update>

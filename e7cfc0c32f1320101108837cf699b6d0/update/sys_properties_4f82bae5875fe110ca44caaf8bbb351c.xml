@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>This property contains the Sys Ids of Sakon Catalog Item Requests which does not require approval.&#13;
+Terminate Service, Suspend Service, Change Device Assignment, Change Phone Number</description>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_sakon_mobile.sakon_catalog_list_no_approval</name>
+        <read_roles/>
+        <suffix>sakon_catalog_list_no_approval</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-06-08 06:26:16</sys_created_on>
+        <sys_id>4f82bae5875fe110ca44caaf8bbb351c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_sakon_mobile.sakon_catalog_list_no_approval</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_properties_4f82bae5875fe110ca44caaf8bbb351c</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-06-08 06:26:16</sys_updated_on>
+        <type>string</type>
+        <value>2c7041f21b73301096b1ebd5624bcbe5,0aafbc721b73301096b1ebd5624bcb84,24ef5ea5871fe110ca44caaf8bbb35d5,2653743a1b33301096b1ebd5624bcbc3</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=4f82bae5875fe110ca44caaf8bbb351c"/>
+</record_update>

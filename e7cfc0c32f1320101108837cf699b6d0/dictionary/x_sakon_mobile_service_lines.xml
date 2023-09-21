@@ -21,7 +21,7 @@
         <element label="Operational Status" max_length="100" name="operational_status" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Operational Status ID" max_length="40" name="operational_status_id" type="integer"/>
         <element attributes="edge_encryption_enabled=true" label="Optimize" max_length="40" name="optimize" type="boolean"/>
-        <element attributes="edge_encryption_enabled=true" display="true" label="Phone Number" max_length="40" name="phone_number" type="longint"/>
+        <element attributes="edge_encryption_enabled=true" label="Phone Number" max_length="40" name="phone_number" type="longint"/>
         <element label="Primary Plan Name" max_length="200" name="primary_plan_name" type="string"/>
         <element label="Service Number End Use" max_length="100" name="service_number_end_use" type="string"/>
         <element label="Service Number Type" max_length="40" name="service_number_type" type="string"/>
@@ -32,6 +32,7 @@
         <element label="Sub Account Number" max_length="50" name="sub_account_number" type="string"/>
         <element label="Upgrade Eligibility Date" max_length="40" name="upgrade_eligibility_date" type="glide_date_time"/>
         <element attributes="edge_encryption_enabled=true" label="User ID" max_length="40" name="user_id" reference="x_sakon_mobile_users" type="reference"/>
+        <element attributes="edge_encryption_enabled=true" display="true" label="Phone Number(Search)" max_length="40" name="u_phone_number_search" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Wireless Device ID" max_length="40" name="wireless_device_id" type="longint"/>
         <element attributes="edge_encryption_enabled=true" label="Wireless Service ID" max_length="40" name="wireless_service_id" type="longint"/>
         <index name="index">

@@ -64,14 +64,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-11-17 02:25:04</sys_created_on>
         <sys_id>0285387a1b33301096b1ebd5624bcbe8</sys_id>
-        <sys_mod_count>24</sys_mod_count>
+        <sys_mod_count>25</sys_mod_count>
         <sys_name>Traveling? Add/Change International Service</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>sc_cat_item_0285387a1b33301096b1ebd5624bcbe8</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2022-07-08 13:29:04</sys_updated_on>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-06-21 13:35:34</sys_updated_on>
         <taxonomy_topic/>
         <template/>
         <template_manager_roles/>

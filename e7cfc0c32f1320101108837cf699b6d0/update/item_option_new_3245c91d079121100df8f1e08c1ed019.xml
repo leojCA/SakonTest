@@ -25,7 +25,7 @@
         <global>false</global>
         <help_tag>More information</help_tag>
         <help_text/>
-        <hidden>false</hidden>
+        <hidden>true</hidden>
         <include_none>true</include_none>
         <instructions/>
         <layout>normal</layout>
@@ -42,12 +42,12 @@
         <mask_use_confirmation>false</mask_use_confirmation>
         <mask_use_encryption>false</mask_use_encryption>
         <name>order_for</name>
-        <order>55</order>
+        <order>62</order>
         <post_insert_script/>
         <price_if_checked>0</price_if_checked>
         <pricing_implications>false</pricing_implications>
         <published_ref/>
-        <question_text>Upgrade Type</question_text>
+        <question_text>Order Type</question_text>
         <read_only>false</read_only>
         <read_roles/>
         <read_script/>
@@ -77,14 +77,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-02-27 17:39:02</sys_created_on>
         <sys_id>3245c91d079121100df8f1e08c1ed019</sys_id>
-        <sys_mod_count>2</sys_mod_count>
-        <sys_name>Upgrade Type</sys_name>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>Order Type</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>item_option_new_3245c91d079121100df8f1e08c1ed019</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-02-27 17:43:21</sys_updated_on>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-08-02 06:52:57</sys_updated_on>
         <table/>
         <tooltip/>
         <type>18</type>

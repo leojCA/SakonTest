@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_user_criteria_mtom">
+    <sc_cat_item_user_criteria_mtom action="DELETE">
+        <sc_cat_item display_value="Terminate Phone Number">2c7041f21b73301096b1ebd5624bcbe5</sc_cat_item>
+        <sys_class_name>sc_cat_item_user_criteria_mtom</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-08 13:28:06</sys_created_on>
+        <sys_id>3dd7c3bd2f245110a158deb6f699b61c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Terminate Phone Number.Sakon Mobile Access User Criteria</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sc_cat_item_user_criteria_mtom_3dd7c3bd2f245110a158deb6f699b61c</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-07-08 13:28:06</sys_updated_on>
+        <user_criteria display_value="Sakon Mobile Access User Criteria">dd457e39c32015103bd7241ce00131d1</user_criteria>
+    </sc_cat_item_user_criteria_mtom>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</application>
+        <file_path/>
+        <instance_id>ec36987bdb430154b847ac44d4961985</instance_id>
+        <instance_name>dev127395</instance_name>
+        <name>sc_cat_item_user_criteria_mtom_3dd7c3bd2f245110a158deb6f699b61c</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_user_criteria_mtom"><sc_cat_item_user_criteria_mtom action="INSERT_OR_UPDATE"><sc_cat_item display_value="Terminate Phone Number">2c7041f21b73301096b1ebd5624bcbe5</sc_cat_item><sys_class_name>sc_cat_item_user_criteria_mtom</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2022-07-08 13:28:06</sys_created_on><sys_id>3dd7c3bd2f245110a158deb6f699b61c</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Terminate Phone Number.Sakon Mobile Access User Criteria</sys_name><sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package><sys_policy/><sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope><sys_update_name>sc_cat_item_user_criteria_mtom_3dd7c3bd2f245110a158deb6f699b61c</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-07-08 13:28:06</sys_updated_on><user_criteria display_value="Sakon Mobile Access User Criteria">dd457e39c32015103bd7241ce00131d1</user_criteria></sc_cat_item_user_criteria_mtom></record_update>]]></payload>
+        <payload_hash>191415725</payload_hash>
+        <record_name>Terminate Phone Number.Sakon Mobile Access User Criteria</record_name>
+        <reverted_from/>
+        <source>215338a7979531100f4435dfe153aff6</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-09-21 12:19:24</sys_created_on>
+        <sys_id>39a33c2b979531100f4435dfe153af58</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>18ab7ae40c20000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-09-21 12:19:24</sys_updated_on>
+        <type>Catalog Item Available for</type>
+        <update_guid>71d7c3bd692451109b041e69d435201f</update_guid>
+        <update_guid_history>71d7c3bd692451109b041e69d435201f:191415725</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-09-21 14:36:54</sys_created_on>
+        <sys_db_object display_value="" name="sc_cat_item_user_criteria_mtom">sc_cat_item_user_criteria_mtom</sys_db_object>
+        <sys_id>acc7550bede84338a378c7118cb2e590</sys_id>
+        <sys_metadata>3dd7c3bd2f245110a158deb6f699b61c</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Terminate Phone Number.Sakon Mobile Access User Criteria</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_scope_delete display_value="">3403c08f62754be89ff52b0da9f6c610</sys_scope_delete>
+        <sys_update_name>sc_cat_item_user_criteria_mtom_3dd7c3bd2f245110a158deb6f699b61c</sys_update_name>
+        <sys_update_version display_value="sc_cat_item_user_criteria_mtom_3dd7c3bd2f245110a158deb6f699b61c">39a33c2b979531100f4435dfe153af58</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-09-21 14:36:54</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -37,7 +37,7 @@
         <lookup_value/>
         <macro/>
         <macroponent/>
-        <mandatory>true</mandatory>
+        <mandatory>false</mandatory>
         <map_to_field>false</map_to_field>
         <mask_use_confirmation>false</mask_use_confirmation>
         <mask_use_encryption>false</mask_use_encryption>
@@ -71,14 +71,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-12-08 05:25:03</sys_created_on>
         <sys_id>ab2821e52f504110831952172799b68e</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>Last Name</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>item_option_new_ab2821e52f504110831952172799b68e</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2021-12-27 12:26:18</sys_updated_on>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-08-09 10:47:56</sys_updated_on>
         <table/>
         <tooltip/>
         <type>6</type>

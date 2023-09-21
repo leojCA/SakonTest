@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_fix">
+    <sys_script_fix action="INSERT_OR_UPDATE">
+        <before>false</before>
+        <description/>
+        <name>Sakon Catalog Item Images</name>
+        <record_for_rollback>true</record_for_rollback>
+        <script><![CDATA[var gt_acc = new GlideRecord('sc_cat_item');
+gt_acc.addQuery('category', '3Db0a568352fc00110831952172799b6d4').addOrCondition('category', 'b0a568352fc00110831952172799b6d4'); //Sakon Accessory/devices
+gt_acc.query();
+while (gt_acc.next()) {
+
+    loadImage(gt_acc.sys_id);
+
+}
+
+function loadImage(catItemSysId) {
+    var logSource = 'Sakon Mobile Catalog Image Upload - ';
+    var logger = new LogUtilities();
+
+    var apiResponse;
+    var currentScope = gs.getCurrentScopeName();
+    var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
+    var top = pageSize;
+    var skip = 0;
+    var iter = 1;
+    var filter = '';
+    var counter = 0;
+    var imageID;
+    //Get the ImageId for the Catalog Item from Sakon Catalog Items table
+    var grSakonCatItem = new GlideRecord(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+    grSakonCatItem.addQuery('servicenow_catalog_item_id', catItemSysId);
+    grSakonCatItem.query();
+    if (grSakonCatItem.next()) {
+        if (grSakonCatItem.thumbnail_file_id > 0) {
+            imageID = grSakonCatItem.thumbnail_file_id;
+        } else {
+            logger.writeInfo(logSource, 'Thumbnail image file id is : ' + grSakonCatItem.thumbnail_file_id);
+        }
+    }
+
+    logger.writeInfo(logSource, 'Iteration=' + iter + ', Top=' + top + ', Skip=' + skip);
+    apiResponse = new APIUtilities().getData(currentScope + '.' + 'Marketplace REST Message', 'GetCatalogImages', top, skip, filter, imageID);
+
+    var grAttach = new GlideRecord('sys_attachment');
+    grAttach.addQuery('table_sys_id', catItemSysId);
+    grAttach.query();
+    while (grAttach.next()) {
+        var attachmentToDelete = new GlideSysAttachment();
+        var attachmentSysID = grAttach.sys_id;
+        attachmentToDelete.deleteAttachment(attachmentSysID);
+    }
+
+    var attachment = new GlideSysAttachment();
+    var rec = new GlideRecord('sc_cat_item');
+    rec.addQuery('sys_id', catItemSysId);
+    rec.query();
+    if (rec.next()) {
+        var fileName = 'picture.jpg';
+        var contentType = 'image/jpg';
+        var base64Encodedcontent = apiResponse.x64EncodedContent;
+        var attID = attachment.writeBase64(rec, fileName, contentType, base64Encodedcontent);
+     
+    }
+
+
+
+    logger.writeInfo(logSource, 'End - ' + logSource);
+}]]></script>
+        <sys_class_name>sys_script_fix</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-08-02 10:19:55</sys_created_on>
+        <sys_id>d398fedfdb5cf950e6f862cb1396191d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Sakon Catalog Item Images</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_fix_d398fedfdb5cf950e6f862cb1396191d</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-08-02 10:19:55</sys_updated_on>
+        <unloadable>false</unloadable>
+    </sys_script_fix>
+</record_update>

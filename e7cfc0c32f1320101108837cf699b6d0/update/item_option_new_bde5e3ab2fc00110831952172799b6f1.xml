@@ -37,7 +37,7 @@
         <lookup_value>order_type</lookup_value>
         <macro/>
         <macroponent/>
-        <mandatory>true</mandatory>
+        <mandatory>false</mandatory>
         <map_to_field>false</map_to_field>
         <mask_use_confirmation>false</mask_use_confirmation>
         <mask_use_encryption>false</mask_use_encryption>
@@ -48,7 +48,7 @@
         <pricing_implications>false</pricing_implications>
         <published_ref/>
         <question_text>Order Type</question_text>
-        <read_only>false</read_only>
+        <read_only>true</read_only>
         <read_roles/>
         <read_script/>
         <rec_lookup_price/>
@@ -71,14 +71,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2021-12-02 09:28:23</sys_created_on>
         <sys_id>bde5e3ab2fc00110831952172799b6f1</sys_id>
-        <sys_mod_count>47</sys_mod_count>
+        <sys_mod_count>54</sys_mod_count>
         <sys_name>Order Type</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>item_option_new_bde5e3ab2fc00110831952172799b6f1</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2021-12-21 10:25:38</sys_updated_on>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-08-02 07:52:58</sys_updated_on>
         <table/>
         <tooltip/>
         <type>18</type>

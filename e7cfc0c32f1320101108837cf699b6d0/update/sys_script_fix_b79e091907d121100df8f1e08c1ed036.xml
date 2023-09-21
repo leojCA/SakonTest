@@ -18,9 +18,12 @@ function SakonAccessories() {
         var gt_accRule = new GlideRecord('sc_cat_item_guide_items');
         gt_accRule.addQuery('item', gt_acc.sys_id);
         gt_accRule.query();
-        if (!gt_accRule.next()) {
-            var ruleid = '';
-            gt_accRule.initialize();
+        if(gt_accRule.next()) {
+			var ruleid = gt_accRule.sys_id;
+			this.CreateAccessItemAssig(ruleid);   
+        }
+		else{
+			gt_accRule.initialize();
             gt_accRule.condition = 'IO:51b5499d079121100df8f1e08c1ed064=' + gt_acc.sys_id + '^EQ'; //field
             gt_accRule.guide = 'e5cbbc55079121100df8f1e08c1ed0d3'; //order guide
             gt_accRule.ignore_mandatory_eval = false;
@@ -30,25 +33,25 @@ function SakonAccessories() {
             gt_accRule.show_quantity = false;
             gt_accRule.use_sc_layout = true;
             ruleid = gt_accRule.insert();
-
-            var item_variable = ['fb8989d107d121100df8f1e08c1ed0d7', '344ba27087af0110fe467f59dabb35a3']; //Requested For,Order For
-
-            var guide_variable = ['3fce7c95079121100df8f1e08c1ed02d', '3fce7c95079121100df8f1e08c1ed02d']; //Requested For,Requested For
-
-            for (var i = 0; i < item_variable.length; i++) {
-                var gt_ass = new GlideRecord('sc_item_variable_assignment');
-                gt_ass.initialize();
-                gt_ass.guide_variable = guide_variable[i];
-                gt_ass.item_variable = item_variable[i];
-                gt_ass.active = true;
-                gt_ass.setValue('rule', ruleid.toString());
-                gt_ass.type = 'order_guide_variable';
-                gt_ass.insert();
-            }
-
-
-        }
+			this.CreateAccessItemAssig(ruleid);
+		}
     }
+}
+
+function CreateAccessItemAssig(ruleid) {
+	var item_variable = ['fb8989d107d121100df8f1e08c1ed0d7', '344ba27087af0110fe467f59dabb35a3']; //Requested For,Order For
+	var guide_variable = ['3fce7c95079121100df8f1e08c1ed02d', '3fce7c95079121100df8f1e08c1ed02d']; //Requested For,Requested For
+
+	for (var i = 0; i < item_variable.length; i++) {
+		var gt_ass = new GlideRecord('sc_item_variable_assignment');
+		gt_ass.initialize();
+		gt_ass.guide_variable = guide_variable[i];
+		gt_ass.item_variable = item_variable[i];
+		gt_ass.active = true;
+		gt_ass.setValue('rule', ruleid.toString());
+		gt_ass.type = 'order_guide_variable';
+		gt_ass.insert();
+	}
 }
 
 function SakonDevices() {
@@ -60,9 +63,12 @@ function SakonDevices() {
         var gt_accRule = new GlideRecord('sc_cat_item_guide_items');
         gt_accRule.addQuery('item', gt_acc.sys_id);
         gt_accRule.query();
-        if (!gt_accRule.next()) {
-            var ruleid = '';
-            gt_accRule.initialize();
+        if (gt_accRule.next()) {
+            var ruleid = gt_accRule.sys_id;
+			this.CreateDeviceItemAssig(ruleid);
+        }
+		else{
+			gt_accRule.initialize();
             gt_accRule.condition = 'IO:51b5499d079121100df8f1e08c1ed064=' + gt_acc.sys_id + '^EQ'; //field
             gt_accRule.guide = 'e5cbbc55079121100df8f1e08c1ed0d3'; //order guide
             gt_accRule.ignore_mandatory_eval = false;
@@ -72,36 +78,39 @@ function SakonDevices() {
             gt_accRule.show_quantity = false;
             gt_accRule.use_sc_layout = true;
             ruleid = gt_accRule.insert();
-
-            var item_variable = ['fb8989d107d121100df8f1e08c1ed0d7', 'ea61f3c4878c51101df0fd57dabb35ad', '9919e36f2fc00110831952172799b69d', '344ba27087af0110fe467f59dabb35a3', 'bde5e3ab2fc00110831952172799b6f1']; //Requested For,Phone Number,Carrier,Order For,Order Type
-
-            var guide_variable = ['3fce7c95079121100df8f1e08c1ed02d', 'ddb4c99d079121100df8f1e08c1ed095', '5306c9dd079121100df8f1e08c1ed06c', '3fce7c95079121100df8f1e08c1ed02d', '3bde8d051b5f9194663964a7bc4bcbd4']; //Requested For,upgrade/port,preferredcarrier,Requested For,Upgrade Type
-
-            for (var i = 0; i < item_variable.length; i++) {
-                var gt_ass = new GlideRecord('sc_item_variable_assignment');
-                gt_ass.initialize();
-                gt_ass.guide_variable = guide_variable[i];
-                gt_ass.item_variable = item_variable[i];
-                gt_ass.active = true;
-                gt_ass.setValue('rule', ruleid.toString());
-                gt_ass.type = 'order_guide_variable';
-                gt_ass.insert();
-            }
-        }
+			this.CreateDeviceItemAssig(ruleid);
+		}
     }
+}
+
+function CreateDeviceItemAssig(ruleid) {
+	var item_variable = ['fb8989d107d121100df8f1e08c1ed0d7', 'ea61f3c4878c51101df0fd57dabb35ad', '9919e36f2fc00110831952172799b69d', '344ba27087af0110fe467f59dabb35a3', 'bde5e3ab2fc00110831952172799b6f1']; //Requested For,Phone Number,Carrier,Order For,Order Type
+
+	var guide_variable = ['3fce7c95079121100df8f1e08c1ed02d', 'ddb4c99d079121100df8f1e08c1ed095', '77f4d471877fe510ca44caaf8bbb35e7', '3fce7c95079121100df8f1e08c1ed02d', '3245c91d079121100df8f1e08c1ed019']; //Requested For,upgrade/port,preferredcarrier,Requested For,Upgrade Type
+
+	for (var i = 0; i < item_variable.length; i++) {
+		var gt_ass = new GlideRecord('sc_item_variable_assignment');
+		gt_ass.initialize();
+		gt_ass.guide_variable = guide_variable[i];
+		gt_ass.item_variable = item_variable[i];
+		gt_ass.active = true;
+		gt_ass.setValue('rule', ruleid.toString());
+		gt_ass.type = 'order_guide_variable';
+		gt_ass.insert();
+	}
 }]]></script>
         <sys_class_name>sys_script_fix</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-02-27 18:19:47</sys_created_on>
         <sys_id>b79e091907d121100df8f1e08c1ed036</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>Sakon Order Guide Rules</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>sys_script_fix_b79e091907d121100df8f1e08c1ed036</sys_update_name>
-        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
-        <sys_updated_on>2023-03-20 05:26:57</sys_updated_on>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-07-25 11:42:14</sys_updated_on>
         <unloadable>false</unloadable>
     </sys_script_fix>
 </record_update>

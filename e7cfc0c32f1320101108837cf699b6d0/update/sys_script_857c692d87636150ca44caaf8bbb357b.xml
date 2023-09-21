@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>sc_req_item</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition table="sc_req_item">cat_item.category=d6389a4a1ba00110864a0d82604bcb2d^ORcat_item.category=b0a568352fc00110831952172799b6d4^ORcat_item.category=8322606207a0411008defe4f7c1ed0fb^EQ<item display_table="sc_category" display_value="Services" endquery="false" field="cat_item.category" goto="false" newquery="false" operator="=" or="false" value="d6389a4a1ba00110864a0d82604bcb2d"/>
+            <item display_table="sc_category" display_value="Devices" endquery="false" field="cat_item.category" goto="false" newquery="false" operator="=" or="true" value="b0a568352fc00110831952172799b6d4"/>
+            <item display_table="sc_category" display_value="Accessories" endquery="false" field="cat_item.category" goto="false" newquery="false" operator="=" or="true" value="8322606207a0411008defe4f7c1ed0fb"/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </filter_condition>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Set Sakon Req For on REQ</name>
+        <order>10</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[if (current.variables.sakon_requested_for.x_sakon_requested_for) {
+    current.requested_for = current.variables.sakon_requested_for.x_sakon_requested_for;
+}]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-06-20 11:32:55</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>857c692d87636150ca44caaf8bbb357b</sys_id>
+        <sys_mod_count>13</sys_mod_count>
+        <sys_name>Set Sakon Req For on REQ</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_857c692d87636150ca44caaf8bbb357b</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-07-05 07:34:50</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=857c692d87636150ca44caaf8bbb357b"/>
+</record_update>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_fix">
+    <sys_script_fix action="INSERT_OR_UPDATE">
+        <before>false</before>
+        <description>Add all Active users to Sakon Access group(Must have Email Address, Must have Employee ID)&#13;
+</description>
+        <name>Sakon Add Users to Access group</name>
+        <record_for_rollback>true</record_for_rollback>
+        <script><![CDATA[var grGroupMember = new GlideRecordSecure('sys_user_group');
+grGroupMember.addQuery('name', 'Sakon Mobile Access');
+grGroupMember.query();
+if (grGroupMember.next()) {
+    var groupSysID = grGroupMember.sys_id;
+}
+
+var userGR = new GlideRecord('sys_user');
+userGR.addEncodedQuery('active=true^employee_numberISNOTEMPTY^emailISNOTEMPTY');
+//userGR.setLimit(1);
+userGR.query();
+while (userGR.next()) {
+    var grpToAdd = new GlideRecord('sys_user_grmember');
+    grpToAdd.addQuery('group', groupSysID);
+    grpToAdd.addQuery('user', userGR.sys_id);
+    grpToAdd.query();
+    if (!grpToAdd.next()) {
+        grpToAdd.initialize();
+        grpToAdd.group = groupSysID;
+        grpToAdd.user = userGR.sys_id;
+        grpToAdd.insert();
+    }
+}]]></script>
+        <sys_class_name>sys_script_fix</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-06-07 07:01:08</sys_created_on>
+        <sys_id>265ee555871fa110ca44caaf8bbb35b3</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Sakon Add Users to Access group</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_fix_265ee555871fa110ca44caaf8bbb35b3</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-06-07 07:05:55</sys_updated_on>
+        <unloadable>false</unloadable>
+    </sys_script_fix>
+</record_update>

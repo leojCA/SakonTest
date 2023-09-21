@@ -23,13 +23,13 @@
         if (g_form.getValue('phone_numbernew') != '') {
             g_form.setVisible('select_device_model', true);
             g_form.setMandatory('select_device_model', true);
-        }else{
-			g_form.setMandatory('select_device_model', false);
-			  g_form.setVisible('select_device_model', false);
-			g_form.setMandatory('select_your_preferred_carrier', false);
-			  g_form.setVisible('select_your_preferred_carrier', false);
-            
-		}
+        } else {
+            g_form.setMandatory('select_device_model', false);
+            g_form.setVisible('select_device_model', false);
+            g_form.setMandatory('select_your_preferred_carrier', false);
+            g_form.setVisible('select_your_preferred_carrier', false);
+
+        }
 
         return;
     }
@@ -51,12 +51,13 @@
 
     function phonenumberdetails(serverResponse) {
         var phoneNumbers = serverResponse.responseXML.documentElement.getAttribute("answer").split(',');
-       // alert('phoneNumbers' + phoneNumbers);
+        // alert('phoneNumbers' + phoneNumbers);
         if (phoneNumbers[0] == 'yes' && g_form.getValue('service_category') == 'UpgradeMyDevice') {
             g_form.setValue('order_for', 'Upgrade Full Price');
+            g_form.setVisible('order_for', false);
             g_form.setValue('select_your_preferred_carrier', phoneNumbers[1]);
-            g_form.addErrorMessage('You are ordering a device at full price. The price will come down upon your upgrade date ' + phoneNumbers[2].split(' ')[0] + ' .');
-            g_form.showFieldMsg('phone_numbernew', 'You are ordering a device at full price. The price will come down upon your upgrade date ' + phoneNumbers[2].split(' ')[0] + ' .', 'error');
+            //   g_form.addErrorMessage('You are ordering a device at full price. The price will come down upon your upgrade date ' + phoneNumbers[2].split(' ')[0] + ' .');
+            //    g_form.showFieldMsg('phone_numbernew', 'You are ordering a device at full price. The price will come down upon your upgrade date ' + phoneNumbers[2].split(' ')[0] + ' .', 'error');
         } else if (phoneNumbers[0] == 'no' && g_form.getValue('service_category') == 'UpgradeMyDevice') {
             g_form.clearMessages();
             g_form.setValue('order_for', 'Upgrade Eligible');
@@ -78,15 +79,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>3367095107d121100df8f1e08c1ed0c1</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>On Change Phone Number</sys_name>
         <sys_overrides/>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>catalog_script_client_3367095107d121100df8f1e08c1ed0c1</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-02-27 18:12:59</sys_updated_on>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-08-02 07:17:29</sys_updated_on>
         <table/>
         <type>onChange</type>
         <ui_type>10</ui_type>

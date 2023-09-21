@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new_set">
+    <item_option_new_set action="INSERT_OR_UPDATE">
+        <create_roles/>
+        <description>New Employee Id and Email Id</description>
+        <display_title>false</display_title>
+        <internal_name>new_employeeid_email_variable_set</internal_name>
+        <layout>2down</layout>
+        <name/>
+        <order>100</order>
+        <read_roles/>
+        <set_attributes/>
+        <sys_class_name>item_option_new_set</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-06-08 05:09:33</sys_created_on>
+        <sys_id>b3d1aa29871fe110ca44caaf8bbb359d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>New EmployeeId-Email Variable Set</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>item_option_new_set_b3d1aa29871fe110ca44caaf8bbb359d</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-06-08 05:09:33</sys_updated_on>
+        <title>New EmployeeId-Email Variable Set</title>
+        <type>one_to_one</type>
+        <write_roles/>
+    </item_option_new_set>
+</record_update>

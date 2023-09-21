@@ -15,9 +15,10 @@
         <condition/>
         <description/>
         <execute_function>false</execute_function>
-        <filter_condition table="sc_req_item">commentsVALCHANGES^cat_item.sys_scope=e7cfc0c32f1320101108837cf699b6d0^cat_item.category=d6389a4a1ba00110864a0d82604bcb2d^EQ<item endquery="false" field="comments" goto="false" newquery="false" operator="VALCHANGES" or="false" value=""/>
+        <filter_condition table="sc_req_item">commentsVALCHANGES^cat_item.sys_scope=e7cfc0c32f1320101108837cf699b6d0^cat_item.category=d6389a4a1ba00110864a0d82604bcb2d^variables.983c6c6c1b010110c858c843604bcb44ISNOTEMPTY^EQ<item endquery="false" field="comments" goto="false" newquery="false" operator="VALCHANGES" or="false" value=""/>
             <item display_table="sys_scope" display_value="Sakon Mobile v2" endquery="false" field="cat_item.sys_scope" goto="false" newquery="false" operator="=" or="false" value="e7cfc0c32f1320101108837cf699b6d0"/>
             <item display_table="sc_category" display_value="Services" endquery="false" field="cat_item.category" goto="false" newquery="false" operator="=" or="false" value="d6389a4a1ba00110864a0d82604bcb2d"/>
+            <item endquery="false" field="variables.983c6c6c1b010110c858c843604bcb44" goto="false" newquery="false" operator="ISNOTEMPTY" or="false" value=""/>
             <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
         </filter_condition>
         <is_rest>false</is_rest>
@@ -69,15 +70,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>7e90f3ca1ba2701096fe0f26624bcbdb</sys_id>
-        <sys_mod_count>2749</sys_mod_count>
+        <sys_mod_count>2750</sys_mod_count>
         <sys_name>Sakon Mobile ReqItem Comment Update</sys_name>
         <sys_overrides/>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>sys_script_7e90f3ca1ba2701096fe0f26624bcbdb</sys_update_name>
-        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
-        <sys_updated_on>2023-03-24 15:49:01</sys_updated_on>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-06-15 12:27:11</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

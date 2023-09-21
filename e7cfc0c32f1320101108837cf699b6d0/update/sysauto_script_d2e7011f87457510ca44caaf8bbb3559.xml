@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <business_calendar/>
+        <condition/>
+        <conditional>false</conditional>
+        <entered_time>1970-01-01 08:00:00</entered_time>
+        <max_drift/>
+        <name>Sakon Add Users to Access group</name>
+        <offset/>
+        <offset_type>0</offset_type>
+        <run_as display_value="System Administrator">6816f79cc0a8016401c5a33be04be441</run_as>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period>1970-01-01 00:15:00</run_period>
+        <run_start>2021-07-15 11:06:39</run_start>
+        <run_time>1970-01-01 08:00:00</run_time>
+        <run_type>daily</run_type>
+        <script><![CDATA[gs.info('>>Sakon Users>>Started Add Users to Sakon Mobile Access Group Scheduled Job');
+
+var count = 0;
+var userGR = new GlideRecord('sys_user');
+userGR.addEncodedQuery('active=true^employee_numberISNOTEMPTY^emailISNOTEMPTY');
+//userGR.setLimit(1);
+userGR.query();
+while (userGR.next()) {
+    var grpToAdd = new GlideRecord('sys_user_grmember');
+    grpToAdd.addQuery('group', gs.getProperty('x_sakon_mobile.sakon_access_group_id'));
+    grpToAdd.addQuery('user', userGR.sys_id);
+    grpToAdd.query();
+    if (!grpToAdd.next()) {
+        grpToAdd.initialize();
+        grpToAdd.group = gs.getProperty('x_sakon_mobile.sakon_access_group_id');
+        grpToAdd.user = userGR.sys_id;
+        grpToAdd.insert();
+		count++;
+    }
+}
+
+gs.info('>>Sakon Users>> Count of users added to Sakon Mobile Access Group: ' + count);]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-09-08 08:53:45</sys_created_on>
+        <sys_id>d2e7011f87457510ca44caaf8bbb3559</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Sakon Add Users to Access group</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sysauto_script_d2e7011f87457510ca44caaf8bbb3559</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-09-08 10:17:04</sys_updated_on>
+        <time_zone/>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

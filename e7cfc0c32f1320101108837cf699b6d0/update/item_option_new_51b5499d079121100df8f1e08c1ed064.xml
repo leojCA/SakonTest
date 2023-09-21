@@ -56,7 +56,7 @@
         <record/>
         <record_producer_table/>
         <reference>sc_cat_item</reference>
-        <reference_qual>javascript: new x_sakon_mobile.sakon_order_guide().services(current.variables.new_device_type,current.variables.phone_numbernew,current.variables.requested_for,current.variables.selection_type,current.variables.service_category,current.variables.order_for)</reference_qual>
+        <reference_qual>javascript: new x_sakon_mobile.sakon_customization().deviceModel(current.variables.new_device_type,current.variables.phone_numbernew,current.variables.requested_for,current.variables.selection_type,current.variables.service_category,current.variables.order_for)</reference_qual>
         <reference_qual_condition/>
         <rich_text/>
         <roles_to_use_also_request_for/>
@@ -77,14 +77,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-02-27 17:40:50</sys_created_on>
         <sys_id>51b5499d079121100df8f1e08c1ed064</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>Select your preferred device model?</sys_name>
         <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
         <sys_update_name>item_option_new_51b5499d079121100df8f1e08c1ed064</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-02-27 18:18:05</sys_updated_on>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-08-09 06:57:38</sys_updated_on>
         <table/>
         <tooltip/>
         <type>8</type>

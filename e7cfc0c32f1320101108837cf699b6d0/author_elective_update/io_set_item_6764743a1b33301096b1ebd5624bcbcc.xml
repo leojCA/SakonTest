@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="io_set_item">
+    <io_set_item action="DELETE">
+        <order>500</order>
+        <sc_cat_item display_value="Phone Number Change">2653743a1b33301096b1ebd5624bcbc3</sc_cat_item>
+        <sys_class_name>io_set_item</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-17 02:19:44</sys_created_on>
+        <sys_id>6764743a1b33301096b1ebd5624bcbcc</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Contact-Number Variable set.Phone Number Change</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>io_set_item_6764743a1b33301096b1ebd5624bcbcc</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-22 20:25:37</sys_updated_on>
+        <variable_set display_value="Contact-Number Variable set">488274f61b33301096b1ebd5624bcb5e</variable_set>
+    </io_set_item>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</application>
+        <file_path/>
+        <instance_id>ec36987bdb430154b847ac44d4961985</instance_id>
+        <instance_name>dev127395</instance_name>
+        <name>io_set_item_6764743a1b33301096b1ebd5624bcbcc</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="io_set_item"><io_set_item action="INSERT_OR_UPDATE"><order>500</order><sc_cat_item display_value="Phone Number Change">2653743a1b33301096b1ebd5624bcbc3</sc_cat_item><sys_class_name>io_set_item</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2021-11-17 02:19:44</sys_created_on><sys_id>6764743a1b33301096b1ebd5624bcbcc</sys_id><sys_mod_count>5</sys_mod_count><sys_name>Contact-Number Variable set.Phone Number Change</sys_name><sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package><sys_policy/><sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope><sys_update_name>io_set_item_6764743a1b33301096b1ebd5624bcbcc</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2021-11-22 20:25:37</sys_updated_on><variable_set display_value="Contact-Number Variable set">488274f61b33301096b1ebd5624bcb5e</variable_set></io_set_item></record_update>]]></payload>
+        <payload_hash>590676805</payload_hash>
+        <record_name>Contact-Number Variable set.Phone Number Change</record_name>
+        <reverted_from/>
+        <source>215338a7979531100f4435dfe153aff6</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-09-21 12:19:14</sys_created_on>
+        <sys_id>d393382b979531100f4435dfe153af2b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>18ab7ae195a0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-09-21 12:19:14</sys_updated_on>
+        <type>Catalog Variable Set</type>
+        <update_guid>32ecd2e45a8001108883ad0dc8f648e6</update_guid>
+        <update_guid_history>32ecd2e45a8001108883ad0dc8f648e6:590676805,32ecd2e45a8001108883ad0dc8f648e6:590676805,32ecd2e45a8001108883ad0dc8f648e6:590676805,d12b1e68a08001108139472646b0c260:1024369604,7a9252a022800110d52a7f7552d535a8:590676805,1484f47a0c333010a7ee1902d05b0fd5:1024369604,eb64b47a95333010047c86b8dd81b2a1:-1969519295</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-09-21 14:36:45</sys_created_on>
+        <sys_db_object display_value="" name="io_set_item">io_set_item</sys_db_object>
+        <sys_id>5530e5dcfbdc48d3aa9b0090fc619b89</sys_id>
+        <sys_metadata>6764743a1b33301096b1ebd5624bcbcc</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Contact-Number Variable set.Phone Number Change</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_scope_delete display_value="">3403c08f62754be89ff52b0da9f6c610</sys_scope_delete>
+        <sys_update_name>io_set_item_6764743a1b33301096b1ebd5624bcbcc</sys_update_name>
+        <sys_update_version display_value="io_set_item_6764743a1b33301096b1ebd5624bcbcc">d393382b979531100f4435dfe153af2b</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-09-21 14:36:45</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

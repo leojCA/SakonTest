@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice">
+    <question_choice action="INSERT_OR_UPDATE">
+        <inactive>false</inactive>
+        <misc>0</misc>
+        <order>500</order>
+        <published_ref/>
+        <question display_value="Region">d06b09fd87ffe510ca44caaf8bbb358c</question>
+        <rec_misc>0</rec_misc>
+        <sys_class_name>question_choice</sys_class_name>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-07-03 14:03:21</sys_created_on>
+        <sys_id>d84c49bd87ffe510ca44caaf8bbb35b0</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Hong Kong</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>question_choice_d84c49bd87ffe510ca44caaf8bbb35b0</sys_update_name>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-07-10 12:38:19</sys_updated_on>
+        <text>Hong Kong</text>
+        <value>Hong Kong</value>
+    </question_choice>
+    <fx_price action="delete_multiple" query="id=d84c49bd87ffe510ca44caaf8bbb35b0"/>
+    <fx_price action="INSERT_OR_UPDATE">
+        <amount>0</amount>
+        <currency display_value="USD">USD</currency>
+        <field>misc</field>
+        <id>d84c49bd87ffe510ca44caaf8bbb35b0</id>
+        <parent/>
+        <reference_amount>0</reference_amount>
+        <reference_currency display_value="USD">USD</reference_currency>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-07-03 14:03:21</sys_created_on>
+        <sys_id>104c49bd87ffe510ca44caaf8bbb35b2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-07-03 14:03:21</sys_updated_on>
+        <table>question_choice</table>
+        <type>calculated</type>
+    </fx_price>
+    <fx_price action="INSERT_OR_UPDATE">
+        <amount>0</amount>
+        <currency display_value="USD">USD</currency>
+        <field>rec_misc</field>
+        <id>d84c49bd87ffe510ca44caaf8bbb35b0</id>
+        <parent/>
+        <reference_amount>0</reference_amount>
+        <reference_currency display_value="USD">USD</reference_currency>
+        <sys_created_by>DhruvM</sys_created_by>
+        <sys_created_on>2023-07-03 14:03:21</sys_created_on>
+        <sys_id>944c49bd87ffe510ca44caaf8bbb35b1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>DhruvM</sys_updated_by>
+        <sys_updated_on>2023-07-03 14:03:21</sys_updated_on>
+        <table>question_choice</table>
+        <type>calculated</type>
+    </fx_price>
+</record_update>

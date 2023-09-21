@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="io_set_item">
+    <io_set_item action="DELETE">
+        <order>400</order>
+        <sc_cat_item display_value="Phone Number Change">2653743a1b33301096b1ebd5624bcbc3</sc_cat_item>
+        <sys_class_name>io_set_item</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-17 02:19:44</sys_created_on>
+        <sys_id>7764b47a1b33301096b1ebd5624bcba8</sys_id>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>Email ID Variable set.Phone Number Change</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>io_set_item_7764b47a1b33301096b1ebd5624bcba8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-22 20:25:30</sys_updated_on>
+        <variable_set display_value="Email ID Variable set">b02238f61b33301096b1ebd5624bcb33</variable_set>
+    </io_set_item>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</application>
+        <file_path/>
+        <instance_id>ec36987bdb430154b847ac44d4961985</instance_id>
+        <instance_name>dev127395</instance_name>
+        <name>io_set_item_7764b47a1b33301096b1ebd5624bcba8</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="io_set_item"><io_set_item action="INSERT_OR_UPDATE"><order>400</order><sc_cat_item display_value="Phone Number Change">2653743a1b33301096b1ebd5624bcbc3</sc_cat_item><sys_class_name>io_set_item</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2021-11-17 02:19:44</sys_created_on><sys_id>7764b47a1b33301096b1ebd5624bcba8</sys_id><sys_mod_count>10</sys_mod_count><sys_name>Email ID Variable set.Phone Number Change</sys_name><sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package><sys_policy/><sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope><sys_update_name>io_set_item_7764b47a1b33301096b1ebd5624bcba8</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2021-11-22 20:25:30</sys_updated_on><variable_set display_value="Email ID Variable set">b02238f61b33301096b1ebd5624bcb33</variable_set></io_set_item></record_update>]]></payload>
+        <payload_hash>2123038204</payload_hash>
+        <record_name>Email ID Variable set.Phone Number Change</record_name>
+        <reverted_from/>
+        <source>215338a7979531100f4435dfe153aff6</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-09-21 12:19:15</sys_created_on>
+        <sys_id>5f93382b979531100f4435dfe153af35</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>18ab7ae19c00000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-09-21 12:19:15</sys_updated_on>
+        <type>Catalog Variable Set</type>
+        <update_guid>4dec1e6836800110635373c49941bd67</update_guid>
+        <update_guid_history>4dec1e6836800110635373c49941bd67:2123038204,4dec1e6836800110635373c49941bd67:2123038204,4dec1e6836800110635373c49941bd67:2123038204,e31b5228f680011038b75988407fc60e:-412474117,714ade28f98001107e92a61dea0bcae4:2123038204,fca292a0578001106c4f125b5f893218:-1395871746,9f601eec5c40011031774ba213488b37:363583229,e7509eecd1400110143ae3c8725c8942:1285065815,962570ba8b3330103121e7ac5d1f4b76:-1395871746,aac4f87a0d333010f9f5be686f41e86d:-474389160,5984f07a66333010618210196de96bfa:363583229,bb64b47ae0333010e3a7b9a6414725ad:-1188531463</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-09-21 14:36:46</sys_created_on>
+        <sys_db_object display_value="" name="io_set_item">io_set_item</sys_db_object>
+        <sys_id>06f3888e790b410a98632991fea0a1d9</sys_id>
+        <sys_metadata>7764b47a1b33301096b1ebd5624bcba8</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Email ID Variable set.Phone Number Change</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_scope_delete display_value="">3403c08f62754be89ff52b0da9f6c610</sys_scope_delete>
+        <sys_update_name>io_set_item_7764b47a1b33301096b1ebd5624bcba8</sys_update_name>
+        <sys_update_version display_value="io_set_item_7764b47a1b33301096b1ebd5624bcba8">5f93382b979531100f4435dfe153af35</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-09-21 14:36:46</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
