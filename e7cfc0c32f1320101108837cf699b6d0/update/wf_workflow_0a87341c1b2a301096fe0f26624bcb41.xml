@@ -1,0 +1,1091 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="wf_workflow_version">
+    <wf_workflow_version action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <activity_stages>{"subflows":[],"activities":{"36b746b02f4c0110831952172799b69c":"a2b746b02f4c0110831952172799b601","feb746b02f4c0110831952172799b69f":"aeb746b02f4c0110831952172799b600"},"ends":["6ab746b02f4c0110831952172799b601"],"stages":{"a2b746b02f4c0110831952172799b601":{"order":1100,"stageId":"a2b746b02f4c0110831952172799b601","duration":"","name":"Completed","value":"complete"},"aeb746b02f4c0110831952172799b600":{"order":120,"stageId":"aeb746b02f4c0110831952172799b600","duration":"1 Day","name":"Fulfillment","value":"fulfillment"}}}</activity_stages>
+        <after_business_rules>false</after_business_rules>
+        <checked_out/>
+        <checked_out_by/>
+        <column_renderer display_value="Workflow-driven">a56213111b030100adca1e094f0713ac</column_renderer>
+        <condition/>
+        <condition_type/>
+        <description/>
+        <expected_sequences>7eb746b02f4c0110831952172799b69e,6eb746b02f4c0110831952172799b602,7ab746b02f4c0110831952172799b69d,feb746b02f4c0110831952172799b69f,36b746b02f4c0110831952172799b69c,6ab746b02f4c0110831952172799b601</expected_sequences>
+        <expected_time>1970-01-01 14:00:00</expected_time>
+        <expected_time_type/>
+        <full_sequences>7eb746b02f4c0110831952172799b69e,6eb746b02f4c0110831952172799b602,7ab746b02f4c0110831952172799b69d,feb746b02f4c0110831952172799b69f,36b746b02f4c0110831952172799b69c,6ab746b02f4c0110831952172799b601</full_sequences>
+        <journal/>
+        <max_activity_count>100</max_activity_count>
+        <name>Servicedesk Tickets Workflow</name>
+        <not_cacheable>false</not_cacheable>
+        <on_cancel><![CDATA[// This script executes if the workflow is cancelled.// The global variable context_sys_id contains the sys_id of the cancelled workflow context.]]></on_cancel>
+        <order>100</order>
+        <pin_type>set_by_activity</pin_type>
+        <published>true</published>
+        <relative_duration/>
+        <requires_ert>true</requires_ert>
+        <run_multiple>false</run_multiple>
+        <schedule/>
+        <stage_field>stage</stage_field>
+        <stage_order>computed</stage_order>
+        <start display_value="Begin">7eb746b02f4c0110831952172799b69e</start>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>eeb706b02f4c0110831952172799b6fe</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:54</sys_updated_on>
+        <table>sc_req_item</table>
+        <timezone/>
+        <validated>false</validated>
+        <workflow display_value="Servicedesk Tickets Workflow">0a87341c1b2a301096fe0f26624bcb41</workflow>
+    </wf_workflow_version>
+    <wf_workflow action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <description/>
+        <name>Servicedesk Tickets Workflow</name>
+        <preview/>
+        <sys_class_name>wf_workflow</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-09-08 04:50:00</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>0a87341c1b2a301096fe0f26624bcb41</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Servicedesk Tickets Workflow</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>wf_workflow_0a87341c1b2a301096fe0f26624bcb41</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-09-08 04:50:00</sys_updated_on>
+        <table>sc_req_item</table>
+        <template>false</template>
+        <vars/>
+    </wf_workflow>
+    <wf_stage action="INSERT_OR_UPDATE">
+        <name>Completed</name>
+        <ola>1970-01-01 00:00:00</ola>
+        <order>1100</order>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>a2b746b02f4c0110831952172799b601</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>complete</value>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+    </wf_stage>
+    <wf_stage action="INSERT_OR_UPDATE">
+        <name>Delivery</name>
+        <ola>1970-01-03 00:00:00</ola>
+        <order>140</order>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>2eb746b02f4c0110831952172799b600</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>delivery</value>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+    </wf_stage>
+    <wf_stage action="INSERT_OR_UPDATE">
+        <name>Fulfillment</name>
+        <ola>1970-01-02 00:00:00</ola>
+        <order>120</order>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>aeb746b02f4c0110831952172799b600</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>fulfillment</value>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+    </wf_stage>
+    <wf_stage action="INSERT_OR_UPDATE">
+        <name>Request Cancelled</name>
+        <ola>1970-01-01 00:00:00</ola>
+        <order>1000</order>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>aab746b02f4c0110831952172799b600</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>Request Cancelled</value>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+    </wf_stage>
+    <wf_stage action="INSERT_OR_UPDATE">
+        <name>Request Approved</name>
+        <ola>1970-01-01 00:00:00</ola>
+        <order>90</order>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>22b746b02f4c0110831952172799b601</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>request_approved</value>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+    </wf_stage>
+    <wf_stage action="INSERT_OR_UPDATE">
+        <name>Waiting for Approval</name>
+        <ola>1970-01-02 00:00:00</ola>
+        <order>100</order>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>2ab746b02f4c0110831952172799b600</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>waiting_for_approval</value>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+    </wf_stage>
+    <wf_activity action="INSERT_OR_UPDATE">
+        <activity_definition display_value="Begin">c7a5e32c0a0a0b3a002377c24ed8ea76</activity_definition>
+        <activity_definition_updated>false</activity_definition_updated>
+        <databus_lookup_id>1</databus_lookup_id>
+        <height/>
+        <input/>
+        <is_parent>false</is_parent>
+        <name>Begin</name>
+        <new_activity_definition/>
+        <notes/>
+        <out_of_date>false</out_of_date>
+        <parent/>
+        <pinned>false</pinned>
+        <pinned_version/>
+        <stage/>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>7eb746b02f4c0110831952172799b69e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <timeout>1970-01-01 00:00:00</timeout>
+        <vars/>
+        <width>80</width>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+        <x>20</x>
+        <y>20</y>
+    </wf_activity>
+    <sys_variable_value action="delete_multiple" query="document_key=7eb746b02f4c0110831952172799b69e"/>
+    <wf_condition action="INSERT_OR_UPDATE">
+        <activity display_value="Begin">7eb746b02f4c0110831952172799b69e</activity>
+        <condition>true</condition>
+        <condition_default/>
+        <condition_type>standard</condition_type>
+        <else_flag>false</else_flag>
+        <error>false</error>
+        <event>false</event>
+        <event_name/>
+        <is_positive>true</is_positive>
+        <name>Always</name>
+        <order>0</order>
+        <short_description/>
+        <skip_during_generate>false</skip_during_generate>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>3ab746b02f4c0110831952172799b69f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+    </wf_condition>
+    <wf_activity action="INSERT_OR_UPDATE">
+        <activity_definition display_value="Set Values">1ca8d7cf0a0a0b265e9a000c2c08248c</activity_definition>
+        <activity_definition_updated>false</activity_definition_updated>
+        <databus_lookup_id>6</databus_lookup_id>
+        <height/>
+        <input>{}</input>
+        <is_parent>false</is_parent>
+        <name>Complete</name>
+        <new_activity_definition/>
+        <notes/>
+        <out_of_date>false</out_of_date>
+        <parent/>
+        <pinned>false</pinned>
+        <pinned_version/>
+        <stage display_value="Completed">a2b746b02f4c0110831952172799b601</stage>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>36b746b02f4c0110831952172799b69c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <timeout>1970-01-01 00:00:00</timeout>
+        <vars/>
+        <width/>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+        <x>852</x>
+        <y>440</y>
+    </wf_activity>
+    <sys_variable_value action="delete_multiple" query="document_key=36b746b02f4c0110831952172799b69c"/>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>36b746b02f4c0110831952172799b69c</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>3ab746b02f4c0110831952172799b69c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>state=3^EQ</value>
+        <variable display_value="Set these values">1cb38c8f0a0a0b266fb48e08de35f507</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>36b746b02f4c0110831952172799b69c</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>3ab746b02f4c0110831952172799b69c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>state=3^EQ</value>
+        <variable display_value="Set these values">1cb38c8f0a0a0b266fb48e08de35f507</variable>
+    </sys_variable_value>
+    <wf_condition action="INSERT_OR_UPDATE">
+        <activity display_value="Complete">36b746b02f4c0110831952172799b69c</activity>
+        <condition>true</condition>
+        <condition_default/>
+        <condition_type>standard</condition_type>
+        <else_flag>false</else_flag>
+        <error>false</error>
+        <event>false</event>
+        <event_name/>
+        <is_positive>true</is_positive>
+        <name>Always</name>
+        <order>0</order>
+        <short_description/>
+        <skip_during_generate>false</skip_during_generate>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>b2b746b02f4c0110831952172799b69d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+    </wf_condition>
+    <wf_activity action="INSERT_OR_UPDATE">
+        <activity_definition display_value="End">c7a66f7d0a0a0b3a004544a6d2f14076</activity_definition>
+        <activity_definition_updated>false</activity_definition_updated>
+        <databus_lookup_id>2</databus_lookup_id>
+        <height/>
+        <input/>
+        <is_parent>false</is_parent>
+        <name>End</name>
+        <new_activity_definition/>
+        <notes/>
+        <out_of_date>false</out_of_date>
+        <parent/>
+        <pinned>false</pinned>
+        <pinned_version/>
+        <stage/>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>6ab746b02f4c0110831952172799b601</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <timeout>1970-01-01 00:00:00</timeout>
+        <vars/>
+        <width>80</width>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+        <x>990</x>
+        <y>322</y>
+    </wf_activity>
+    <sys_variable_value action="delete_multiple" query="document_key=6ab746b02f4c0110831952172799b601"/>
+    <wf_activity action="INSERT_OR_UPDATE">
+        <activity_definition display_value="Run Script">db8c65aec0a8016501d00259bc7203a4</activity_definition>
+        <activity_definition_updated>false</activity_definition_updated>
+        <databus_lookup_id>3</databus_lookup_id>
+        <height/>
+        <input>{}</input>
+        <is_parent>false</is_parent>
+        <name>PostTicketRequest</name>
+        <new_activity_definition/>
+        <notes/>
+        <out_of_date>false</out_of_date>
+        <parent/>
+        <pinned>false</pinned>
+        <pinned_version/>
+        <stage/>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>7ab746b02f4c0110831952172799b69d</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:49</sys_updated_on>
+        <timeout>1970-01-01 00:00:00</timeout>
+        <vars/>
+        <width/>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+        <x>501</x>
+        <y>53</y>
+    </wf_activity>
+    <sys_variable_value action="delete_multiple" query="document_key=7ab746b02f4c0110831952172799b69d"/>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>7ab746b02f4c0110831952172799b69d</document_key>
+        <order>1</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>7eb746b02f4c0110831952172799b69d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>//(function executeRule(current, previous) {&#13;
+var today = new GlideDateTime();&#13;
+var reqNumber = current.getDisplayValue('number');&#13;
+var currentScope = gs.getCurrentScopeName();&#13;
+var SyncCounter = gs.getProperty(currentScope + '.' + 'user_sync_retry_count');&#13;
+&#13;
+var gr = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');&#13;
+gr.initialize();&#13;
+gr.servicenow_entity_id = reqNumber;&#13;
+gr.entity_type = 'Ticket';&#13;
+gr.sync_status = 0;&#13;
+gr.retry_count_setting = SyncCounter;&#13;
+gr.sync_counter = 0;&#13;
+gr.last_retry_datetime = today;&#13;
+gr.insert_datetime = today;&#13;
+gr.modified_datetime = today;&#13;
+gr.sync_type = 'INSERT';&#13;
+gr.sakon_sync_action = 'INSERT';&#13;
+gr.sakon_entity_id = '';&#13;
+gr.insert();&#13;
+&#13;
+&#13;
+//})(current, previous);</value>
+        <variable display_value="Script">c35ddef20a0a0ba96248a7090eccd518</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>7ab746b02f4c0110831952172799b69d</document_key>
+        <order>1</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>7eb746b02f4c0110831952172799b69d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>//(function executeRule(current, previous) {&#13;
+var today = new GlideDateTime();&#13;
+var reqNumber = current.getDisplayValue('number');&#13;
+var currentScope = gs.getCurrentScopeName();&#13;
+var SyncCounter = gs.getProperty(currentScope + '.' + 'user_sync_retry_count');&#13;
+&#13;
+var gr = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');&#13;
+gr.initialize();&#13;
+gr.servicenow_entity_id = reqNumber;&#13;
+gr.entity_type = 'Ticket';&#13;
+gr.sync_status = 0;&#13;
+gr.retry_count_setting = SyncCounter;&#13;
+gr.sync_counter = 0;&#13;
+gr.last_retry_datetime = today;&#13;
+gr.insert_datetime = today;&#13;
+gr.modified_datetime = today;&#13;
+gr.sync_type = 'INSERT';&#13;
+gr.sakon_sync_action = 'INSERT';&#13;
+gr.sakon_entity_id = '';&#13;
+gr.insert();&#13;
+&#13;
+&#13;
+//})(current, previous);</value>
+        <variable display_value="Script">c35ddef20a0a0ba96248a7090eccd518</variable>
+    </sys_variable_value>
+    <wf_condition action="INSERT_OR_UPDATE">
+        <activity display_value="PostTicketRequest">7ab746b02f4c0110831952172799b69d</activity>
+        <condition>true</condition>
+        <condition_default/>
+        <condition_type>standard</condition_type>
+        <else_flag>false</else_flag>
+        <error>false</error>
+        <event>false</event>
+        <event_name/>
+        <is_positive>true</is_positive>
+        <name>Always</name>
+        <order>0</order>
+        <short_description/>
+        <skip_during_generate>false</skip_during_generate>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>f6b746b02f4c0110831952172799b69e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+    </wf_condition>
+    <wf_activity action="INSERT_OR_UPDATE">
+        <activity_definition display_value="Timer">3961a1da0a0a0b5c00ecd84822f70d85</activity_definition>
+        <activity_definition_updated>false</activity_definition_updated>
+        <databus_lookup_id>4</databus_lookup_id>
+        <height/>
+        <input>{}</input>
+        <is_parent>false</is_parent>
+        <name>Timer</name>
+        <new_activity_definition/>
+        <notes/>
+        <out_of_date>false</out_of_date>
+        <parent/>
+        <pinned>false</pinned>
+        <pinned_version/>
+        <stage/>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>6eb746b02f4c0110831952172799b602</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <timeout>1970-01-01 00:00:00</timeout>
+        <vars/>
+        <width/>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+        <x>216</x>
+        <y>179</y>
+    </wf_activity>
+    <sys_variable_value action="delete_multiple" query="document_key=6eb746b02f4c0110831952172799b602"/>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1360</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>32b746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Percentage">292b2f0e0a0a0b215aa2dd2cbc578dc5</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1310</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>36b746b02f4c0110831952172799b604</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>1970-01-01 00:00:02</value>
+        <variable display_value="Duration">c35dc0df0a0a0ba96248a7098d737925</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>500</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>3ab746b02f4c0110831952172799b603</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Wait">220dc5a40a0a0b2109fbd28b8c4b6213</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>310</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>3eb746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Timer based on">21f80cd00a0a0b2101fcd5b5defc0810</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>320</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>62b746b02f4c0110831952172799b603</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Schedule based on">4cba34da0a0a0b5200798c86eafe1203</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>3000</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>72b746b02f4c0110831952172799b604</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>// Set 'answer' to the number of seconds this timer should wait&#13;
+answer = 0;</value>
+        <variable display_value="Script">293493710a0a0b2115e3e5b4fce1d12a</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1360</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>7ab746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Time after">292c91070a0a0b212543d91ffde5014c</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1360</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>7eb746b02f4c0110831952172799b604</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Time before">292bd15e0a0a0b215a040c701033e3c5</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1320</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>b6b746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Schedule field">4cc6788c0a0a0b5200e6743c94001b16</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1310</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>bab746b02f4c0110831952172799b604</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Field">21fd462c0a0a0b211c997276d7806c03</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>350</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>beb746b02f4c0110831952172799b603</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Time zone based on">4cbfe48a0a0a0b5200cf8b82cc6685f1</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1320</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>f2b746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Schedule">4cc4a4030a0a0b52007334f001376dc5</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1310</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>f6b746b02f4c0110831952172799b604</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>3bf802c20a0a0b52008e2859cd8abcf2</value>
+        <variable display_value="Relative duration">220cd53d0a0a0b214103bdc2ec5c7ab4</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1350</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>fab746b02f4c0110831952172799b603</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Time zone">4cc836da0a0a0b520083ebc07da2f47c</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1350</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>feb746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Time zone field">4cc740fe0a0a0b520025dcf8e2ff78e7</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>310</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>3eb746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Timer based on">21f80cd00a0a0b2101fcd5b5defc0810</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>320</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>62b746b02f4c0110831952172799b603</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Schedule based on">4cba34da0a0a0b5200798c86eafe1203</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>350</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>beb746b02f4c0110831952172799b603</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Time zone based on">4cbfe48a0a0a0b5200cf8b82cc6685f1</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>500</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>3ab746b02f4c0110831952172799b603</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Wait">220dc5a40a0a0b2109fbd28b8c4b6213</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1310</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>36b746b02f4c0110831952172799b604</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>1970-01-01 00:00:02</value>
+        <variable display_value="Duration">c35dc0df0a0a0ba96248a7098d737925</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1310</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>bab746b02f4c0110831952172799b604</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Field">21fd462c0a0a0b211c997276d7806c03</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1310</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>f6b746b02f4c0110831952172799b604</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>3bf802c20a0a0b52008e2859cd8abcf2</value>
+        <variable display_value="Relative duration">220cd53d0a0a0b214103bdc2ec5c7ab4</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1320</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>f2b746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Schedule">4cc4a4030a0a0b52007334f001376dc5</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1320</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>b6b746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Schedule field">4cc6788c0a0a0b5200e6743c94001b16</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1350</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>fab746b02f4c0110831952172799b603</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Time zone">4cc836da0a0a0b520083ebc07da2f47c</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1350</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>feb746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Time zone field">4cc740fe0a0a0b520025dcf8e2ff78e7</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1360</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>7eb746b02f4c0110831952172799b604</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Time before">292bd15e0a0a0b215a040c701033e3c5</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1360</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>7ab746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Time after">292c91070a0a0b212543d91ffde5014c</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>1360</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>32b746b02f4c0110831952172799b605</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Percentage">292b2f0e0a0a0b215aa2dd2cbc578dc5</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>6eb746b02f4c0110831952172799b602</document_key>
+        <order>3000</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>72b746b02f4c0110831952172799b604</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>// Set 'answer' to the number of seconds this timer should wait&#13;
+answer = 0;</value>
+        <variable display_value="Script">293493710a0a0b2115e3e5b4fce1d12a</variable>
+    </sys_variable_value>
+    <wf_condition action="INSERT_OR_UPDATE">
+        <activity display_value="Timer">6eb746b02f4c0110831952172799b602</activity>
+        <condition>true</condition>
+        <condition_default/>
+        <condition_type>standard</condition_type>
+        <else_flag>false</else_flag>
+        <error>false</error>
+        <event>false</event>
+        <event_name/>
+        <is_positive>true</is_positive>
+        <name>Always</name>
+        <order>0</order>
+        <short_description/>
+        <skip_during_generate>false</skip_during_generate>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>7eb746b02f4c0110831952172799b69b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+    </wf_condition>
+    <wf_activity action="INSERT_OR_UPDATE">
+        <activity_definition display_value="Wait for condition">d93a02ae0a0a0aa30077abad3fdac035</activity_definition>
+        <activity_definition_updated>false</activity_definition_updated>
+        <databus_lookup_id>5</databus_lookup_id>
+        <height/>
+        <input>{}</input>
+        <is_parent>false</is_parent>
+        <name>Wait for Request Item to close</name>
+        <new_activity_definition/>
+        <notes/>
+        <out_of_date>false</out_of_date>
+        <parent/>
+        <pinned>false</pinned>
+        <pinned_version/>
+        <stage display_value="Fulfillment">aeb746b02f4c0110831952172799b600</stage>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>feb746b02f4c0110831952172799b69f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <timeout>1970-01-01 00:00:00</timeout>
+        <vars/>
+        <width/>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+        <x>682</x>
+        <y>293</y>
+    </wf_activity>
+    <sys_variable_value action="delete_multiple" query="document_key=feb746b02f4c0110831952172799b69f"/>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>feb746b02f4c0110831952172799b69f</document_key>
+        <order>1</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>b6b746b02f4c0110831952172799b6a0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Condition">c35dc4cd0a0a0ba96248a70990c1ac54</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>feb746b02f4c0110831952172799b69f</document_key>
+        <order>2</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>f2b746b02f4c0110831952172799b6a0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>answer = (function(current) {	&#13;
+	var result = false;&#13;
+	var state = current.state.toString();&#13;
+	var state_display = current.state.getDisplayValue().toLowerCase().trim();	&#13;
+	if (state=='3' || state=='4' || state=='7' || state_display == 'closed complete') {&#13;
+		result = true;&#13;
+	}&#13;
+	&#13;
+	return result;&#13;
+	&#13;
+})(current);</value>
+        <variable display_value="Condition script">c35debce0a0a0ba96248a709440cf31a</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>feb746b02f4c0110831952172799b69f</document_key>
+        <order>1</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>b6b746b02f4c0110831952172799b6a0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value/>
+        <variable display_value="Condition">c35dc4cd0a0a0ba96248a70990c1ac54</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>wf_activity</document>
+        <document_key>feb746b02f4c0110831952172799b69f</document_key>
+        <order>2</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>f2b746b02f4c0110831952172799b6a0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <value>answer = (function(current) {	&#13;
+	var result = false;&#13;
+	var state = current.state.toString();&#13;
+	var state_display = current.state.getDisplayValue().toLowerCase().trim();	&#13;
+	if (state=='3' || state=='4' || state=='7' || state_display == 'closed complete') {&#13;
+		result = true;&#13;
+	}&#13;
+	&#13;
+	return result;&#13;
+	&#13;
+})(current);</value>
+        <variable display_value="Condition script">c35debce0a0a0ba96248a709440cf31a</variable>
+    </sys_variable_value>
+    <wf_condition action="INSERT_OR_UPDATE">
+        <activity display_value="Wait for Request Item to close">feb746b02f4c0110831952172799b69f</activity>
+        <condition>true</condition>
+        <condition_default/>
+        <condition_type>standard</condition_type>
+        <else_flag>false</else_flag>
+        <error>false</error>
+        <event>false</event>
+        <event_name/>
+        <is_positive>true</is_positive>
+        <name>Always</name>
+        <order>0</order>
+        <short_description/>
+        <skip_during_generate>false</skip_during_generate>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>32b746b02f4c0110831952172799b6a1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+    </wf_condition>
+    <wf_transition action="INSERT_OR_UPDATE">
+        <condition display_value="Always">b2b746b02f4c0110831952172799b69d</condition>
+        <from display_value="Complete">36b746b02f4c0110831952172799b69c</from>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>3eb746b02f4c0110831952172799b6a2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <to display_value="End">6ab746b02f4c0110831952172799b601</to>
+    </wf_transition>
+    <wf_transition action="INSERT_OR_UPDATE">
+        <condition display_value="Always">32b746b02f4c0110831952172799b6a1</condition>
+        <from display_value="Wait for Request Item to close">feb746b02f4c0110831952172799b69f</from>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>7ab746b02f4c0110831952172799b6a2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <to display_value="Complete">36b746b02f4c0110831952172799b69c</to>
+    </wf_transition>
+    <wf_transition action="INSERT_OR_UPDATE">
+        <condition display_value="Always">7eb746b02f4c0110831952172799b69b</condition>
+        <from display_value="Timer">6eb746b02f4c0110831952172799b602</from>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>b6b746b02f4c0110831952172799b6a2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <to display_value="PostTicketRequest">7ab746b02f4c0110831952172799b69d</to>
+    </wf_transition>
+    <wf_transition action="INSERT_OR_UPDATE">
+        <condition display_value="Always">3ab746b02f4c0110831952172799b69f</condition>
+        <from display_value="Begin">7eb746b02f4c0110831952172799b69e</from>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>f2b746b02f4c0110831952172799b6a2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <to display_value="Timer">6eb746b02f4c0110831952172799b602</to>
+    </wf_transition>
+    <wf_transition action="INSERT_OR_UPDATE">
+        <condition display_value="Always">f6b746b02f4c0110831952172799b69e</condition>
+        <from display_value="PostTicketRequest">7ab746b02f4c0110831952172799b69d</from>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>feb746b02f4c0110831952172799b6a2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <to display_value="Wait for Request Item to close">feb746b02f4c0110831952172799b69f</to>
+    </wf_transition>
+    <wf_estimated_runtime_config action="INSERT_OR_UPDATE">
+        <estimated_run_time/>
+        <no_of_data_points>1</no_of_data_points>
+        <percentage_threshold_ert>20</percentage_threshold_ert>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-23 13:31:31</sys_created_on>
+        <sys_id>e2b706b02f4c0110831952172799b6ff</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-23 13:31:31</sys_updated_on>
+        <workflow_version display_value="Servicedesk Tickets Workflow">eeb706b02f4c0110831952172799b6fe</workflow_version>
+    </wf_estimated_runtime_config>
+    <wf_workflow_version action="update_multiple" query="workflow=0a87341c1b2a301096fe0f26624bcb41^sys_id!=eeb706b02f4c0110831952172799b6fe">
+        <published>false</published>
+    </wf_workflow_version>
+</record_update>

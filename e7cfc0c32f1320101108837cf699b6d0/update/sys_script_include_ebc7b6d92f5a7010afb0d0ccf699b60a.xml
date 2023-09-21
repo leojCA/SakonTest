@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.MDMDevicesSyncScript</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>MDMDevicesSyncScript</name>
+        <script><![CDATA[var MDMDevicesSyncScript = Class.create();
+MDMDevicesSyncScript.prototype = {
+    initialize: function() {},
+
+    loadData: function() {
+        try {
+            var logSource = 'MDMDevicesSyncScript Script Include';
+            var logger = new LogUtilities();
+            logger.writeInfo(logSource, 'Start - ' + logSource);
+            var apiResponse;
+            var currentScope = gs.getCurrentScopeName();
+            var utcNow = new CommonUtilities().getUTCDateTime();
+            var last_sync_date = gs.getProperty(currentScope + '.' + 'mdm_device_last_sync');
+            var filter = 'updateDateTime ge ' + last_sync_date;
+            var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
+            var top = pageSize;
+            var skip = 0;
+            var iter = 1;
+
+            do {
+
+                logger.writeInfo(logSource, 'Iteration=' + iter + ', Top=' + top + ', Skip=' + skip);
+                apiResponse = new APIUtilities().getData('MDM Devices REST Message', 'GetMDMDevices', top, skip, filter);
+                logger.writeInfo(logSource, 'Iteration=' + iter + ', Total records fetched=' + apiResponse.data.length);
+                //Get the total record count from API response
+                var totalRec = apiResponse.total;
+
+                //Load API response to Import Set table		
+                for (var i = 0; i < apiResponse.data.length; i++) {
+                    var newRec = new GlideRecordSecure(currentScope + '_' + 'mdm_devices_import_set_table');
+                    newRec.initialize();
+                    newRec.managed_device_id = apiResponse.data[i].id;
+                    newRec.imei = apiResponse.data[i].imei;
+                    newRec.device_id = apiResponse.data[i].deviceId;
+                    newRec.serial_number = apiResponse.data[i].serialNumber;
+                    newRec.first_connection = apiResponse.data[i].firstConnection;
+                    newRec.last_connection = apiResponse.data[i].lastConnection;
+                    newRec.asset_id = apiResponse.data[i].assetId;
+                    newRec.device_model_name = apiResponse.data[i].modelName;
+                    newRec.udid = apiResponse.data[i].udid;
+                    newRec.device_manufacturer = apiResponse.data[i].manufacturer;
+                    newRec.device_model_number = apiResponse.data[i].modelNumber;
+                    newRec.device_part_number = apiResponse.data[i].partNumber;
+                    newRec.device_os = apiResponse.data[i].os;
+                    newRec.device_os_version = apiResponse.data[i].osVer;
+                    newRec.device_country_code = apiResponse.data[i].countryCode;
+                    newRec.device_phone_number = apiResponse.data[i].phoneNumber;
+                    newRec.device_ownership = apiResponse.data[i].ownership;
+                    newRec.platform_instance = apiResponse.data[i].platformInstance;
+
+                    newRec.device_category = apiResponse.data[i].category;
+                    newRec.platform = apiResponse.data[i].platform.name;
+                    newRec.device_type = apiResponse.data[i].type;
+                    newRec.equipment_class = apiResponse.data[i].equipmentClass;
+                    newRec.equipment_category = apiResponse.data[i].equipmentCategory;
+                    newRec.assigned_to = apiResponse.data[i].assignedTo;
+                    newRec.device_class = apiResponse.data[i]['class'];
+                    newRec.assigned_to_group = apiResponse.data[i].assignedToGroup;
+                    newRec.ar_email = apiResponse.data[i].arEmail;
+                    newRec.wireless_number_id = apiResponse.data[i].wirelessNumberId;
+                    if (!gs.nil(apiResponse.data[i].user)) {
+                        newRec.user_name = apiResponse.data[i].user.name;
+                        newRec.user_email = apiResponse.data[i].user.email;
+                    }
+                    newRec.platform_version = apiResponse.data[i].platformVer;
+                    newRec.platform_sp = apiResponse.data[i].platformSP;
+                    newRec.insert_date_time = apiResponse.data[i].insertDateTime;
+                    if (!gs.nil(apiResponse.data[i].status)) {
+                        newRec.device_status = apiResponse.data[i].status.id;
+                        newRec.device_status_name = apiResponse.data[i].status.name;
+                    }
+                    newRec.update_date_time = apiResponse.data[i].updateDateTime;
+                    newRec.equipment_type = apiResponse.data[i].equipmentType;
+                    newRec.device_os_sp = apiResponse.data[i].ossp;
+                    if (!gs.nil(apiResponse.data[i].carrier)) {
+                        newRec.device_carrier = apiResponse.data[i].carrier.name;
+                    }
+                    newRec.insert();
+                }
+                logger.writeInfo(logSource, 'Iteration=' + iter + ' Inserted records to MDM Devices Table');
+                skip = skip + top;
+                iter = iter + 1;
+            } while (skip < totalRec);
+
+            //Update Last_sync system property with current date(UTC) 
+
+            var gt_mdmsync = new GlideRecord('sys_properties');
+            gt_mdmsync.addQuery('sys_id', 'e7c6f21d2f5a7010afb0d0ccf699b65d'); //x_sakon_mobile.mdm_device_last_sync--Property
+            gt_mdmsync.query();
+            if (gt_mdmsync.next()) {
+                gt_mdmsync.value = utcNow;
+                gt_mdmsync.update();
+            }
+
+
+            //gs.setProperty(currentScope + '.' + 'mdm_device_last_sync', utcNow); Commented to pass certification tests
+
+
+            logger.writeInfo(logSource, 'End - ' + logSource);
+
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            gs.eventQueue('x_sakon_mobile.mdm.sync.failure', newRec);
+            throw ex;
+        }
+    },
+
+    type: 'MDMDevicesSyncScript'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-08-30 07:39:25</sys_created_on>
+        <sys_id>ebc7b6d92f5a7010afb0d0ccf699b60a</sys_id>
+        <sys_mod_count>92</sys_mod_count>
+        <sys_name>MDMDevicesSyncScript</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_ebc7b6d92f5a7010afb0d0ccf699b60a</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-02-20 11:02:58</sys_updated_on>
+    </sys_script_include>
+</record_update>

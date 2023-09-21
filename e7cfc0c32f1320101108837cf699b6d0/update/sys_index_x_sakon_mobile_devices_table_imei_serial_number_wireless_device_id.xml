@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_index">
+    <sys_index action="INSERT_OR_UPDATE">
+        <col_name_string>imei,serial_number,wireless_device_id</col_name_string>
+        <index_col_name>97c22d442f5530101108837cf699b630,9ed225042f5530101108837cf699b621,d8522d442f5530101108837cf699b628</index_col_name>
+        <logical_table_name>x_sakon_mobile_devices_table</logical_table_name>
+        <sys_class_name>sys_index</sys_class_name>
+        <sys_created_by>system</sys_created_by>
+        <sys_created_on>2021-07-08 07:16:50</sys_created_on>
+        <sys_id>bc960e1c2f1530101108837cf699b623</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_sakon_mobile_devices_table</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_index_x_sakon_mobile_devices_table_imei_serial_number_wireless_device_id</sys_update_name>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2021-07-08 07:16:50</sys_updated_on>
+        <table display_value="Devices Table" name="x_sakon_mobile_devices_table">f85f1c842f1130101108837cf699b641</table>
+        <unique_index>false</unique_index>
+    </sys_index>
+</record_update>

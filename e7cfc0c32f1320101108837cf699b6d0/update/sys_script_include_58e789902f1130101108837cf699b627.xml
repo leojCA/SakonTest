@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.DevicesSyncScript</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>DevicesSyncScript</name>
+        <script><![CDATA[var DevicesSyncScript = Class.create();
+DevicesSyncScript.prototype = {
+    initialize: function() {},
+    loadData: function() {
+
+        try {
+            var logSource = 'DevicesSyncScript Script Include';
+            var logger = new LogUtilities();
+            logger.writeInfo(logSource, 'Start - ' + logSource);
+            var apiResponse;
+            var currentScope = gs.getCurrentScopeName();
+			var utcNow = new CommonUtilities().getUTCDateTime();
+            var last_sync_date = gs.getProperty(currentScope + '.' + 'device_last_sync');
+            var filter = 'lastModifiedDateTime ge ' + last_sync_date;
+            var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
+            var top = pageSize;
+            var skip = 0;
+            var iter = 1;
+
+            do {
+                logger.writeInfo(logSource, 'Iteration=' + iter + ', Top=' + top + ', Skip=' + skip);
+                apiResponse = new APIUtilities().getData(currentScope + '.' + 'Devices REST Message', 'GetDevices', top, skip, filter);
+                logger.writeInfo(logSource, 'Iteration=' + iter + ', Total records fetched=' + apiResponse.data.length);
+                //Get the total record count from API response
+                var totalRec = apiResponse.total;
+
+                //Load API response to Import Set table		
+                for (var i = 0; i < apiResponse.data.length; i++) {
+
+                    var newRec = new GlideRecordSecure(currentScope + '_' + 'devices_import_set_table');
+                    newRec.initialize();
+                    newRec.u_wireless_device_id = apiResponse.data[i].id;
+                    newRec.u_phone_number = apiResponse.data[i].phoneNumber;
+                    newRec.u_serial_number = apiResponse.data[i].serialNumber;
+                    newRec.u_imei = apiResponse.data[i].imei;
+                    newRec.u_wireless_service_id = apiResponse.data[i].serviceId;
+                    newRec.u_device_name = apiResponse.data[i].name;
+                    newRec.u_device_tag = apiResponse.data[i].tag;
+                    newRec.u_device_model = apiResponse.data[i].model;
+                    newRec.u_device_model_number = apiResponse.data[i].modelNumber;
+                    newRec.u_device_manufacturer = apiResponse.data[i].manufacturer;
+                    newRec.u_device_ownership = apiResponse.data[i].ownership;
+                    newRec.u_device_os = apiResponse.data[i].os;
+                    newRec.u_device_os_version = apiResponse.data[i].osVersion;
+                    newRec.u_device_cellular = apiResponse.data[i].cellular;
+                    newRec.u_device_memory = apiResponse.data[i].memory;
+                    newRec.u_device_wi_fi = apiResponse.data[i].wifi;
+                    newRec.u_device_bluetooth = apiResponse.data[i].bluetooth;
+                    newRec.u_device_type = apiResponse.data[i].type;
+                    newRec.u_device_activation_date = apiResponse.data[i].activationDate;
+                    if (!gs.nil(apiResponse.data[i].carrier)) {
+                        newRec.u_carrier_id = apiResponse.data[i].carrier.id;
+                        newRec.u_carrier = apiResponse.data[i].carrier.name;
+                    }
+                    if (!gs.nil(apiResponse.data[i].warrantyInfo)) {
+                        newRec.u_warranty_doc_id = apiResponse.data[i].warrantyInfo.docId;
+                        newRec.u_warranty_start_date = apiResponse.data[i].warrantyInfo.startDate;
+                        newRec.u_warranty_end_date = apiResponse.data[i].warrantyInfo.endDate;
+                    }
+                    if (!gs.nil(apiResponse.data[i].warrantyInfo.Provider)) {
+                        newRec.u_warranty_provider_name = apiResponse.data[i].warrantyInfo.provider.name;
+
+                    }
+                    if (!gs.nil(apiResponse.data[i].user)) {
+                        newRec.u_employee_id = apiResponse.data[i].user.employeeId;
+                        var gr = new GlideRecordSecure('x_sakon_mobile_users');
+                        gr.addQuery('sakon_user_id', apiResponse.data[i].user.id);
+                        gr.query();
+                        while (gr.next()) {
+                            newRec.u_user_id = gr.sys_id;
+                        }
+                    }
+                    if (!gs.nil(apiResponse.data[i].status)) {
+                        newRec.u_device_status_id = apiResponse.data[i].status.id;
+                        newRec.u_device_status = apiResponse.data[i].status.name;
+                    }
+                    if (!gs.nil(apiResponse.data[i].allocationInfo)) {
+                        newRec.u_department = apiResponse.data[i].allocationInfo.department;
+                        newRec.u_cost_center = apiResponse.data[i].allocationInfo.costCenter;
+                        newRec.u_glcode = apiResponse.data[i].allocationInfo.glCode;
+                        newRec.u_accountcode = apiResponse.data[i].allocationInfo.accountCode;
+                        newRec.u_business_entity = apiResponse.data[i].allocationInfo.businessEntity;
+                        newRec.u_business_unit = apiResponse.data[i].allocationInfo.businessUnit;
+                        newRec.u_business_group = apiResponse.data[i].allocationInfo.businessGroup;
+                        newRec.u_business_location = apiResponse.data[i].allocationInfo.businessLocation;
+                    }
+                    if (!gs.nil(apiResponse.data[i].purchaseInfo)) {
+                        newRec.u_purchased_by = apiResponse.data[i].purchaseInfo.by;
+                        newRec.u_purchased_from = apiResponse.data[i].purchaseInfo.from;
+                        newRec.u_purchase_date = apiResponse.data[i].purchaseInfo.date;
+                    }
+                    newRec.insert();
+                }
+                logger.writeInfo(logSource, 'Iteration=' + iter + ' Inserted records to Devices Table');
+                skip = skip + top;
+                iter = iter + 1;
+            } while (skip < totalRec);
+
+            //Update Last_sync system property with current date(UTC))
+            //gs.setProperty(currentScope + '.' + 'device_last_sync', utcNow);
+			
+			var gt_devicesync =new GlideRecord('sys_properties');
+			gt_devicesync.addQuery('sys_id','524bdc002f1130101108837cf699b663');//x_sakon_mobile.device_last_sync--Property
+			gt_devicesync.query();
+			if(gt_devicesync.next()){
+			gt_devicesync.value=utcNow;
+			gt_devicesync.update();	
+			}
+			
+			
+            logger.writeInfo(logSource, 'End - ' + logSource);
+
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            gs.eventQueue('x_sakon_mobile.devices.sync.failure', newRec);
+            throw ex;
+        }
+    },
+	
+    type: 'DevicesSyncScript'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-07-08 02:43:36</sys_created_on>
+        <sys_id>58e789902f1130101108837cf699b627</sys_id>
+        <sys_mod_count>33</sys_mod_count>
+        <sys_name>DevicesSyncScript</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_58e789902f1130101108837cf699b627</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-02-20 11:00:17</sys_updated_on>
+    </sys_script_include>
+</record_update>

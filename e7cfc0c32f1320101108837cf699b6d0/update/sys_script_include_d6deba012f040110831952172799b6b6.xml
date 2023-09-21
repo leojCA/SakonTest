@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.MarketplaceSyncScript</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>MarketplaceSyncScript</name>
+        <script><![CDATA[var MarketplaceSyncScript = Class.create();
+MarketplaceSyncScript.prototype = {
+    initialize: function() {},
+
+    loadData: function(OrderID, SyncType, SyncID, SakonID) {
+
+        try {
+            var logger = new LogUtilities();
+            var logSource = 'MarketplaceSyncScript Script Include - loadData';
+            logger.writeInfo(logSource, 'Start - ' + logSource);
+            if (SyncType == 'INSERT') {
+                logger.writeInfo(logSource, 'Calling CreateOrder function for ' + OrderID);
+                this.createOrder(OrderID, SyncID);
+            } else if (SyncType == 'UPDATE') {
+                logger.writeInfo(logSource, 'Calling UpdateOrder function for ' + OrderID);
+                this.updateOrder(OrderID, SakonID, SyncID);
+            }
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, ' Error Line Number ' + ex.lineNumber);
+            throw ex;
+        }
+    },
+
+    //Build Json request body for creating orders on Sakon
+    buildJsonRequest: function(OrderID) {
+        try {
+            var currentScope = gs.getCurrentScopeName();
+            var reqSysID;
+            var catItemSysID;
+            var orderType = '';
+            var networkProvider = '';
+            var requestBody = {};
+            var quantity;
+            var userSakonId;
+            var userName;
+            var orderComment;
+            var i = 0;
+
+            requestBody.OrderItems = [];
+            var grRequest = new GlideRecord('sc_request');
+            grRequest.addQuery('number', OrderID);
+            grRequest.query();
+            while (grRequest.next()) {
+                reqSysID = grRequest.sys_id;
+                orderComment = '';
+                requestBody.CorrelationId = grRequest.number.toString();
+            }
+
+            var grReqItem = new GlideRecord('sc_req_item');
+            grReqItem.addQuery('request', reqSysID);
+            grReqItem.query();
+            while (grReqItem.next()) {
+                //Check if the requested item belongs to Sakon Catalog
+                var isSakonCatItem = new CommonUtilities().isSakonCatItem(grReqItem.cat_item.getDisplayValue());
+                if (isSakonCatItem.toString().toLowerCase() === 'true') {
+                    var item = {
+                        "UniqueProductId": 1234,
+                        "SubformDataId": 18,
+                        "Quantity": 1,
+                        "PhoneNumber": 0,
+                        "CorrelationId": 0,
+                        "ServicePackId": 0,
+                        "OrderTypeID": 0,
+                        "ServiceProviderId": 0
+                    };
+
+                    //check if logged in user is an admin user
+                    var current_user_id = grRequest.opened_by.toString();
+                    var commonUtilities = new CommonUtilities();
+                    isAdmin = commonUtilities.isAdmin(current_user_id);
+                    if (isAdmin == 'true') {
+                        userName = grReqItem.variables.order_for_user.toString();
+                    } else {
+                        //Assigned opened by user field to user name as requested for is modified by some clients as part of customization.
+                        userName = grRequest.opened_by.toString();
+                    }
+                    var grSakonUser = new GlideRecordSecure(currentScope + "_" + 'users');
+                    grSakonUser.addQuery('servicenow_user_id', userName);
+                    grSakonUser.query();
+                    while (grSakonUser.next()) {
+                        userSakonId = grSakonUser.sakon_user_id.toString();
+                    }
+
+                    requestBody.ForUserId = userSakonId;
+                    requestBody.Comment = grReqItem.variables.note.toString();
+                    requestBody.EligibilityUserId = userSakonId;
+                    requestBody.ShippingAddress = {};
+                    requestBody.ShippingAddress.AddressLine1 = grReqItem.variables.address_line_1.toString();
+                    requestBody.ShippingAddress.AddressLine2 = grReqItem.variables.address_line_2.toString();
+                    requestBody.ShippingAddress.AttentionName = grReqItem.variables.attention_name.toString();
+                    requestBody.ShippingAddress.City = grReqItem.variables.city.toString();
+                    requestBody.ShippingAddress.Country = grReqItem.variables.country.toString();
+                    requestBody.ShippingAddress.FirstName = grReqItem.variables.first_name.toString();
+                    requestBody.ShippingAddress.LastName = grReqItem.variables.last_name.toString();
+                    requestBody.ShippingAddress.PhoneNumber = grReqItem.variables.contact_number.toString();
+                    requestBody.ShippingAddress.State = grReqItem.variables.state.toString();
+                    requestBody.ShippingAddress.ZipCode = grReqItem.variables.zip_code.toString();
+
+                    requestBody.ShippingTypeId = grReqItem.variables.shipping_type.toString();
+                    requestBody.OrderItems.push(item);
+                    networkProvider = grReqItem.variables.carrier;
+                    orderType = grReqItem.variables.order_type;
+                    quantity = grReqItem.quantity;
+                    requestBody.OrderItems[i].CorrelationId = grReqItem.number.toString();
+                    var grCatItem = new GlideRecord('sc_cat_item');
+                    grCatItem.addQuery('name', grReqItem.getDisplayValue('cat_item'));
+                    grCatItem.addQuery('active', true);
+                    grCatItem.query();
+                    var category = '';
+                    while (grCatItem.next()) {
+                        catItemSysID = grCatItem.sys_id;
+                        category = grCatItem.category.toString();
+                        break;
+                    }
+                    var grItems = new GlideRecordSecure(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+                    grItems.addQuery('servicenow_catalog_item_id', catItemSysID);
+                    if (category == 'b0a568352fc00110831952172799b6d4') {
+                        grItems.addQuery('order_type', orderType);
+                        grItems.addQuery('network_provider', networkProvider);
+                    }
+                    grItems.query();
+                    while (grItems.next()) {
+                        if (gs.nil(grItems.order_type_id.toString())) {
+                            requestBody.OrderItems[i].OrderTypeID = 1702;
+                        } else {
+                            requestBody.OrderItems[i].OrderTypeID = parseInt(grItems.order_type_id.toString());
+                        }
+                        requestBody.OrderItems[i].ServiceProviderId = parseInt(grItems.service_provider_id.toString());
+                        requestBody.OrderItems[i].UniqueProductId = parseInt(grItems.id.toString());
+                        requestBody.OrderItems[i].Quantity = 1; //Hard coded to 1 as only item allowed per order.
+                        var isDevice = new CommonUtilities().isDevice(catItemSysID);
+                        if (isDevice.toString().toLowerCase() === 'true') {
+                            requestBody.OrderItems[i].PhoneNumber = parseInt((grReqItem.variables.phone_number_mp.getDisplayValue().toString()).replace(/[^\n\d]+/g, ''));
+                        }
+
+                        break;
+                    }
+                    i++;
+                }
+            }
+
+            requestBody = JSON.stringify(requestBody);
+            logger.writeInfo('API Request body: ', requestBody);
+            return requestBody;
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, ' Error Line Number ' + ex.lineNumber);
+            throw ex;
+        }
+    },
+
+    createOrder: function(OrderID, SyncID) {
+        try {
+            var logSource = 'MarketplaceSyncScript Script Include - createOrder';
+            var logger = new LogUtilities();
+            logger.writeInfo(logSource, 'Start - ' + logSource);
+            var SyncCounter = gs.getProperty(currentScope + '.' + 'order_sync_retry_count');
+
+            var requestBody = this.buildJsonRequest(OrderID);
+            var currentScope = gs.getCurrentScopeName();
+            var apiResponse;
+            apiResponse = new APIUtilities().postData(currentScope + '.' + 'Marketplace REST Message', 'CreateOrder', requestBody);
+            logger.writeInfo(logSource, 'createOrder - Response status from APIUtilities: ' + apiResponse[0]);
+
+            //Get Sakon Order ID from API Response
+            var responseJson = JSON.parse(apiResponse[1]);
+            var startIndex = apiResponse[1].indexOf('"OrderId:"') + 12;
+            var endIndex = apiResponse[1].lastIndexOf('}');
+            var sakonID = apiResponse[1].slice(startIndex, endIndex);
+
+            //Update Sync Status, Last Retry DateTime and Retry Counter in Entity Sync Queue Table if Order Creation is successful
+            var gr = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+            gr.addQuery('number', SyncID);
+            gr.query();
+            var apiErrorMessage = "";
+            while (gr.next()) {
+                if (apiResponse[0] == 200) {
+                    logger.writeInfo(logSource, 'Order with RequestID ' + OrderID + ' created in Sakon, Sakon Order ID - ' + sakonID);
+                    gr.sync_status = 2;
+                    gr.sakon_entity_id = sakonID;
+                    gr.comments = 'Order Sync Successful';
+                    gr.update();
+                } else {
+                    apiErrorMessage = 'Exception: ' + responseJson.message;
+                }
+            }
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, ' Error Line Number ' + ex.lineNumber);
+            throw ex;
+        } finally {
+            currentScope = gs.getCurrentScopeName();
+            var gr1 = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+            gr1.addQuery('servicenow_entity_id', OrderID);
+            gr1.query();
+            while (gr1.next()) {
+                var now2 = new GlideDateTime();
+                gr1.last_retry_datetime = now2;
+                gr1.modified_datetime = now2;
+                gr1.sakon_entity_id = sakonID;
+                gr1.sync_counter = Number(gr1.getValue('sync_counter')) + 1;
+                if (apiErrorMessage != '') {
+                    gr1.comments = apiErrorMessage;
+                }
+                gr1.update();
+            }
+        }
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+    },
+
+    //Sync devices from Sakon to Custom Catalog Items table
+    getProductCatalog: function() {
+        try {
+            var logSource = 'MarketplaceSyncScript Script Include - getProductCatalog';
+            var logger = new LogUtilities();
+            logger.writeInfo(logSource, 'Start - ' + logSource);
+            var apiResponse;
+            var currentScope = gs.getCurrentScopeName();
+            var last_sync_date = gs.getProperty(currentScope + '.' + 'marketplace_last_sync');
+            //var filter = 'lastModifiedDateTime ge ' + last_sync_date;
+            var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
+            var top = pageSize;
+            var skip = 0;
+            var iter = 1;
+
+            do {
+                logger.writeInfo(logSource, 'Iteration=' + iter + ', Top=' + top + ', Skip=' + skip);
+                apiResponse = new APIUtilities().getData(currentScope + '.' + 'Marketplace REST Message', 'GetProductCatalog', top, skip);
+                logger.writeInfo(logSource, 'Iteration=' + iter + ', Total records fetched=' + apiResponse.total);
+                //Get the total record count from API response
+                var totalRec = apiResponse.total;
+
+                if (totalRec > 0) {
+                    //Deactivate all catalog items in Sakon Catalog Items Table
+                    var grCatItem = new GlideRecordSecure(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+                    grCatItem.query();
+                    while (grCatItem.next()) {
+                        grCatItem.is_active = false;
+                        grCatItem.update();
+                    }
+                }
+
+                //Load API response to Import Set table		
+                for (var i = 0; i < apiResponse.data.length; i++) {
+                    var eligibilityArray = [];
+                    var newRec = new GlideRecordSecure(currentScope + '_' + 'marketplace_catalog_items_import_set_table');
+                    newRec.initialize();
+                    newRec.id = apiResponse.data[i].id;
+                    newRec.parent_id = apiResponse.data[i].parentId;
+                    newRec.name = apiResponse.data[i].name;
+                    newRec.color = apiResponse.data[i].color;
+                    newRec.memory = apiResponse.data[i].memory;
+                    newRec.model = apiResponse.data[i].model;
+                    newRec.thumbnail_file_id = apiResponse.data[i].thumbnailFileId;
+                    newRec.price = apiResponse.data[i].price;
+                    newRec.recurring_charge = apiResponse.data[i].recurringCharge;
+
+                    if (!gs.nil(apiResponse.data[i].serviceProvider)) {
+                        newRec.service_provider_id = apiResponse.data[i].serviceProvider.id;
+                        newRec.service_provider_name = apiResponse.data[i].serviceProvider.name;
+                    }
+
+                    if (!gs.nil(apiResponse.data[i].networkProvider)) {
+                        newRec.network_provider_id = apiResponse.data[i].networkProvider.id;
+                        newRec.network_provider = apiResponse.data[i].networkProvider.name;
+                    }
+
+                    if (!gs.nil(apiResponse.data[i].category)) {
+                        newRec.category_id = apiResponse.data[i].category.id;
+                        newRec.category_name = apiResponse.data[i].category.name;
+                    }
+                    if (!gs.nil(apiResponse.data[i].subCategory)) {
+                        newRec.subcategory_id = apiResponse.data[i].subCategory.id;
+                        newRec.subcategory_name = apiResponse.data[i].subCategory.name;
+                    }
+                    if (!gs.nil(apiResponse.data[i].currency)) {
+                        newRec.currency_id = apiResponse.data[i].currency.id;
+                        newRec.currency = apiResponse.data[i].currency.name;
+                    }
+                    if (!gs.nil(apiResponse.data[i].orderType)) {
+                        newRec.order_type_id = apiResponse.data[i].orderType.id;
+                        newRec.order_type = apiResponse.data[i].orderType.name;
+                    }
+
+                    newRec.is_active = true;
+                    newRec.insert();
+                }
+                logger.writeInfo(logSource, 'Iteration=' + iter + ' Inserted records to marketplace catalog items table');
+                skip = skip + top;
+                iter = iter + 1;
+            } while (skip < totalRec);
+
+            //Update Last_sync system property with current date(UTC).	
+            var utcNow = new CommonUtilities().getUTCDateTime();
+            // gs.setProperty(currentScope + '.' + 'marketplace_last_sync', utcNow);
+
+            var gt_marketsync = new GlideRecord('sys_properties');
+            gt_marketsync.addQuery('sys_id','74600f412f040110831952172799b6a8'); //x_sakon_mobile.marketplace_last_sync--Property
+			gt_marketsync.query();
+            if (gt_marketsync.next()) {
+                gt_marketsync.value = utcNow;
+                gt_marketsync.update();
+            }
+
+
+            logger.writeInfo(logSource, 'End - ' + logSource);
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, ' Error Line Number ' + ex.lineNumber);
+            throw ex;
+        }
+    },
+
+    //Sync Order Status
+    updateOrderStatus: function() {
+        try {
+            logger.writeInfo(logSource, 'Start - MarketplaceSyncScript - updateOrderStatus');
+            var SyncCounter = gs.getProperty(currentScope + '.' + 'order_sync_retry_count');
+            var currentScope = gs.getCurrentScopeName();
+            var last_sync_date = gs.getProperty(currentScope + '.' + 'order_last_sync');
+            var filter = 'lastModifiedDateTime ge ' + last_sync_date;
+            var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
+            var top = pageSize;
+            var skip = 0;
+            var iter = 1;
+            var apiResponse;
+
+            var SakonOrderStatus, ServicenowOrderStatus;
+            do {
+                apiResponse = new APIUtilities().getData(currentScope + '.' + 'Marketplace REST Message', 'GetOrderStatus', top, skip, filter, 0);
+                //Get the total record count from API response
+                var totalRec = apiResponse.total;
+                logger.writeInfo(logSource, 'Number of Orders updated in Sakon since last sync: ' + totalRec);
+                if (apiResponse.total > 0) {
+                    for (var i = 0; i < apiResponse.data.length; i++) {
+                        var numItems = apiResponse.data[i].items ? apiResponse.data[i].items.length : 0;
+                        for (var j = 0; j < numItems; j++) {
+                            var grSync = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+                            grSync.addQuery('sakon_entity_id', apiResponse.data[i].id);
+                            grSync.query();
+                            while (grSync.next()) {
+                                var grReqItem = new GlideRecordSecure('sc_req_item');
+                                grReqItem.addQuery('number', apiResponse.data[i].items[j].correlationId);
+                                grReqItem.query();
+                                while (grReqItem.next()) {
+                                    SakonOrderStatus = apiResponse.data[i].items[j].status.id;
+                                    //Get Order Status from Stage Mapping Table
+                                    ServicenowOrderStatus = this.getOrderStatusMapping(SakonOrderStatus);
+                                    grReqItem.state = ServicenowOrderStatus;
+                                    grReqItem.update();
+                                }
+                                grReqItem = new GlideRecord('sc_req_item');
+                                grReqItem.addQuery('number', apiResponse.data[i].items[j].correlationId);
+                                grReqItem.query();
+                                while (grReqItem.next()) {
+                                    //Update Shipment tracking details if status is 'Shipped'
+                                    if (SakonOrderStatus == 332) {
+                                        logger.writeInfo(logSource, "Closing Request Item " + grReqItem.number);
+                                        grReqItem.variables.imei = apiResponse.data[i].items[j].imei.toString();
+                                        grReqItem.variables.sim_card_number = apiResponse.data[i].items[j].simCardNo.toString();
+                                        grReqItem.variables.serial_number = apiResponse.data[i].items[j].serialNo.toString();
+                                        if (!(gs.nil(apiResponse.data[i].items[j].phoneNumber))) {
+                                            grReqItem.variables.new_phone_number = apiResponse.data[i].items[j].phoneNumber.toString();
+                                        }
+                                        if (!(gs.nil(apiResponse.data[i].items[j].portCarrier))) {
+                                            grReqItem.variables.port_carrier = apiResponse.data[i].items[j].portCarrier.name.toString();
+                                        }
+                                        grReqItem.variables.shipment_tracking_number = apiResponse.data[i].items[j].shipmentTrackingNo.toString();
+                                        grReqItem.variables.shipment_date = apiResponse.data[i].items[j].shipmentDate.toString();
+                                        grReqItem.variables.courier = apiResponse.data[i].items[j].courier.name.toString();
+                                        grReqItem.variables.correlation_id = apiResponse.data[i].id.toString();
+                                        grReqItem.variables.carrier_order_number = apiResponse.data[i].items[j].carrierOrderNo.toString();
+                                        grReqItem.update();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                skip = skip + top;
+                iter = iter + 1;
+            } while (skip < totalRec);
+
+            //Update Last_sync system property with current date	
+            var utcNow = new CommonUtilities().getUTCDateTime();
+            //gs.setProperty(currentScope + '.' + 'order_last_sync', utcNow);
+
+            var gt_ordersync = new GlideRecord('sys_properties');
+            gt_ordersync.addQuery('sys_id','216f55552f540110831952172799b6a8'); //x_sakon_mobile.order_last_sync--Property
+			gt_ordersync.query();
+            if (gt_ordersync.next()) {
+                gt_ordersync.value = utcNow;
+                gt_ordersync.update();
+            }
+
+
+            logger.writeInfo(logSource, 'End - MarketplaceSyncScript - updateOrderStatus');
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, "Error Line Number - " + ex.lineNumber);
+            throw ex;
+        }
+    },
+
+    //Map Sakon Order Status ID to Servicenow Order Status ID
+    getOrderStatusMapping: function(SakonOrderStatus) {
+        var ServicenowOrderStatus;
+        var currentScope = gs.getCurrentScopeName();
+        var grState = new GlideRecordSecure(currentScope + '_' + 'workflow_stage_mapping');
+        grState.addQuery('sakon_state_id', SakonOrderStatus);
+        grState.addQuery('category', 'Marketplace');
+        grState.query();
+        while (grState.next()) {
+            ServicenowOrderStatus = grState.servicenow_state_id;
+            return ServicenowOrderStatus;
+        }
+    },
+
+    loadImage: function(catItemSysId) {
+        var logSource = 'Sakon Mobile Catalog Image Upload - ';
+        var logger = new LogUtilities();
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+
+        var apiResponse;
+        var currentScope = gs.getCurrentScopeName();
+        var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
+        var top = pageSize;
+        var skip = 0;
+        var iter = 1;
+        var filter = '';
+        var counter = 0;
+        var imageID;
+        //Get the ImageId for the Catalog Item from Sakon Catalog Items table
+        var grSakonCatItem = new GlideRecord(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+        grSakonCatItem.addQuery('servicenow_catalog_item_id', catItemSysId);
+        grSakonCatItem.query();
+        if (grSakonCatItem.next()) {
+            if (grSakonCatItem.thumbnail_file_id > 0) {
+                imageID = grSakonCatItem.thumbnail_file_id;
+            } else {
+                logger.writeInfo(logSource, 'Thumbnail image file id is : ' + grSakonCatItem.thumbnail_file_id);
+            }
+        }
+
+        logger.writeInfo(logSource, 'Iteration=' + iter + ', Top=' + top + ', Skip=' + skip);
+        apiResponse = new APIUtilities().getData(currentScope + '.' + 'Marketplace REST Message', 'GetCatalogImages', top, skip, filter, imageID);
+
+        var grAttach = new GlideRecord('sys_attachment');
+        grAttach.addQuery('table_sys_id', catItemSysId);
+        grAttach.query();
+
+        while (grAttach.next()) {
+            var attachment = new GlideSysAttachment();
+            var attachmentSysID = grAttach.sys_id;
+            attachment.deleteAttachment(attachmentSysID);
+        }
+
+        attachment = new GlideSysAttachment();
+        var rec = new GlideRecord('sc_cat_item');
+        //var catItemSysID = current.sys_id;
+        rec.addQuery('sys_id',catItemSysID);
+		rec.query();
+		if(rec.next()){
+		var fileName = 'picture';
+        var contentType = 'image/png';
+        base64Encodedcontent = apiResponse.x64EncodedContent;
+        attID = attachment.writeBase64(rec, fileName, contentType, base64Encodedcontent);
+		}
+     
+
+        logger.writeInfo(logSource, 'End - ' + logSource);
+    },
+
+    type: 'MarketplaceSyncScript'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-24 12:12:26</sys_created_on>
+        <sys_id>d6deba012f040110831952172799b6b6</sys_id>
+        <sys_mod_count>428</sys_mod_count>
+        <sys_name>MarketplaceSyncScript</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_d6deba012f040110831952172799b6b6</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-24 04:43:37</sys_updated_on>
+    </sys_script_include>
+</record_update>

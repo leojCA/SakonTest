@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_sakon_mobile_SakonSupport.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false"
+	xmlns:j="jelly:core"
+	xmlns:g="glide"
+	xmlns:j2="null"
+	xmlns:g2="null">
+	<div class="container">
+		<p align="center"><img style="align: left;" src="x_sakon_mobile.Sakon.png" alt="" width="210" height="40" align="left" /><span style="font-family: impact, chicago; font-size: xx-large;">SUPPORT</span></p>
+	
+		<br/>
+		<div class="container">
+			<table class="table-sm table-responsive borderless">
+				<tr>
+					<td>
+						<h2>Please use the following link to contact our support team:</h2>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h2>Email-Id:ITOPS@sakon.com</h2>
+					</td>
+					</tr>
+				<tr>
+					<td>
+						<h3>
+							<a rel="noopener noreferrer nofollow" href="https://www.sakon.com/" target="_blank">https://www.sakon.com/</a>
+						</h3>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</j:jelly>]]></html>
+        <name>SakonSupport</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>Shaik.Pullsaida</sys_created_by>
+        <sys_created_on>2023-03-20 04:25:15</sys_created_on>
+        <sys_id>6be69abfdb2d2910e7da049ed396196c</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>SakonSupport</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_ui_page_6be69abfdb2d2910e7da049ed396196c</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-23 18:08:31</sys_updated_on>
+    </sys_ui_page>
+</record_update>

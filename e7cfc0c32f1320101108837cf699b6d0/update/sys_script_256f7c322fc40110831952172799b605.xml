@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>false</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>sc_cat_item</collection>
+        <condition>new CommonUtilities().isSakonCatItem(current.name)</condition>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Sakon Mobile Catalog Image Upload</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
+	
+    var logSource = 'Sakon Mobile Catalog Image Upload Business Rule';
+    var logger = new LogUtilities();
+    logger.writeInfo(logSource, 'Start - ' + logSource);
+
+    var apiResponse;
+    var currentScope = gs.getCurrentScopeName();
+    var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
+    var top = pageSize;
+    var skip = 0;
+    var iter = 1;
+    var filter = '';
+    var imageID;
+
+    //Get the ImageId for the Catalog Item from Sakon Catalog Items table
+    var grSakonCatItem = new GlideRecord(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+    grSakonCatItem.addQuery('servicenow_catalog_item_id', current.sys_id);
+    grSakonCatItem.query();
+    while (grSakonCatItem.next()) {
+        imageID = grSakonCatItem.thumbnail_file_id;
+        break;
+    }
+
+
+    logger.writeInfo(logSource, 'Iteration=' + iter + ', Top=' + top + ', Skip=' + skip);
+    apiResponse = new APIUtilities().getData(currentScope + '.' + 'Marketplace REST Message', 'GetCatalogImages', top, skip, filter, imageID);
+
+
+    var grAttach = new GlideRecord('sys_attachment');
+    grAttach.addQuery('table_sys_id', current.sys_id);
+    grAttach.query();
+    while (grAttach.next()) {
+        var attachment = new GlideSysAttachment();
+        var attachmentSysID = grAttach.sys_id;
+        attachment.deleteAttachment(attachmentSysID);
+    }
+    
+    attachment = new GlideSysAttachment();
+    var rec = new GlideRecord('sc_cat_item');
+    var catItemSysID = current.sys_id;
+    rec.get(catItemSysID);
+    var fileName = 'picture';
+    var contentType = 'image/png';
+    base64Encodedcontent = apiResponse.x64EncodedContent;
+    attID = attachment.writeBase64(rec, fileName, contentType, base64Encodedcontent);
+
+    logger.writeInfo(logSource, 'End - ' + logSource);
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-29 13:23:56</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>256f7c322fc40110831952172799b605</sys_id>
+        <sys_mod_count>66</sys_mod_count>
+        <sys_name>Sakon Mobile Catalog Image Upload</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_256f7c322fc40110831952172799b605</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-09-02 15:19:06</sys_updated_on>
+        <template/>
+        <when>async_always</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=256f7c322fc40110831952172799b605"/>
+</record_update>

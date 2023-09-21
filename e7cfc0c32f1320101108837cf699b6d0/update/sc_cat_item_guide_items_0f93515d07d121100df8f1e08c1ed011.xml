@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_guide_items">
+    <sc_cat_item_guide_items action="INSERT_OR_UPDATE">
+        <condition>IO:d862011d079121100df8f1e08c1ed0c8=SuspendService^EQ</condition>
+        <guide display_value="Mobile Devices &amp; Services">e5cbbc55079121100df8f1e08c1ed0d3</guide>
+        <ignore_mandatory_eval>false</ignore_mandatory_eval>
+        <item display_value="Suspend Phone Number">0aafbc721b73301096b1ebd5624bcb84</item>
+        <order>2</order>
+        <quantity>1</quantity>
+        <requested_by/>
+        <requested_for/>
+        <show_quantity>false</show_quantity>
+        <sys_class_name>sc_cat_item_guide_items</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-02-27 18:41:56</sys_created_on>
+        <sys_id>0f93515d07d121100df8f1e08c1ed011</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>0aafbc721b73301096b1ebd5624bcb84</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sc_cat_item_guide_items_0f93515d07d121100df8f1e08c1ed011</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-02-27 18:41:56</sys_updated_on>
+        <use_sc_layout>true</use_sc_layout>
+    </sc_cat_item_guide_items>
+</record_update>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice">
+    <question_choice action="INSERT_OR_UPDATE">
+        <inactive>false</inactive>
+        <order>1200</order>
+        <published_ref/>
+        <question display_value="Please select a request type for your existing device?">d862011d079121100df8f1e08c1ed0c8</question>
+        <sys_class_name>question_choice</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-02-27 18:45:55</sys_created_on>
+        <sys_id>8474919d07d121100df8f1e08c1ed018</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Replace Device</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>question_choice_8474919d07d121100df8f1e08c1ed018</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-02-27 18:45:55</sys_updated_on>
+        <text>Replace Device</text>
+        <value>ReplaceDevice</value>
+    </question_choice>
+    <fx_price action="delete_multiple" query="id=8474919d07d121100df8f1e08c1ed018"/>
+</record_update>

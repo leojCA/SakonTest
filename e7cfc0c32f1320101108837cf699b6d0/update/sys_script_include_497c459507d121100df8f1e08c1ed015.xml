@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.sakon_order_guide</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description>Order Guide Script Include</description>
+        <name>sakon_order_guide</name>
+        <script><![CDATA[var sakon_order_guide = Class.create();
+sakon_order_guide.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+
+    getdevicecategory: function() {
+
+        var userid = this.getParameter('sysparm_sakon_id');
+        var usergroupsysids = [];
+        var grgroups = new GlideRecord('sys_user_grmember'); ///Collecting list of users groups
+        grgroups.addQuery('user', userid);
+        grgroups.query();
+        while (grgroups.next()) {
+            usergroupsysids.push(grgroups.group.toString());
+        }
+        gs.info('usergroupsysids' + usergroupsysids, 'SAKON-ORDER');
+
+        var criteriavalue = [];
+        var gt_criteria = new GlideAggregate('sc_cat_item_user_criteria_mtom'); ///Collection of user eligible user criteria Devices
+        gt_criteria.addEncodedQuery('sc_cat_item.category=b0a568352fc00110831952172799b6d4^sc_cat_item.active=true');
+        gt_criteria.groupBy('user_criteria');
+        gt_criteria.query();
+        while (gt_criteria.next()) {
+            for (var i = 0; i < usergroupsysids.length; i++) {
+                var gt_user = new GlideRecord('user_criteria');
+                gt_user.addEncodedQuery('groupLIKE' + usergroupsysids[i]);
+                gt_user.query();
+                while (gt_user.next()) {
+                    criteriavalue.push(gt_user.sys_id.toString());
+                }
+            }
+        }
+        gs.info('criteriavalue' + criteriavalue, 'SAKON-ORDER');
+        var results = [];
+        if (criteriavalue) {
+            var keywords = ['phone', 'ipad', 'hot', 'mifi', 'others'];
+            for (var k = 0; k < keywords.length; k++) {
+                var eligbility = new GlideRecord('sc_cat_item_user_criteria_mtom'); ///Collection of key words device category
+                if (keywords[k] == 'others') {
+                    eligbility.addEncodedQuery('user_criteria.sys_idIN' + criteriavalue.toString() + '^sc_cat_item.category=b0a568352fc00110831952172799b6d4^sc_cat_item.active=true^sc_cat_item.nameNOT LIKEphone^sc_cat_item.nameNOT LIKEhot^sc_cat_item.nameNOT LIKEmifi^sc_cat_item.nameNOT LIKEipad');
+                } else {
+                    eligbility.addEncodedQuery('user_criteria.sys_idIN' + criteriavalue.toString() + '^sc_cat_item.category=b0a568352fc00110831952172799b6d4^sc_cat_item.active=true^sc_cat_item.nameLIKE' + keywords[k]);
+                }
+                eligbility.query();
+                if (eligbility.next()) {
+                    results.push(keywords[k].toString());
+                }
+            }
+        }
+        gs.info('results' + results, 'SAKON-ORDER');
+        return results.toString();
+    },
+
+
+    getcriteriacheck: function() {
+
+        var returnresult = [];
+        var userid = this.getParameter('sysparm_sakon_id');
+        gs.info('Custom Order Guide----userid' + userid);
+        var usergroupsysids = [];
+        var grgroups = new GlideRecord('sys_user_grmember'); ///Collecting list of users groups
+        grgroups.addQuery('user', userid);
+        grgroups.query();
+        while (grgroups.next()) {
+            usergroupsysids.push(grgroups.group.toString());
+        }
+        gs.info('Custom Order Guide----usergroupsysids' + usergroupsysids);
+        var criteriavalue = [];
+        var gt_criteria = new GlideAggregate('sc_cat_item_user_criteria_mtom'); ///Collection of user eligible user criteria Devices
+        gt_criteria.addEncodedQuery('sc_cat_item.category=b0a568352fc00110831952172799b6d4^sc_cat_item.active=true');
+        gt_criteria.groupBy('user_criteria');
+        gt_criteria.query();
+        while (gt_criteria.next()) {
+            for (var i = 0; i < usergroupsysids.length; i++) {
+                var gt_user = new GlideRecord('user_criteria');
+                gt_user.addQuery('sys_id', gt_criteria.user_criteria);
+                gt_user.addEncodedQuery('groupLIKE' + usergroupsysids[i]);
+                gt_user.query();
+                while (gt_user.next()) {
+                    gs.info('Custom Order Guide----devices' + criteriavalue);
+                    criteriavalue.push(gt_user.sys_id.toString());
+                }
+            }
+        }
+
+        gs.info('Custom Order Guide----criteriavalue' + criteriavalue);
+
+        if (criteriavalue) {
+            returnresult.push('devices');
+        }
+        criteriavalue = [];
+        var gt_criterias = new GlideAggregate('sc_cat_item_user_criteria_mtom'); ///Collection of user eligible user criteria Services
+        gt_criterias.addEncodedQuery('sc_cat_item.category=d6389a4a1ba00110864a0d82604bcb2d^sc_cat_item.active=true');
+        gt_criterias.groupBy('user_criteria');
+        gt_criterias.query();
+        while (gt_criterias.next()) {
+            for (var k = 0; k < usergroupsysids.length; k++) {
+                var gt_users = new GlideRecord('user_criteria');
+                gt_users.addEncodedQuery('groupLIKE' + usergroupsysids[k]);
+                gt_users.query();
+                while (gt_users.next()) {
+                    criteriavalue.push(gt_users.sys_id.toString());
+                }
+            }
+        }
+        gs.info('Custom Order Guide----criteriavalue' + criteriavalue);
+        if (criteriavalue) {
+            returnresult.push('services');
+        }
+
+        criteriavalue = [];
+        var gt_criteriaacc = new GlideAggregate('sc_cat_item_user_criteria_mtom'); ///Collection of user eligible user criteria Accessories
+        gt_criteriaacc.addEncodedQuery('sc_cat_item.category=8322606207a0411008defe4f7c1ed0fb^sc_cat_item.active=true');
+        gt_criteriaacc.groupBy('user_criteria');
+        gt_criteriaacc.query();
+        while (gt_criteriaacc.next()) {
+            for (var j = 0; j < usergroupsysids.length; j++) {
+                var gt_userss = new GlideRecord('user_criteria');
+                gt_userss.addEncodedQuery('groupLIKE' + usergroupsysids[j]);
+                gt_userss.query();
+                while (gt_userss.next()) {
+                    criteriavalue.push(gt_userss.sys_id.toString());
+                }
+            }
+        }
+        gs.info('Custom Order Guide----criteriavalue' + criteriavalue);
+        if (criteriavalue) {
+            returnresult.push('accessories');
+        }
+
+
+        gs.info('Custom Order Guide----returnresult' + returnresult);
+        return returnresult.toString();
+    },
+
+
+
+
+    services: function(type, number, user, selection, existing, order) {
+        var query = '';
+
+        if (selection == 'Accessory') {
+            query = 'active=true^category=8322606207a0411008defe4f7c1ed0fb';
+
+        } else {
+
+            if (type == 'SmartPhone') {
+                query = 'active=true^category=b0a568352fc00110831952172799b6d4^nameLIKEphone';
+            } else if (type == 'Tablet') {
+                query = 'active=true^category=b0a568352fc00110831952172799b6d4^nameLIKEipad';
+            } else if (type == 'HotspotMiFi') {
+                query = 'active=true^category=b0a568352fc00110831952172799b6d4^nameLIKEhot^ORnameLIKEmifi';
+            } else if (type == 'Other') {
+                query = 'active=true^category=b0a568352fc00110831952172799b6d4^nameNOT LIKEphone^nameNOT LIKEipad^nameNOT LIKEhot^nameNOT LIKEmifi';
+            } else {
+                if (existing == 'UpgradeMyDevice') {
+                    var sysid = [];
+                    var gt_device = new GlideRecord('x_sakon_mobile_devices_table');
+                    gt_device.addQuery('phone_number', number);
+                    gt_device.query();
+                    if (gt_device.next()) {
+                        var gt_model = new GlideAggregate('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+                        gt_model.addQuery('order_type', order);
+                        if (gt_device.device_type.toString().indexOf('Smartphone') > -1 || gt_device.device_type.toString().indexOf('Tablet') > -1 || gt_device.device_type.toString().indexOf('Notebook') > -1) {
+                            gt_model.addQuery('subcategory_name', 'Phones').addOrCondition('subcategory_name', 'Desktops');
+                        } else {
+                            gt_model.addQuery('subcategory_name', 'Mobile Hotspot');
+                        }
+                        gt_model.groupBy('servicenow_catalog_item_id');
+                        gt_model.query();
+                        while (gt_model.next()) {
+                            sysid.push(gt_model.servicenow_catalog_item_id.toString());
+                        }
+                    }
+                    query = 'active=true^category=b0a568352fc00110831952172799b6d4^sys_idIN' + sysid.toString();
+                } else {
+                    var sysids = [];
+                    var gt_devicec = new GlideRecord('x_sakon_mobile_devices_table');
+                    gt_devicec.addQuery('phone_number', number);
+                    gt_devicec.query();
+                    if (gt_devicec.next()) {
+                        var gt_models = new GlideAggregate('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+                        gt_models.addQuery('order_type', 'Port Number');
+                        gt_models.addQuery('network_provider', '!=', gt_devicec.carrier);
+                        if (gt_devicec.device_type.toString().indexOf('Smartphone') > -1) {
+                            gt_models.addQuery('subcategory_name', 'Phones').addOrCondition('subcategory_name', 'Desktops');
+                        } else {
+                            gt_models.addQuery('subcategory_name', 'Mobile Hotspot');
+                        }
+                        gt_models.groupBy('servicenow_catalog_item_id');
+                        gt_models.query();
+                        while (gt_models.next()) {
+                            sysids.push(gt_models.servicenow_catalog_item_id.toString());
+                        }
+                    }
+
+                    query = 'active=true^category=b0a568352fc00110831952172799b6d4^sys_idIN' + sysids.toString();
+
+                }
+
+
+            }
+        }
+
+        gs.info('devicetype----' + type + '\n' + query, 'SAKON-ORDER');
+
+        return query;
+
+    },
+
+    getOrderTypes: function(cat_item_id) {
+
+        var orderTypes = [];
+        var price = [];
+        var query;
+        var grCatItem = new GlideRecord('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+        grCatItem.addQuery('servicenow_catalog_item_id', cat_item_id);
+        grCatItem.addQuery('order_type', 'New Line');
+        grCatItem.addQuery('is_active', 'true');
+        grCatItem.query();
+        if (grCatItem.next()) {
+            query = grCatItem.sys_id;
+            // orderTypes.push(grCatItem.order_type.toString());
+            // price.push(grCatItem.price.toString());
+        }
+        //orderTypes = new global.ArrayUtil().unique(orderTypes);
+        // price = new global.ArrayUtil().unique(price);
+        // query = 'order_typeIN' + orderTypes + '^servicenow_catalog_item_id=' + cat_item_id;
+        return query;
+    },
+
+    getOrderTypevalue: function() {
+
+        var cat_item_id = this.getParameter('sysparm_cat_id');
+        var category_id = this.getParameter('sysparm_category_id');
+
+        var orderTypes = [];
+        var price = [];
+        var query = [];
+        var grCatItem = new GlideRecord('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+        grCatItem.addQuery('servicenow_catalog_item_id', cat_item_id);
+        // 		if(category_id==''){
+        grCatItem.addQuery('order_type', category_id);
+        // 		}else if(category_id=='ChangeCarrierPort'){
+        // 			grCatItem.addQuery('order_type', 'Port Number');
+        // 		}
+
+        grCatItem.addQuery('is_active', 'true');
+        grCatItem.query();
+        if (grCatItem.next()) {
+            query.push(grCatItem.order_type.toString());
+            // orderTypes.push(grCatItem.order_type.toString());
+            // price.push(grCatItem.price.toString());
+        }
+
+
+        //orderTypes = new global.ArrayUtil().unique(orderTypes);
+        // price = new global.ArrayUtil().unique(price);
+        // query = 'order_typeIN' + orderTypes + '^servicenow_catalog_item_id=' + cat_item_id;
+
+        var gt_attach = new GlideRecord('sys_attachment');
+        gt_attach.addQuery('table_sys_id', cat_item_id);
+        gt_attach.query();
+        if (gt_attach.next()) {
+            query.push(gt_attach.sys_id.toString());
+        }
+        return query.toString();
+    },
+
+    getNetworkProviders: function(cat_item_id, order_type, phonenumber, category) {
+        var networkProviders = [];
+        var price = [];
+        var query;
+        if (phonenumber) {
+            gs.info('---getNetworkProviders' + phonenumber);
+            var gt_service_line = new GlideRecord('x_sakon_mobile_service_lines');
+            gt_service_line.addQuery('phone_number', phonenumber);
+            gt_service_line.query();
+            if (gt_service_line.next()) {
+                gs.info('---getNetworkProviders' + phonenumber + '------' + gt_service_line.carrier);
+                var grCatItemphone = new GlideRecord('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+                if (category == 'UpgradeMyDevice') {
+                    grCatItemphone.addQuery('network_provider_id', gt_service_line.carrier_id);
+                } else {
+                    grCatItemphone.addQuery('network_provider_id', '!=', gt_service_line.carrier_id);
+                }
+
+                grCatItemphone.addQuery('order_type', order_type);
+                grCatItemphone.addQuery('is_active', 'true');
+                grCatItemphone.query();
+                while (grCatItemphone.next()) {
+                    networkProviders.push(grCatItemphone.network_provider.toString());
+                }
+            }
+            query = 'network_providerIN' + networkProviders + '^order_typeIN' + order_type;
+            gs.info('---getNetworkProviders' + phonenumber + '------' + gt_service_line.carrier + '-------' + query);
+
+        } else {
+            gs.info('---getNetworkProviders' + cat_item_id + '------' + order_type + '-------');
+            var grCatItem = new GlideRecord('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+            grCatItem.addQuery('servicenow_catalog_item_id', cat_item_id);
+            grCatItem.addQuery('order_type', order_type);
+            grCatItem.addQuery('is_active', 'true');
+            grCatItem.query();
+            while (grCatItem.next()) {
+                networkProviders.push(grCatItem.network_provider.toString());
+                price.push(grCatItem.price.toString());
+            }
+            query = 'network_providerIN' + networkProviders + '^priceIN' + price + '^servicenow_catalog_item_id=' + cat_item_id + '^order_typeIN' + order_type;
+            gs.info('---getNetworkProviders' + cat_item_id + '------' + order_type + '-------' + query);
+        }
+        return query;
+    },
+
+    getphonenumbers: function() {
+        var numarray = [];
+        var empid = '';
+        var userid = this.getParameter('order_for');
+        var gt_user = new GlideRecord('sys_user');
+        gt_user.addQuery('sys_id',userid);
+		gt_user.query();
+        if (gt_user.next()) {
+            empid = gt_user.getDisplayValue(gs.getProperty('x_sakon_mobile.employee_id_field'));
+            if (empid) {
+                var gt_service = new GlideRecord('x_sakon_mobile_service_lines');
+                gt_service.addQuery('employee_id', empid);
+                gt_service.query();
+                while (gt_service.next()) {
+                    numarray.push(gt_service.phone_number.toString());
+                }
+            }
+        }
+
+        return numarray.toString();
+    },
+
+    getphonenumberdetails: function() {
+        var resultvalue = '';
+        var number = this.getParameter('phone_number_id');
+        var gt_service = new GlideRecord('x_sakon_mobile_service_lines');
+        gt_service.addEncodedQuery('upgrade_eligibility_date>javascript:gs.endOfToday()^phone_number=' + number);
+        gt_service.query();
+        if (gt_service.next()) {
+            resultvalue = 'yes,' + gt_service.carrier +
+                ',' + gt_service.upgrade_eligibility_date.getDisplayValue(); // Upgrade Full Price
+        } else {
+            var gt_service_elig = new GlideRecord('x_sakon_mobile_service_lines');
+            gt_service_elig.addQuery('phone_number', number);
+            gt_service_elig.query();
+            if (gt_service_elig.next()) {
+                resultvalue = 'no,' + gt_service_elig.carrier; // Upgrade Eligible
+            }
+        }
+        return resultvalue;
+    },
+    getNetworkTypevalue: function() {
+        var resultvalue = '';
+        var number = this.getParameter('sysparm_phone_id');
+        var gt_service = new GlideRecord('x_sakon_mobile_service_lines');
+        gt_service.addQuery('phone_number', number);
+        gt_service.query();
+        if (gt_service.next()) {
+            resultvalue = gt_service.carrier;
+        }
+        return resultvalue;
+    },
+
+
+    getprice: function() {
+        var cost = 0;
+        var carrier = this.getParameter('sysparm_carrier_id');
+        var model = this.getParameter('sysparm_model_id');
+        var order = this.getParameter('sysparm_orderfor_id');
+
+        var gt_price = new GlideRecord('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+        gt_price.addQuery('servicenow_catalog_item_id', model);
+        gt_price.addQuery('order_type', order);
+        gt_price.addQuery('network_provider', carrier);
+        gt_price.query();
+        if (gt_price.next()) {
+            cost = gt_price.price;
+        }
+        return cost.toString();
+    },
+
+    getpricevalue: function() {
+        var cost = 0;
+        var model = this.getParameter('sysparm_model_id');
+
+        var gt_price = new GlideRecord('x_sakon_mobile_sakon_marketplace_catalog_items_table');
+        gt_price.addQuery('servicenow_catalog_item_id', model);
+        gt_price.query();
+        if (gt_price.next()) {
+            cost = gt_price.price;
+        }
+        return cost.toString();
+    },
+    type: 'sakon_order_guide'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-02-27 18:12:22</sys_created_on>
+        <sys_id>497c459507d121100df8f1e08c1ed015</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>sakon_order_guide</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_497c459507d121100df8f1e08c1ed015</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-20 05:32:05</sys_updated_on>
+    </sys_script_include>
+</record_update>

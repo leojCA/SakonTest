@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.SakonMobileMapCatalogItems</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>SakonMobileMapCatalogItems</name>
+        <script><![CDATA[var SakonMobileMapCatalogItems = Class.create();
+SakonMobileMapCatalogItems.prototype = {
+    initialize: function() {},
+
+    syncDevices: function(workflowSysId, catalogSysId) {
+
+        var logSource = 'SakonMobileMapCatalogItems Script Include - Sync Devices';
+
+        var logger = new LogUtilities();
+        var currentScope = gs.getCurrentScopeName();
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+
+        //Start-Delta Update
+        var grRawCatItem = new GlideRecord(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+        grRawCatItem.addQuery('servicenow_catalog_item_id', '');
+        grRawCatItem.addQuery('category_id', 329);
+        grRawCatItem.query();
+
+        while (grRawCatItem.next()) {
+
+            var grParentId = new GlideRecord(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+            grParentId.addQuery('parent_id', grRawCatItem.parent_id);
+            grParentId.addQuery('servicenow_catalog_item_id', '!=', '');
+            grParentId.query();
+            if (grParentId.next()) {
+                grRawCatItem.servicenow_catalog_item_id = grParentId.servicenow_catalog_item_id;
+                grRawCatItem.update();
+            }
+        }
+
+        //End-Delta Update
+
+        //Start - UpdateItem
+        var gaCatItemsToUpdate = new GlideAggregate(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+        gaCatItemsToUpdate.groupBy('parent_id');
+        gaCatItemsToUpdate.groupBy('name');
+        gaCatItemsToUpdate.groupBy('color');
+        gaCatItemsToUpdate.groupBy('memory');
+        gaCatItemsToUpdate.groupBy('thumbnail_file_id');
+        gaCatItemsToUpdate.groupBy('servicenow_catalog_item_id');
+        gaCatItemsToUpdate.addQuery('category_id', 329);
+        gaCatItemsToUpdate.addQuery('is_active', 'true');
+        gaCatItemsToUpdate.addQuery('servicenow_catalog_item_id', '!=', '');
+        gaCatItemsToUpdate.query();
+
+        while (gaCatItemsToUpdate.next()) {
+
+            var catItemNewName = gaCatItemsToUpdate.name + " " + gaCatItemsToUpdate.color + " " + gaCatItemsToUpdate.memory;
+            var newDesc = '<p>' + 'Name: ' + gaCatItemsToUpdate.name + '</p><p>' + 'Color: ' + gaCatItemsToUpdate.color + '</p><p>' + 'Memory: ' + gaCatItemsToUpdate.memory + '</p>';
+
+            logger.writeInfo(logSource, 'Updating item - ' + catItemNewName);
+            var existingItem = new sn_sc.CatItem(gaCatItemsToUpdate.servicenow_catalog_item_id);
+            var attr = {
+                "name": catItemNewName,
+                "description": newDesc
+            };
+            existingItem.update(attr, true);
+        }
+        //End - UpdateItem
+
+        //Start- CreateItem
+        var grSakonCatItem = new GlideAggregate(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+        grSakonCatItem.groupBy('parent_id');
+        grSakonCatItem.groupBy('name');
+        grSakonCatItem.groupBy('color');
+        grSakonCatItem.groupBy('memory');
+        grSakonCatItem.groupBy('thumbnail_file_id');
+        grSakonCatItem.addQuery('category_id', 329);
+        grSakonCatItem.addQuery('is_active', 'true');
+        grSakonCatItem.addQuery('servicenow_catalog_item_id', '');
+        grSakonCatItem.query();
+
+        var devicesCategorySysId = this.getDevicesCategorySysID();
+
+        while (grSakonCatItem.next()) {
+
+            var catItemName = grSakonCatItem.name + " " + grSakonCatItem.color + " " + grSakonCatItem.memory;
+            var Desc = '<p>' + 'Name: ' + grSakonCatItem.name + '</p><p>' + 'Color: ' + grSakonCatItem.color + '</p><p>' + 'Memory: ' + grSakonCatItem.memory + '</p>';
+            logger.writeInfo('Creating item - ' + catItemName);
+            var catalogItem = new sn_sc.CatItem();
+
+            catalogItem.setAttributes({
+                "name": catItemName,
+                "description": Desc,
+                "workflow": workflowSysId,
+                "no_quantity_v2": 'true',
+                "no_attachment_v2": 'true',
+                "no_cart_v2": 'true',
+                "no_delivery_time_v2": 'true',
+                "no_wishlist_v2": 'true',
+                "request_method": 'Submit',
+                "recurring_frequency": 'monthly'
+            });
+
+            catalogItem.setCatalogs(catalogSysId);
+            catalogItem.setCategories(devicesCategorySysId);
+            catItemSysId = catalogItem.create(true);
+
+            //Change the catalog item scope to sakon mobile
+            var commonUtils = new CommonUtilities();
+            var sakonAppSysId = commonUtils.getSakonMobileScopeSysId();
+            var catItem = new sn_sc.CatItem(catItemSysId);
+            var objColumns = {
+                "sys_scope": sakonAppSysId
+            };
+            catItem.update(objColumns, false);
+
+            //Assign user criteria to catalog item
+            var ucSMAccess = this.getUserCriteriaSysId();
+            catItem.availableForUserCriteria("add", [ucSMAccess]);
+
+            //Store the newly created catalog item id in Sakon Catalog Items table
+            var grSakonCatItem1 = new GlideRecord(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+            grSakonCatItem1.addQuery('parent_id', grSakonCatItem.parent_id);
+            grSakonCatItem1.query();
+            while (grSakonCatItem1.next()) {
+                grSakonCatItem1.servicenow_catalog_item_id = catItemSysId;
+                grSakonCatItem1.update();
+            }
+            this.loadImage(catItemSysId);
+        }
+        //End- CreateItem
+
+        //Start- DeactivateItem
+        var grCatItem = new GlideRecord('sc_cat_item');
+        grCatItem.addQuery('category', devicesCategorySysId);
+        grCatItem.query();
+
+        while (grCatItem.next()) {
+            var grSakonCatItem2 = new GlideRecord(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+            grSakonCatItem2.addQuery('servicenow_catalog_item_id', grCatItem.sys_id);
+            grSakonCatItem2.addQuery('is_active', 'true');
+            grSakonCatItem2.query();
+            if (!grSakonCatItem2.hasNext()) {
+                logger.writeInfo('Deactivating item - ' + grCatItem.name);
+                grCatItem.active = false;
+                grCatItem.update();
+            }
+        }
+        //End- DeactivateItem
+
+    },
+
+    syncAccessories: function(workflowSysId, catalogSysId) {
+        var logSource = 'SakonMobileMapCatalogItems Script Include - Sync Accessories';
+        var logger = new LogUtilities();
+        var currentScope = gs.getCurrentScopeName();
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+
+        //Start - UpdateItem
+        var gaCatItemsToUpdate = new GlideAggregate(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+        gaCatItemsToUpdate.groupBy('parent_id');
+        gaCatItemsToUpdate.groupBy('name');
+        gaCatItemsToUpdate.groupBy('thumbnail_file_id');
+        gaCatItemsToUpdate.groupBy('servicenow_catalog_item_id');
+        gaCatItemsToUpdate.groupBy('recurring_charge');
+        gaCatItemsToUpdate.groupBy('price');
+        gaCatItemsToUpdate.addQuery('category_id', 330);
+        gaCatItemsToUpdate.addQuery('is_active', 'true');
+        gaCatItemsToUpdate.addQuery('servicenow_catalog_item_id', '!=', '');
+        gaCatItemsToUpdate.query();
+
+        while (gaCatItemsToUpdate.next()) {
+
+            var catItemNewName = gaCatItemsToUpdate.name;
+            var newDesc = '<p>' + 'Name: ' + gaCatItemsToUpdate.name + '</p>';
+
+            logger.writeInfo('Updating Accessory - ' + catItemNewName);
+            var existingItem = new sn_sc.CatItem(gaCatItemsToUpdate.servicenow_catalog_item_id);
+            var attr = {
+                "name": catItemNewName,
+                "description": newDesc
+            };
+            existingItem.update(attr, true);
+        }
+        //End - UpdateItem
+
+        //Start- CreateItem
+        var grSakonCatItem = new GlideAggregate(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+        grSakonCatItem.groupBy('parent_id');
+        grSakonCatItem.groupBy('name');
+        grSakonCatItem.groupBy('thumbnail_file_id');
+        grSakonCatItem.groupBy('recurring_charge');
+        grSakonCatItem.groupBy('price');
+        grSakonCatItem.addQuery('category_id', 330);
+        grSakonCatItem.addQuery('is_active', 'true');
+        grSakonCatItem.addQuery('servicenow_catalog_item_id', '');
+        grSakonCatItem.query();
+
+        var accessoriesCategorySysId = this.getAccessoriesCategorySysID();
+
+        while (grSakonCatItem.next()) {
+
+            var catItemName = grSakonCatItem.name;
+            var Desc = '<p>' + 'Name: ' + grSakonCatItem.name + '</p>';
+            logger.writeInfo('Creating accessory - ' + catItemName);
+            var catalogItem = new sn_sc.CatItem();
+
+            catalogItem.setAttributes({
+                "name": catItemName,
+                "description": Desc,
+                "price": grSakonCatItem.price,
+                "recurring_price": grSakonCatItem.recurring_charge,
+                "workflow": workflowSysId,
+                "no_quantity_v2": 'true',
+                "no_attachment_v2": 'true',
+                "no_cart_v2": 'true',
+                "no_delivery_time_v2": 'true',
+                "no_wishlist_v2": 'true',
+                "request_method": 'Submit',
+                "recurring_frequency": 'monthly'
+            });
+
+            catalogItem.setCatalogs(catalogSysId);
+            catalogItem.setCategories(accessoriesCategorySysId);
+            catItemSysId = catalogItem.create(true);
+
+            //Change the catalog item scope to sakon mobile
+            var commonUtils = new CommonUtilities();
+            var sakonAppSysId = commonUtils.getSakonMobileScopeSysId();
+            var catItem = new sn_sc.CatItem(catItemSysId);
+            var objColumns = {
+                "sys_scope": sakonAppSysId
+            };
+            catItem.update(objColumns, false);
+
+            //Assign user criteria to catalog item
+            var ucSMAccess = this.getUserCriteriaSysId();
+            catItem.availableForUserCriteria("add", [ucSMAccess]);
+
+            //Store the newly created catalog item id in Sakon Catalog Items table
+            var grSakonCatItem1 = new GlideRecord(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+            grSakonCatItem1.addQuery('parent_id', grSakonCatItem.parent_id);
+            grSakonCatItem1.query();
+            while (grSakonCatItem1.next()) {
+                grSakonCatItem1.servicenow_catalog_item_id = catItemSysId;
+                grSakonCatItem1.update();
+            }
+            this.loadImage(catItemSysId);
+        }
+        //End- CreateItem
+
+        //Start- DeactivateItem
+        var grCatItem = new GlideRecord('sc_cat_item');
+        grCatItem.addQuery('category', accessoriesCategorySysId);
+        grCatItem.query();
+
+        while (grCatItem.next()) {
+            var grSakonCatItem2 = new GlideRecord(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+            grSakonCatItem2.addQuery('servicenow_catalog_item_id', grCatItem.sys_id);
+            grSakonCatItem2.addQuery('is_active', 'true');
+            grSakonCatItem2.query();
+            if (!grSakonCatItem2.hasNext()) {
+                logger.writeInfo('Deactivating item - ' + grCatItem.name);
+                grCatItem.active = false;
+                grCatItem.update();
+            }
+        }
+        //End- DeactivateItem
+
+    },
+
+    createCatItems: function() {
+        var logSource = 'SakonMobileMapCatalogItems Script Include - createCatItems';
+        var logger = new LogUtilities();
+        var currentScope = gs.getCurrentScopeName();
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+        var catItemSysId;
+
+        var catalogSysId;
+        var devicesCategorySysId;
+        var accessoriesCategorySysId;
+        var parentCatalogSysId;
+        var workflowSysId;
+
+        gs.info("Before get sys ids");
+        parentCatalogSysId = this.getParentCategorySysID();
+        devicesCategorySysId = this.getDevicesCategorySysID();
+        accessoriesCategorySysId = this.getAccessoriesCategorySysID();
+        gs.info("Before get sys id of catalog");
+
+        //Get Sys_id for 'Service Catalog'
+        //         var grCatalog = new GlideRecordSecure('sc_catalog');
+        //         grCatalog.addQuery('title', 'Service Catalog');
+        //         grCatalog.query();
+        //         while (grCatalog.next()) {
+        //             catalogSysId = grCatalog.sys_id.toString();
+        //         }
+        catalogSysId = this.getServiceCatalogSysId();
+        gs.info("After get sys ids");
+
+        //get Sys_Id of 'Marketplace Orders Workflow(Sakon)'
+        var grWorkflow = new GlideRecord('wf_workflow_version');
+        grWorkflow.addQuery('name', 'Marketplace Orders Workflow(Sakon)');
+        grWorkflow.addQuery('published', 'true');
+        grWorkflow.query();
+        if (grWorkflow.next()) {
+            workflowSysId = grWorkflow.workflow;
+        }
+
+        this.syncDevices(workflowSysId, catalogSysId);
+        this.syncAccessories(workflowSysId, catalogSysId);
+
+        logger.writeInfo(logSource, 'End - ' + logSource);
+    },
+
+    getVariableSetArray: function(category) {
+        var devicesCategorySysId;
+        devicesCategorySysId = this.getDevicesCategorySysID();
+
+        var variableSetArray = [];
+
+        if (category == devicesCategorySysId) {
+            var grVariableSet = new GlideRecord('item_option_new_set');
+            grVariableSet.addEncodedQuery('internal_name=mp_catalog_item_variable_set^ORinternal_name=order_shipping_details_variable_set^ORinternal_name=order_shipment_tracking_variable_set^ORinternal_name=phone_number_variable_set_marketplace^ORinternal_name=order_for_user_variable_set^ORinternal_name=marketplace_order_comments');
+            grVariableSet.query();
+            while (grVariableSet.next()) {
+                variableSetArray.push(grVariableSet.sys_id.toString());
+            }
+
+            return variableSetArray;
+        } else {
+            grVariableSet = new GlideRecord('item_option_new_set');
+            grVariableSet.addEncodedQuery('internal_name=order_shipping_details_variable_set^ORinternal_name=order_shipment_tracking_variable_set^ORinternal_name=order_for_user_variable_set^ORinternal_name=marketplace_order_comments');
+            grVariableSet.query();
+            while (grVariableSet.next()) {
+                variableSetArray.push(grVariableSet.sys_id.toString());
+            }
+            return variableSetArray;
+        }
+    },
+
+    mapCatItemsToVariableSets: function() {
+        var logSource = 'SakonMobileMapCatalogItems Script Include - mapCatItemsToVariableSets';
+        var logger = new LogUtilities();
+        var currentScope = gs.getCurrentScopeName();
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+        var devicesCategorySysId;
+        var accessoriesCategorySysId;
+        var encodedQuery;
+
+        devicesCategorySysId = this.getDevicesCategorySysID();
+        accessoriesCategorySysId = this.getAccessoriesCategorySysID();
+
+        var grSakonCatItem = new GlideRecord('sc_cat_item');
+        grSakonCatItem.addQuery('category', devicesCategorySysId).addOrCondition('category', accessoriesCategorySysId);
+        grSakonCatItem.query();
+        while (grSakonCatItem.next()) {
+            var catItemSysID = grSakonCatItem.sys_id.toString();
+            variableSetArray = this.getVariableSetArray(grSakonCatItem.category.toString());
+            for (var i = 0; i < variableSetArray.length; i++) {
+                //check if the catalog item is mapped to variable set                                                      
+                var grVarMap = new GlideRecord('io_set_item');
+                grVarMap.addQuery('sc_cat_item', catItemSysID);
+                grVarMap.addQuery('variable_set', variableSetArray[i]);
+                grVarMap.query();
+                if (!grVarMap.hasNext()) {
+
+                    // var cat_item_sys_id = 'bd6fa75a4f334200086eeed18110c79e'; // catalog item - iPhone 6s
+                    //  var variable_set_sys_id = 'e01cab1a4f334200086eeed18110c71f'; // variable set - Standard Employee Questions
+                    var app_scope = 'e7cfc0c32f1320101108837cf699b6d0'; // sys_id id Sakon scoped app
+                    var varset = new sn_sc.CatalogItemVariableSetM2M();
+                    var attr = {
+                        'variable_set': variableSetArray[i], // required
+                        'sc_cat_item': catItemSysID, // required
+                        'sys_scope': app_scope, // optional
+                        };
+                    varset.setAttributes(attr);
+                    var m2mRec = varset.create(true);
+                    gs.info('Variable set added to catalog item and M2M record created in table io_set_item with sys_id ' + m2mRec);
+
+                    /*
+                    var gr = new GlideRecord('io_set_item');
+                    gr.setValue('sc_cat_item', catItemSysID);
+                    gr.setValue('variable_set', variableSetArray[i]);
+                    gr.insert();*/
+
+                    logger.writeInfo(logSource, 'Mapped : ' + catItemSysID + '||' + variableSetArray[i]);
+                }
+            }
+        }
+        logger.writeInfo(logSource, 'End - ' + logSource);
+    },
+
+
+    //Get Sys_id for 'Devices' category
+    getDevicesCategorySysID: function() {
+        return "b0a568352fc00110831952172799b6d4";
+    },
+
+    //Get Sys_id for 'Accessories' category
+    getAccessoriesCategorySysID: function() {
+        return "8322606207a0411008defe4f7c1ed0fb";
+    },
+
+    //Get Sys_id for 'Manage Mobile Devices and Services' category
+    getParentCategorySysID: function() {
+        return "7a3a89181b6a301096fe0f26624bcb1c";
+    },
+
+    getServiceCatalogSysId: function() {
+        var parentCategorySysId = this.getParentCategorySysID();
+        var grCategory = new GlideRecord('sc_category');
+        grCategory.addQuery("sys_id", parentCategorySysId);
+        grCategory.query();
+        while (grCategory.next()) {
+            return grCategory.sc_catalog.toString();
+        }
+    },
+
+    getUserCriteriaSysId: function() {
+        var uc = new GlideRecord('user_criteria');
+        uc.addQuery('name', 'Sakon Mobile Access User Criteria');
+        uc.query();
+        if (uc.next()) {
+            return uc.sys_id.toString();
+        }
+    },
+
+    loadImage: function(catItemSysId) {
+        var logSource = 'Sakon Mobile Catalog Image Upload - ';
+        var logger = new LogUtilities();
+
+        var apiResponse;
+        var currentScope = gs.getCurrentScopeName();
+        var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
+        var top = pageSize;
+        var skip = 0;
+        var iter = 1;
+        var filter = '';
+        var counter = 0;
+        var imageID;
+        //Get the ImageId for the Catalog Item from Sakon Catalog Items table
+        var grSakonCatItem = new GlideRecord(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+        grSakonCatItem.addQuery('servicenow_catalog_item_id', catItemSysId);
+        grSakonCatItem.query();
+        if (grSakonCatItem.next()) {
+            if (grSakonCatItem.thumbnail_file_id > 0) {
+                imageID = grSakonCatItem.thumbnail_file_id;
+            } else {
+                logger.writeInfo(logSource, 'Thumbnail image file id is : ' + grSakonCatItem.thumbnail_file_id);
+            }
+        }
+
+        logger.writeInfo(logSource, 'Iteration=' + iter + ', Top=' + top + ', Skip=' + skip);
+        apiResponse = new APIUtilities().getData(currentScope + '.' + 'Marketplace REST Message', 'GetCatalogImages', top, skip, filter, imageID);
+
+        var grAttach = new GlideRecord('sys_attachment');
+        grAttach.addQuery('table_sys_id', catItemSysId);
+        grAttach.query();
+        while (grAttach.next()) {
+            var attachmentToDelete = new GlideSysAttachment();
+            var attachmentSysID = grAttach.sys_id;
+            attachmentToDelete.deleteAttachment(attachmentSysID);
+        }
+
+        var attachment = new GlideSysAttachment();
+        var rec = new GlideRecord('sc_cat_item');
+        rec.addQuery('sys_id', catItemSysId);
+        rec.query();
+        if (rec.next()) {
+            var fileName = 'picture';
+            var contentType = 'image/png';
+            var base64Encodedcontent = apiResponse.x64EncodedContent;
+            var attID = attachment.writeBase64(rec, fileName, contentType, base64Encodedcontent);
+        }
+
+
+        logger.writeInfo(logSource, 'End - ' + logSource);
+    },
+
+    type: 'SakonMobileMapCatalogItems'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-30 07:58:02</sys_created_on>
+        <sys_id>0a6e7cc72f800110831952172799b6fe</sys_id>
+        <sys_mod_count>242</sys_mod_count>
+        <sys_name>SakonMobileMapCatalogItems</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_0a6e7cc72f800110831952172799b6fe</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-24 05:04:22</sys_updated_on>
+    </sys_script_include>
+</record_update>

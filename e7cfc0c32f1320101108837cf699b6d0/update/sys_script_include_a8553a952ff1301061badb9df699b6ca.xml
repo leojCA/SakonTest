@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.UserUtilities</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>UserUtilities</name>
+        <script><![CDATA[var UserUtilities = Class.create();
+UserUtilities.prototype = {
+    initialize: function() {
+        var logger = new LogUtilities();
+    },
+
+    //Check if any of the Sakon User Fields are updated in sys_user table
+    syncUserFieldsUpdated: function(user) {
+        var syncFieldsArr = ['active', 'user_name', 'first_name', 'last_name', 'location', 'city', 'state', 'zip', 'country', 'title', 'department', 'manager', 'email', 'cost_center', 'vip', 'phone', 'mobile_phone'];
+        var sync = false;
+        for (i = 0; i < syncFieldsArr.length; i++) {
+            var fName = syncFieldsArr[i];
+            if (user[fName].changes()) {
+                sync = true;
+                break;
+            }
+        }
+        return sync;
+    },
+
+    //Check if the user is a member of Sakon Mobile Access Group
+    isMemberOfAccessGroup: function(user_sys_id) {
+        if (typeof user_sys_id == "object") {
+            user_sys_id = String(user_sys_id.sys_id);
+        }
+        var currentScope = gs.getCurrentScopeName();
+        var group_id = gs.getProperty(currentScope + '.' + 'sakon_access_group_id');
+        var gr_member = new GlideRecord("sys_user_grmember");
+        var encodedquery = "group=" + group_id + "^user=" + user_sys_id;
+
+        gr_member.addEncodedQuery(encodedquery);
+        gr_member.query();
+        return (gr_member.hasNext());
+    },
+
+    isMemberOfAdminGroup: function(user_sys_id) {
+        if (typeof user_sys_id == "object") {
+            user_sys_id = String(user_sys_id.sys_id);
+        }
+        var currentScope = gs.getCurrentScopeName();
+        var group_id = new CommonUtilities().getGroupId('Sakon Mobile Admins');
+        var gr_member = new GlideRecord("sys_user_grmember");
+        var encodedquery = "group=" + group_id + "^user=" + user_sys_id;
+
+        gr_member.addEncodedQuery(encodedquery);
+        gr_member.query();
+        return (gr_member.hasNext());
+    },
+
+    getSakonID: function(userID) {
+        var currentScope = gs.getCurrentScopeName();
+        var grUsers = new GlideRecordSecure(currentScope + '_' + 'users');
+        grUsers.addQuery('servicenow_user_id.name', userID);
+        grUsers.query();
+        while (grUsers.next()) {
+            sakonID = grUsers.sakon_user_id;
+            return sakonID;
+        }
+    },
+
+    getSakonIDFromUserID: function(userID) {
+        var currentScope = gs.getCurrentScopeName();
+        var grSnowUser = new GlideRecord('sys_user');
+        grSnowUser.addQuery('user_name', userID);
+        grSnowUser.query();
+        while (grSnowUser.next()) {
+            var grUsers = new GlideRecordSecure(currentScope + '_' + 'users');
+            grUsers.addQuery('servicenow_user_id', grSnowUser.sys_id);
+            grUsers.query();
+            if (grUsers.next()) {
+                sakonID = grUsers.sakon_user_id;
+                return sakonID;
+            }
+        }
+
+    },
+
+    addSakonUser: function(UserID, SakonID) {
+        //Insert a record into Sakon Mobile Users table for this user
+        var currentScope = gs.getCurrentScopeName();
+        var logSource = 'UserUtilities - addSakonUser';
+        logger.writeInfo(logSource, 'Adding user ' + UserID + '; SakonId: ' + SakonID);
+        var now = new GlideDateTime();
+        var grUser = new GlideRecord('sys_user');
+        grUser.addQuery('user_name', UserID);
+        grUser.query();
+        var grSUser = new GlideRecordSecure(currentScope + '_' + 'users');
+        grSUser.initialize();
+        while (grUser.next()) {
+            grSUser.servicenow_user_id = grUser.sys_id;
+            grSUser.sakon_user_id = SakonID;
+            grSUser.active_user = true;
+            grSUser.insert_datetime = now;
+            grSUser.modified_datetime = now;
+            grSUser.insert();
+        }
+
+    },
+
+    updateEntitySyncQueue: function(UserID, SyncID) {
+        var currentScope = gs.getCurrentScopeName();
+        var gr = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+        gr.addQuery('servicenow_entity_id', UserID);
+        gr.addQuery('number', SyncID);
+        gr.query();
+        while (gr.next()) {
+            var now2 = new GlideDateTime();
+            gr.last_retry_datetime = now2;
+            gr.modified_datetime = now2;
+            gr.sync_counter = Number(gr.getValue('sync_counter')) + 1;
+            gr.update();
+        }
+        var syncCounter = Number(gr.getValue('sync_counter'));
+        var syncStatus = gr.sync_status;
+        var res = [syncCounter, syncStatus, gr];
+        return res;
+    },
+
+    type: 'UserUtilities'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-08-05 09:46:40</sys_created_on>
+        <sys_id>a8553a952ff1301061badb9df699b6ca</sys_id>
+        <sys_mod_count>70</sys_mod_count>
+        <sys_name>UserUtilities</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_a8553a952ff1301061badb9df699b6ca</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-23 13:47:05</sys_updated_on>
+    </sys_script_include>
+</record_update>

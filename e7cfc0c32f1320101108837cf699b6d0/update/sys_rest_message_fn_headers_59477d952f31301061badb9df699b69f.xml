@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message_fn_headers">
+    <sys_rest_message_fn_headers action="INSERT_OR_UPDATE">
+        <name>sakon-auth</name>
+        <rest_message_function display_value="UpdateUser">6317f1d92f31301061badb9df699b656</rest_message_function>
+        <sys_class_name>sys_rest_message_fn_headers</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-08-05 05:23:37</sys_created_on>
+        <sys_id>59477d952f31301061badb9df699b69f</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>sakon-auth</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_rest_message_fn_headers_59477d952f31301061badb9df699b69f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-08-05 05:31:46</sys_updated_on>
+        <value>${api_key}</value>
+    </sys_rest_message_fn_headers>
+</record_update>

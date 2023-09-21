@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="io_set_item">
+    <io_set_item action="INSERT_OR_UPDATE">
+        <order>100</order>
+        <sc_cat_item display_value="Phone Number Change">2653743a1b33301096b1ebd5624bcbc3</sc_cat_item>
+        <sys_class_name>io_set_item</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-17 12:40:56</sys_created_on>
+        <sys_id>9792c7362f3b30109eb12ea62799b6e1</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Phone Number Variable Set.Phone Number Change</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>io_set_item_9792c7362f3b30109eb12ea62799b6e1</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-22 19:39:43</sys_updated_on>
+        <variable_set display_value="Phone Number Variable Set">b631b7842f3330109e6d70682799b6fe</variable_set>
+    </io_set_item>
+</record_update>

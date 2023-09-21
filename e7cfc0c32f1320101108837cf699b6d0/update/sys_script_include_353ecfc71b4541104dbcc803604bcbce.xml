@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.SakonSmokeTest</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>SakonSmokeTest</name>
+        <script><![CDATA[var SakonSmokeTest = Class.create();
+SakonSmokeTest.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+    getServicesLastSyncDate: function() {
+		var serviceLastSyncDate = gs.getProperty('x_sakon_mobile.service_last_sync');		
+		var ga = new GlideAggregate("x_sakon_mobile_service_lines");
+        ga.addAggregate('COUNT');
+        ga.query();
+        var count = 0;
+        if (ga.next())
+            count = ga.getAggregate('COUNT');
+        var rtnObj = {
+            'count': count,
+            'lastsyncdate': serviceLastSyncDate
+        };
+        return JSON.stringify(rtnObj);
+    },
+	
+    getDevicesLastSyncDate: function() {
+        var ga = new GlideAggregate("x_sakon_mobile_devices_table");
+        ga.addAggregate('COUNT');
+        ga.query();
+        var count = 0;
+        if (ga.next())
+            count = ga.getAggregate('COUNT');
+		
+        var devicesLastSyncDate = gs.getProperty('x_sakon_mobile.device_last_sync');
+        var rtnObj = {
+            'count': count,
+            'deviceslastsyncdate': devicesLastSyncDate
+        };
+        return JSON.stringify(rtnObj);
+    },
+	
+    getMarketplaceLastSyncDate: function() {
+        var ga = new GlideAggregate("x_sakon_mobile_sakon_marketplace_catalog_items_table");
+        ga.addAggregate('COUNT');
+        ga.query();
+        var count = 0;
+        if (ga.next())
+            count = ga.getAggregate('COUNT');
+        var mrktpLastSyncDate = gs.getProperty('x_sakon_mobile.marketplace_last_sync');
+        var rtnObj = {
+            'count': count,
+            'mrktplastsyncdate': mrktpLastSyncDate
+        };
+        return JSON.stringify(rtnObj);
+    },
+	
+    getTicketsLastSyncDate: function() {
+        var ga = new GlideAggregate("sc_req_item");
+        ga.addAggregate('COUNT');
+        ga.query();
+        var count = 0;
+        if (ga.next())
+            count = ga.getAggregate('COUNT');
+        var ticketLastSyncDate = gs.getProperty('x_sakon_mobile.ticket_last_sync');
+        var rtnObj = {
+            'count': count,
+            'ticketlastsyncdate': ticketLastSyncDate
+        };
+        return JSON.stringify(rtnObj);
+    },
+	
+    getConfigurationData: function() {
+        var property = this.getParameter('system_prop_name');
+        var rtnObj = {
+            'value': gs.getProperty(property)            
+        };
+        return JSON.stringify(rtnObj);
+    },
+
+    getConnectivityStatus: function() {
+		var rest = this.getParameter('rest_message_name');		
+		try {
+            var logSource = 'APIUtilities Script Include';            
+            var logger = new LogUtilities();
+            logger.writeInfo(logSource, 'Start - ' + logSource);
+            var currentScope = gs.getCurrentScopeName();
+            var response = '';
+            var responseBody = '';
+            var httpStatus = '';
+            var apiKey = gs.getProperty(currentScope + '.' + 'api_key');
+            var apiBaseUrl = gs.getProperty(currentScope + '.' + 'api_base_url');
+			
+            //Build REST Message from parameters
+            var r = new sn_ws.RESTMessageV2(rest, 'Default GET');			
+            r.setStringParameterNoEscape('api_key', apiKey);
+            r.setStringParameterNoEscape('api_baseurl', apiBaseUrl);
+            response = r.execute();
+
+            //Check for response code 
+            responseBody = response.getBody();
+            httpStatus = response.getStatusCode();
+
+            if (httpStatus == '200') {
+                var res = JSON.parse(responseBody);
+                logger.writeInfo(logSource, 'Default GET' + ' =>API Response Status: ' + httpStatus);
+                logger.writeInfo(logSource, 'Default GET' + ' => API Response Body: ' + responseBody);
+
+            } else {
+                res = null;
+                logger.writeWarning(logSource, 'Default GET' + ' => API Response Status: ' + httpStatus);
+                logger.writeWarning(logSource, 'Default GET' + ' => API Response Body: ' + responseBody);
+            }
+            logger.writeInfo(logSource, 'Default GET' + ' - End - ' + logSource);
+            return res;
+
+        } catch (ex) {
+            logger.writeError(logSource, 'Default GET' + +' - Error Message: ' + ex);
+            throw ex;
+		}
+	},
+	
+	getSakonCatalogCount: function() {
+        var gaCatalog = new GlideAggregate("x_sakon_mobile_sakon_marketplace_catalog_items_table");
+        gaCatalog.addAggregate('COUNT');
+        gaCatalog.query();
+        var rawItemsCount = 0;
+        if (gaCatalog.next())
+            rawItemsCount = gaCatalog.getAggregate('COUNT');
+		
+        var ga = new GlideAggregate("sc_cat_item");
+        ga.addEncodedQuery('category=b0a568352fc00110831952172799b6d4^ORcategory=8322606207a0411008defe4f7c1ed0fb');
+		ga.addEncodedQuery('');
+        ga.addAggregate('COUNT');
+        ga.query();
+        var snowCatalogCount = 0;
+        if (ga.next())
+            snowCatalogCount = ga.getAggregate('COUNT');
+		
+        var rtnObj = {
+            'rawCatalogCount': rawItemsCount,
+            'sNowCatalogCount': snowCatalogCount
+        };
+        return JSON.stringify(rtnObj);
+    },
+	
+    getSelfserviceTicketsCount: function() {
+        var ga = new GlideAggregate("sc_cat_item");
+		ga.addEncodedQuery('category.parent.title=Manage Mobile Devices and Services^category=d6389a4a1ba00110864a0d82604bcb2d^active=true');
+        ga.addAggregate('COUNT');
+        ga.query();
+        var count = 0;
+        if (ga.next())
+            count = ga.getAggregate('COUNT');
+        var rtnObj = {
+            'selfServiceTicketsCount': count
+        };
+        return JSON.stringify(rtnObj);
+    },
+    type: 'SakonSmokeTest'   
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-01-19 11:29:03</sys_created_on>
+        <sys_id>353ecfc71b4541104dbcc803604bcbce</sys_id>
+        <sys_mod_count>113</sys_mod_count>
+        <sys_name>SakonSmokeTest</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_353ecfc71b4541104dbcc803604bcbce</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-09-02 15:40:46</sys_updated_on>
+    </sys_script_include>
+</record_update>

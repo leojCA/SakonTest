@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="io_set_item">
+    <io_set_item action="INSERT_OR_UPDATE">
+        <order>100</order>
+        <sc_cat_item display_value="Terminate Phone Number">2c7041f21b73301096b1ebd5624bcbe5</sc_cat_item>
+        <sys_class_name>io_set_item</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-02-27 18:06:26</sys_created_on>
+        <sys_id>dc9b495507d121100df8f1e08c1ed06a</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Sakon Requested For.Terminate Phone Number</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>io_set_item_dc9b495507d121100df8f1e08c1ed06a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-02-27 18:06:26</sys_updated_on>
+        <variable_set display_value="Sakon Requested For">823945d107d121100df8f1e08c1ed076</variable_set>
+    </io_set_item>
+</record_update>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>sys_user</collection>
+        <condition>new UserUtilities().syncUserFieldsUpdated(current) &amp;&amp; (new UserUtilities().isMemberOfAccessGroup(current)||new UserUtilities().isMemberOfAdminGroup(current))</condition>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Sakon Mobile Add Users to Queue UPDATE</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous) {
+	
+    var currentScope = gs.getCurrentScopeName();
+    var SyncCounter = gs.getProperty(currentScope + '.' + 'user_sync_retry_count');
+    var today = new GlideDateTime();
+    var sakonID;   
+    var userSysID = current.user;
+	var userID = current.user_name;    	
+    sakonID = new UserUtilities().getSakonIDFromUserID(userID);
+	
+    var gr_update = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+    gr_update.initialize();
+    gr_update.servicenow_entity_id = userID;
+    gr_update.sakon_entity_id = sakonID;
+    gr_update.entity_type = 'User';
+    gr_update.sync_status = 0;
+    gr_update.retry_count_setting = SyncCounter;
+    gr_update.sync_counter = 0;
+    gr_update.last_retry_datetime = today;
+    gr_update.insert_datetime = today;
+    gr_update.modified_datetime = today;
+    gr_update.sync_type = 'UPDATE';
+    gr_update.sakon_sync_action = 'UPDATE';
+    gr_update.insert();
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-08-05 08:48:25</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>a18722d92fb1301061badb9df699b611</sys_id>
+        <sys_mod_count>51</sys_mod_count>
+        <sys_name>Sakon Mobile Add Users to Queue UPDATE</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_a18722d92fb1301061badb9df699b611</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-20 05:55:26</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=a18722d92fb1301061badb9df699b611"/>
+</record_update>

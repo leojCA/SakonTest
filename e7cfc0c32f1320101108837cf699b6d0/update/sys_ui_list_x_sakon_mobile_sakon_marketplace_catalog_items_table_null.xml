@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="x_sakon_mobile_sakon_marketplace_catalog_items_table" version="2" view="">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>id</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>0ceb0a021ba00110864a0d82604bcb62</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>name</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>8ceb0a021ba00110864a0d82604bcb62</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>memory</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>00eb0a021ba00110864a0d82604bcb63</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>color</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>80eb0a021ba00110864a0d82604bcb63</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>order_type</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>4</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>04eb0a021ba00110864a0d82604bcb63</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>network_provider</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>84eb0a021ba00110864a0d82604bcb63</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>currency</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>6</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>08eb0a021ba00110864a0d82604bcb63</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>eligibility_level</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>7</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>88eb0a021ba00110864a0d82604bcb63</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>is_active</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>8</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>0ceb0a021ba00110864a0d82604bcb63</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>price</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>9</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>8ceb0a021ba00110864a0d82604bcb63</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>servicenow_catalog_item_id</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>10</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>00eb0a021ba00110864a0d82604bcb64</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>service_provider_name</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>11</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>80eb0a021ba00110864a0d82604bcb64</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>thumbnail_file_id</element>
+            <list_id display_value="x_sakon_mobile_sakon_marketplace_catalog_items_table" element="NULL" name="x_sakon_mobile_sakon_marketplace_catalog_items_table" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">80eb0a021ba00110864a0d82604bcb62</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>12</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_id>04eb0a021ba00110864a0d82604bcb64</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>x_sakon_mobile_sakon_marketplace_catalog_items_table</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-12-22 07:33:26</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>80eb0a021ba00110864a0d82604bcb62</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_sakon_mobile_sakon_marketplace_catalog_items_table</sys_name>
+            <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+            <sys_update_name>sys_ui_list_x_sakon_mobile_sakon_marketplace_catalog_items_table_null</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-12-22 07:33:26</sys_updated_on>
+            <sys_user/>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>

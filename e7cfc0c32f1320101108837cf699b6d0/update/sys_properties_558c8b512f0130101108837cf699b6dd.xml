@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>This property tracks the last successful sync date for service lines</description>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_sakon_mobile.service_last_sync</name>
+        <read_roles>admin,x_sakon_mobile.admin</read_roles>
+        <suffix>service_last_sync</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-06-29 04:50:09</sys_created_on>
+        <sys_id>558c8b512f0130101108837cf699b6dd</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>x_sakon_mobile.service_last_sync</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_properties_558c8b512f0130101108837cf699b6dd</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-22 12:14:19</sys_updated_on>
+        <type>date_format</type>
+        <value>1901-01-01</value>
+        <write_roles>admin,x_sakon_mobile.admin</write_roles>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=558c8b512f0130101108837cf699b6dd"/>
+</record_update>

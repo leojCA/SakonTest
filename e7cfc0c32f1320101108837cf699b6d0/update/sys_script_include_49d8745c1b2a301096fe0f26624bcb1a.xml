@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.TicketsSyncScript</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>TicketsSyncScript</name>
+        <script><![CDATA[var TicketsSyncScript = Class.create();
+TicketsSyncScript.prototype = {
+    initialize: function() {},
+    
+	loadData: function(TicketID, SyncType, SyncID, SakonID) {
+        try {
+            var logger = new LogUtilities();
+            var logSource = 'TicketsSyncScript Script Include - loadData';
+            logger.writeInfo(logSource, 'Start - ' + logSource);
+            if (SyncType == 'INSERT') {
+                logger.writeInfo(logSource, 'Calling CreateTicket function');
+                this.createTicket(TicketID, SyncID);
+            } else if (SyncType == 'UPDATE') {
+                logger.writeInfo(logSource, 'Calling UpdateTicketComment function for ' + TicketID);
+                this.updateTicketCommentSnowToSakon(TicketID, SakonID, SyncID);
+            }
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, ' Error Line Number ' + ex.lineNumber);
+            throw ex;
+        }
+    },
+
+    //Build the Json request body for creating a ticket on Sakon
+    getTicketAsJson: function(TicketID) {
+        try {
+			
+            var currentScope = gs.getCurrentScopeName();            
+			var requestBody = {};
+            requestBody.parentId = 0;
+            requestBody.priorityId = 23;
+            requestBody.statusId = 40;
+            requestBody.estimateId = 28;
+            requestBody.assignedUserId = null;
+            requestBody.comments = '';
+            requestBody.assignedToGroupId = null;
+            requestBody.tags = '';
+            requestBody.sourceId = 226;
+            requestBody.callBackDate = null;
+            requestBody.callBackName = null;
+            requestBody.callBackNumber = null;
+            requestBody.notifyList = '';
+            requestBody.closureSummary = '';
+            requestBody.TimeSpent = null;
+            requestBody.FollowUpDate = null;
+            requestBody.DueDate = null;
+			
+            var gr = new GlideRecordSecure('sc_req_item');
+            gr.addQuery('number', TicketID);
+            gr.query();
+            while (gr.next()) {
+                requestBody.Description = this.getReqItemVariables(TicketID);
+                requestBody.Summary = gr.cat_item.name.toString();
+                var reqBySakonID = new UserUtilities().getSakonID(gr.opened_by.getDisplayValue('name'));
+                requestBody.reportedbyid = reqBySakonID.toString();
+                for (var prop in gr.variables) {
+                    if (prop == "phone_number") {
+                        if (!(gs.nil(gr.variables.phone_number.wireless_service_id.toString()))) {
+                            requestBody.affectedItemid = gr.variables.phone_number.wireless_service_id.toString();
+                            requestBody.affectedItemTypeId = 234;
+                            break;
+                        }
+                    } else if (prop == "device") {
+                        if (!(gs.nil(gr.variables.device.wireless_device_id.toString()))) {
+                            requestBody.affectedItemid = gr.variables.device.wireless_device_id.toString();
+                            requestBody.affectedItemTypeId = 232;
+                            break;
+                        }
+                    } else {
+                        var sakonID = new UserUtilities().getSakonID(gr.requested_for.getDisplayValue('name'));
+                        requestBody.affectedItemid = sakonID.toString();
+                        requestBody.affectedItemTypeId = 231;
+                    }
+                }
+            }
+
+            var grItems = new GlideRecordSecure(currentScope + '_' + 'catalog_items_mapping');
+            grItems.addQuery('catalog_item.name', gr.cat_item.name.toString());
+            grItems.query();
+            while (grItems.next()) {
+                requestBody.componentId = grItems.component_id.toString();
+                requestBody.categoryId = grItems.category_id.toString();
+                requestBody.subCategoryId = grItems.subcategory_id.toString();
+            }
+            
+			requestBody = JSON.stringify(requestBody);
+            
+			logger.writeInfo('CreateTicket API Request body: ', requestBody);
+            return requestBody;
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            throw ex;
+        }
+    },
+
+    //Post the ticket request on Sakon and return a TicketID
+    createTicket: function(TicketID, SyncID) {
+        try {
+            logger.writeInfo(logSource, 'Start - TicketsSyncScript - Create Ticket');
+            var SyncCounter = gs.getProperty(currentScope + '.' + 'ticket_sync_retry_count');
+            var requestBody = this.getTicketAsJson(TicketID);
+            var currentScope = gs.getCurrentScopeName();
+            var apiResponse;
+            apiResponse = new APIUtilities().postData(currentScope + '.' + 'Servicedesk Tickets REST Message', 'CreateTicket', requestBody);
+            logger.writeInfo(logSource, 'CreateTicket - Response status from APIUtilities: ' + apiResponse[0]);
+
+            //Parse API response JSON. Delcare variables for Sakon Id and API error if any.
+			var apiErrorMessage = "";
+			var responseJson = JSON.parse(apiResponse[1]);
+			var sakonID;
+			
+            //Update Sync Status, Last Retry DateTime and Retry Counter in Entity Sync Queue Table if Ticket Creation is successful
+            var gr = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');            
+			//gr.addQuery('servicenow_entity_id', TicketID); // VM/PBN - ??
+			gr.addQuery('number', SyncID);            
+            gr.query();
+			
+            while (gr.next()) {
+                if (apiResponse[0] == 200) {
+					sakonID = responseJson.id;
+					logger.writeInfo(logSource, 'Ticket with RequestID ' + TicketID + ' created in Sakon, Sakon Ticket ID - ' + sakonID);
+                    gr.sync_status = 2;
+                    gr.sakon_entity_id = sakonID;
+                    gr.comments = 'Ticket Sync Successful';
+                    gr.update();
+					
+					//update internal ticket id on RITM
+					var grTicket = new GlideRecordSecure('sc_req_item');
+					grTicket.addQuery('number', TicketID);
+					grTicket.query();
+					while (grTicket.next()) {
+						grTicket.variables.internal_ticket = sakonID.toString();
+						grTicket.update();
+					}
+                }
+				else{
+					apiErrorMessage= 'Exception: ' + responseJson.message;
+				}
+            }
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            throw ex;
+        } finally {
+            currentScope = gs.getCurrentScopeName();
+            var gr1 = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+            gr1.addQuery('servicenow_entity_id', TicketID);
+            gr1.query();
+            while (gr1.next()) {
+                var now2 = new GlideDateTime();
+                gr1.last_retry_datetime = now2;
+                gr1.modified_datetime = now2;
+                gr1.sync_counter = Number(gr1.getValue('sync_counter')) + 1;
+				if(apiErrorMessage != ''){
+					gr1.comments = apiErrorMessage;
+				}
+                gr1.update();
+            }
+            logger.writeInfo(logSource, 'End - TicketsSyncScript - Create Ticket');
+        }
+    },
+
+    //Sync Ticket Status and Comments from Sakon to Servicenow
+    updateTicketSakonToSnow: function() {
+        try {
+            logger.writeInfo(logSource, 'Start - TicketsSyncScript - Update Ticket');
+            var SyncCounter = gs.getProperty(currentScope + '.' + 'ticket_sync_retry_count');
+            var currentScope = gs.getCurrentScopeName();
+			var utcNow = new CommonUtilities().getUTCDateTime();
+            var last_sync_date = gs.getProperty(currentScope + '.' + 'ticket_last_sync');
+            var filter = 'lastModifiedDateTime ge ' + last_sync_date;
+            var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
+            var top = pageSize;
+            var skip = 0;
+            var iter = 1;
+            var apiResponse;
+            var closureSummary;
+            var sakonComments = [];
+            var snowComments = [];
+            var sakonToSnow = [];
+
+            var SakonTicketStatus, ServicenowTicketStatus;
+            do {
+                apiResponse = new APIUtilities().getData(currentScope + '.' + 'Servicedesk Tickets REST Message', 'GetTickets', top, skip, filter);
+
+                //Get the total record count from API response
+                var totalRec = apiResponse.total;
+                logger.writeInfo(logSource, 'Total Records modified in Sakon since last sync: ' + totalRec);
+                if (apiResponse.total > 0) {
+                    for (var i = 0; i < apiResponse.data.length; i++) {
+                        var grSync = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+                        grSync.addQuery('sakon_entity_id', apiResponse.data[i].id);
+                        grSync.query();
+                        while (grSync.next()) {
+                            var grTicket = new GlideRecordSecure('sc_req_item');
+                            grTicket.addQuery('number', grSync.servicenow_entity_id);
+                            grTicket.query();
+                            while (grTicket.next()) {                              
+                                    SakonTicketStatus = apiResponse.data[i].status.id;
+                                    //Get Ticket Status from Stage Mapping Table
+                                    ServicenowTicketStatus = this.getTicketStatusMapping(SakonTicketStatus);
+                                    grTicket.state = ServicenowTicketStatus;
+                                    grTicket.variables.closure_summary = apiResponse.data[i].closureSummary.toString();
+                                    grTicket.variables.status_name = apiResponse.data[i].status.name.toString();
+                                    grTicket.update();                                
+                            }
+                        }
+
+                        //Sync Comments from Sakon to Snow
+
+                        var SakonID = apiResponse.data[i].id;
+                        var TicketID = grSync.servicenow_entity_id;
+                        sakonComments = this.getSakonComments(SakonID);
+
+                        //Update Comments from Sakon to Snow
+                        if (!(gs.nil(TicketID))) {
+
+
+                            snowComments = this.getSnowComments(TicketID);
+                            sakonToSnow = this.getArrayDiff(sakonComments, snowComments);
+                            logger.writeInfo(logSource, "Comments to be synced from Sakon to Snow " + " for TicketID - " + TicketID + ' - ' + sakonToSnow);
+                        }
+
+                        var grComments = new GlideRecordSecure('sc_req_item');
+                        grComments.addQuery('number', TicketID);
+                        grComments.query();
+                        while (grComments.next()) {
+                            if (sakonToSnow.length > 0) {
+                                //Disable the "After Update" business rule for Request Items table
+//                                 var gr = new GlideRecordSecure('sys_script');
+//                                 gr.addQuery('sys_id', '7e90f3ca1ba2701096fe0f26624bcbdb');
+// 								gr.query();
+// 								if(gr.next()){
+// 								gr.active = false;
+//                                 gr.setWorkflow(false);
+//                                 gr.update();	
+// 								}
+                                
+                                for (var k = sakonToSnow.length - 1; k >= 0; k--) {
+                                    grComments.comments = 'SakonComments:'+sakonToSnow[k];
+                                    grComments.update();
+                                }
+                            }
+//                             var gr1 = new GlideRecordSecure('sys_script');
+//                             gr1.addQuery('sys_id', '7e90f3ca1ba2701096fe0f26624bcbdb');
+// 							gr1.query();
+// 							if(gr1.next()){
+// 							gr1.active = true;
+//                             gr1.setWorkflow(true);
+//                             gr1.update();	
+// 							}
+                            
+                        }
+                    }
+                }
+
+                skip = skip + top;
+                iter = iter + 1;
+            } while (skip < totalRec);
+
+            //Update Last_sync system property with current date(UTC)            
+           // gs.setProperty(currentScope + '.' + 'ticket_last_sync', utcNow);
+			
+			var gt_ticketsync =new GlideRecord('sys_properties');
+			gt_ticketsync.addQuery('sys_id','6637d92c1be2701096fe0f26624bcbfe');//x_sakon_mobile.ticket_last_sync--Property
+			gt_ticketsync.query();
+			if(gt_ticketsync.next()){
+			gt_ticketsync.value=utcNow;
+			gt_ticketsync.update();	
+			}
+			
+
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            logger.writeError(logSource, ex.lineNumber);
+            throw ex;
+        } finally {
+            logger.writeInfo(logSource, 'End - TicketsSyncScript - Update Ticket');
+            var gr2 = new GlideRecordSecure('sys_script');
+			gr2.addQuery('sys_id', '7e90f3ca1ba2701096fe0f26624bcbdb');
+			gr2.query();
+			if(gr2.next()){
+				gr2.active = true;
+            gr2.setWorkflow(true);
+            gr2.update();
+			}
+            
+        }
+
+    },
+
+    getArrayDiff: function(array1, array2) {
+        var diffArray = [];
+        var arrayUtil = new global.ArrayUtil();
+        diffArray = arrayUtil.diff(array1, array2);
+        return diffArray;
+    },
+
+    //Get all comments from Sakon
+    getSakonComments: function(SakonID) {
+        var logger = new LogUtilities();
+        var logSource = 'TicketSyncScript - getSakonComments';
+        var currentScope = gs.getCurrentScopeName();
+        var top = 1000;
+        var skip = 0;
+        var filter = 'createdDateTime ge 1901-01-01';
+        var sakonComments = [];
+        //Retrieve comments from Sakon
+        apiResponse = new APIUtilities().getData(currentScope + '.' + 'Servicedesk Tickets REST Message', 'GetComments', top, skip, filter, SakonID);
+
+        if (!(gs.nil(apiResponse))) {
+            if (apiResponse.comments.length > 0) {
+                for (var i = 0; i < apiResponse.comments.length; i++) {
+                    sakonComments.push(apiResponse.comments[i].message);
+                }
+            }
+        }
+        logger.writeInfo(logSource, 'Sakon Comments for ' + SakonID + ' - ' + sakonComments);
+        return sakonComments;
+    },
+
+    //Get all comments from Snow
+    getSnowComments: function(TicketID) {
+        try {
+            var snowComments = [];
+            var comments = '';
+            var reqItemSysID;
+            var logger = new LogUtilities();
+            var logSource = 'TicketSyncScript - getSnowComments';
+            var grReqItem = new GlideRecordSecure('sc_req_item');
+            grReqItem.addQuery('number', TicketID);
+            grReqItem.query();
+            while (grReqItem.next()) {
+                reqItemSysID = grReqItem.sys_id;
+            }
+
+            var gr = new GlideRecordSecure('sys_journal_field');
+            gr.addQuery('element_id', reqItemSysID);
+            gr.addQuery('name', 'sc_req_item');
+            gr.addQuery('element', 'comments');
+            gr.orderBy('sys_created_on');
+            gr.query();
+            while (gr.next()) {
+                comments += gr.value + '**';
+            }
+            commentsStr = comments.split('**');
+
+            if (commentsStr.length > 0) {
+                for (var i = 0; i < commentsStr.length; i++) {
+                    snowComments.push(commentsStr[i]);
+                }
+            }
+            snowComments.join();
+            logger.writeInfo(logSource, 'Snow Comments for ' + TicketID + ' - ' + snowComments);
+
+            return snowComments;
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            throw ex;
+        }
+
+    },
+
+    //Sync Ticket Comments from Servicenow to Sakon
+    updateTicketCommentSnowToSakon: function(TicketID, SakonID, SyncID) {
+        try {
+
+            var logger = new LogUtilities();
+            var logSource = 'TicketsSyncScript Script Include - updateTicketComment';
+            logger.writeInfo(logSource, 'Start - TicketsSyncScript - updateTicketCommentSnowToSakon');
+            var sakonComments = [];
+            var snowComments = [];
+            var snowToSakon = [];
+            var currentScope = gs.getCurrentScopeName();
+
+            if (SakonID > 0) {
+                sakonComments = this.getSakonComments(SakonID);
+                snowComments = this.getSnowComments(TicketID);
+                snowToSakon = this.getArrayDiff(snowComments, sakonComments);
+                //                 logger.writeInfo(logSource, "Comments to be synced from Snow to Sakon " + TicketID + "-" + SyncID + '-' + snowToSakon);
+                logger.writeInfo(logSource, "Comments to be synced from Snow to Sakon " + TicketID + "-" + SyncID + '-' + snowToSakon);
+
+
+                //Push Comments from Snow to Sakon
+                if (snowToSakon.length > 1) {
+                    for (var i = 0; i < snowToSakon.length; i++) {
+                        var requestBody = {};
+                        if (!gs.nil(snowToSakon[i])) {
+                            requestBody.message = snowToSakon[i];
+                            requestBody = JSON.stringify(requestBody);
+                            apiResponse = new APIUtilities().postData(currentScope + '.' + 'Servicedesk Tickets REST Message', 'PostComments', requestBody, SakonID);
+                            logger.writeInfo(logSource, 'updateTicketCommentSnowToSakon - Response status from APIUtilities for ' + TicketID + ' - ' + apiResponse[0] + ' - ' + apiResponse[1]);
+                            if (apiResponse[0] == 200) {
+                                var grSync = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+                                grSync.addQuery('number', SyncID);
+                                grSync.addQuery('sync_type', 'Update');
+                                grSync.query();
+                                while (grSync.next()) {
+                                    grSync.sync_status = 2;
+                                    grSync.comments = 'Comments updated successfully';
+                                    grSync.update();
+                                }
+                            }
+                        }
+
+                    }
+                } else {
+                    var grSync1 = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+                    grSync1.addQuery('number', SyncID);
+                    grSync1.query();
+                    while (grSync1.next()) {
+                        grSync1.sync_status = 2;
+                        grSync1.comments = 'No comments found for sync';
+                        grSync1.update();
+                    }
+                }
+            } else {
+                var grEsq = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+                grEsq.addQuery('number', SyncID);
+                grEsq.addQuery('sync_type', 'Update');
+                grEsq.query();
+                while (grEsq.next()) {
+                    grEsq.sync_status = -1;
+                    grEsq.comments = 'Comments not synced; Ticket not found in Sakon';
+                    grEsq.update();
+                }
+            }
+
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            throw ex;
+        } finally {
+            logger.writeInfo(logSource, 'End - TicketsSyncScript - updateTicketCommentSnowToSakon');
+            var gr = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+            gr.addQuery('number', SyncID);
+            gr.query();
+            while (gr.next()) {
+                var now2 = new GlideDateTime();
+                gr.last_retry_datetime = now2;
+                gr.modified_datetime = now2;
+                gr.sync_counter = Number(gr.getValue('sync_counter')) + 1;
+                gr.update();
+            }
+        }
+    },
+
+    //Map Sakon Ticket Status ID to Servicenow Ticket Status ID
+    getTicketStatusMapping: function(SakonTicketStatus) {
+        var ServicenowTicketStatus;
+        var currentScope = gs.getCurrentScopeName();
+        var grState = new GlideRecordSecure(currentScope + '_' + 'workflow_stage_mapping');
+        grState.addQuery('sakon_state_id', SakonTicketStatus);
+        grState.addQuery('category', 'Tickets');
+        grState.query();
+        while (grState.next()) {
+            ServicenowTicketStatus = grState.servicenow_state_id;
+            return ServicenowTicketStatus;
+        }
+    },
+
+    //Get all the variables for the request item for Issue Description
+    getReqItemVariables: function(TicketID) {
+        var issueDesc = "";
+        var grReqItem = new GlideRecordSecure('sc_req_item');
+        grReqItem.addQuery('number', TicketID);
+        grReqItem.query();
+        while (grReqItem.next()) {
+            for (var prop in grReqItem.variables) {
+                var variable = grReqItem.variables[prop].getDisplayValue().toString();
+                if (variable.indexOf(":") == -1 && variable != "") {
+                    issueDesc += prop + ':' + variable + "\n";
+                }
+            }
+            return issueDesc;
+        }
+
+    },
+
+    //Get active ticket types from Sakon
+    getSakonTicketTypes: function() {
+        var logger = new LogUtilities();
+        var logSource = 'TicketsSyncScript Script Include - getSakonTicketTypes';
+        logger.writeInfo(logSource, 'Start - TicketsSyncScript - getSakonTicketTypes');
+        var TicketID;
+        var TicketName;
+        var currentScope = gs.getCurrentScopeName();
+        var top = 1000;
+        var skip = 0;
+        var filter = 'lastModifiedDateTime ge 1901-01-01';
+
+        //Retrieve active ticket types from Sakon
+        apiResponse = new APIUtilities().getData(currentScope + '.' + 'Servicedesk Tickets REST Message', 'GetTicketTypes', top, skip, filter);
+
+        if (!(gs.nil(apiResponse))) {
+            if (apiResponse.length > 0) {
+
+                //Deactivate all tickets in Catalog items table
+                var grCatalogItems = new GlideRecordSecure('sc_cat_item');
+                grCatalogItems.addQuery('category.title', 'Services');
+                grCatalogItems.query();
+                while (grCatalogItems.next()) {
+                    grCatalogItems.active = false;
+                    grCatalogItems.update();
+                }
+
+                //Activate the ticket types returned by the API
+                for (var i = 0; i < apiResponse.length; i++) {
+                    if (!gs.nil(apiResponse[i].subCategory)) {
+                        TicketID = apiResponse[i].subCategory.id;
+                        var grCatalogMap = new GlideRecordSecure(currentScope + '_' + 'catalog_items_mapping');
+                        grCatalogMap.addQuery('subcategory_id', TicketID);
+                        grCatalogMap.addQuery('category_id', 252);
+                        grCatalogMap.query();
+                        while (grCatalogMap.next()) {
+                            TicketName = grCatalogMap.getDisplayValue('catalog_item').toString();
+                            logger.writeInfo(logSource, 'Matching Active Ticket - ' + TicketName);
+                            //Enable the ticket type in Servicenow    
+                            grCatalogItems = new GlideRecordSecure('sc_cat_item');
+                            grCatalogItems.addQuery('category.title', 'Services');
+                            grCatalogItems.addQuery('name', TicketName);
+                            grCatalogItems.query();
+                            while (grCatalogItems.next()) {
+                                logger.writeInfo(logSource, 'Activating Ticket - ' + TicketName);
+                                grCatalogItems.active = true;
+                                grCatalogItems.update();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        logger.writeInfo(logSource, 'End - TicketsSyncScript - getSakonTicketTypes');
+    },
+	
+    type: 'TicketsSyncScript'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-09-08 04:55:56</sys_created_on>
+        <sys_id>49d8745c1b2a301096fe0f26624bcb1a</sys_id>
+        <sys_mod_count>566</sys_mod_count>
+        <sys_name>TicketsSyncScript</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_49d8745c1b2a301096fe0f26624bcb1a</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-23 13:54:21</sys_updated_on>
+    </sys_script_include>
+</record_update>

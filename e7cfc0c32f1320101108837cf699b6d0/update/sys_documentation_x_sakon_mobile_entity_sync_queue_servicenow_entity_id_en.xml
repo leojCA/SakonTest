@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="servicenow_entity_id" label="ServiceNow Entity ID " language="en" table="x_sakon_mobile_entity_sync_queue">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>servicenow_entity_id</element>
+            <help/>
+            <hint/>
+            <label>ServiceNow Entity ID </label>
+            <language>en</language>
+            <name>x_sakon_mobile_entity_sync_queue</name>
+            <plural>ServiceNow Entity ID s</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-07-16 10:34:04</sys_created_on>
+            <sys_id>a36084c72fd1b0101108837cf699b636</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>ServiceNow Entity ID</sys_name>
+            <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+            <sys_update_name>sys_documentation_x_sakon_mobile_entity_sync_queue_servicenow_entity_id_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-07-16 10:34:04</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

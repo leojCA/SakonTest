@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.ServiceLinesSyncScript</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>ServiceLinesSyncScript</name>
+        <script><![CDATA[var ServiceLinesSyncScript = Class.create();
+ServiceLinesSyncScript.prototype = {
+    initialize: function() {},
+    loadData: function() {
+
+        try {
+            var logSource = 'ServiceLinesSyncScript Script Include';
+            var logger = new LogUtilities();
+            logger.writeInfo(logSource, 'Start - ' + logSource);
+            var apiResponse;
+            var currentScope = gs.getCurrentScopeName();
+			var utcNow = new CommonUtilities().getUTCDateTime();
+            var last_sync_date = gs.getProperty(currentScope + '.' + 'service_last_sync');
+            var filter = 'lastModifiedDateTime ge ' + last_sync_date;
+            var pageSize = parseInt(gs.getProperty(currentScope + '.' + 'page_size'));
+            var top = pageSize;
+            var skip = 0;
+            var iter = 1;
+
+            do {
+                logger.writeInfo(logSource, 'Iteration=' + iter + ', Top=' + top + ', Skip=' + skip);
+                apiResponse = new APIUtilities().getData(currentScope + '.' + 'Service Lines REST Message', 'GetServiceLines', top, skip, filter);
+                logger.writeInfo(logSource, 'Iteration=' + iter + ', Total records fetched=' + apiResponse.data.length);
+                //Get the total record count from API response
+                var totalRec = apiResponse.total;
+
+                //Load API response to Import Set table		
+                for (var i = 0; i < apiResponse.data.length; i++) {
+
+                    var newRec = new GlideRecordSecure(currentScope + '_' + 'service_lines_import');
+                    newRec.initialize();
+                    newRec.u_wireless_service_id = apiResponse.data[i].id;
+                    newRec.u_phone_number = apiResponse.data[i].phoneNumber;
+                    newRec.u_countryCode = apiResponse.data[i].countryCode;
+                    newRec.u_wireless_device_id = apiResponse.data[i].deviceId;
+                    newRec.u_carrier_user_name = apiResponse.data[i].carrierUserName;
+                    newRec.u_sim_card_number = apiResponse.data[i].simNumber;
+                    newRec.u_sub_account_number = apiResponse.data[i].subAccountNumber;
+                    newRec.u_contract_start_date = apiResponse.data[i].contractStart;
+                    newRec.u_contract_end_date = apiResponse.data[i].contractEnd;
+                    newRec.u_upgrade_eligibility_date = apiResponse.data[i].upgradeEligibility;
+                    newRec.u_activation_date = apiResponse.data[i].accountActivation;
+                    newRec.u_optimize = apiResponse.data[i].optimize;
+                    newRec.u_service_number_end_use = apiResponse.data[i].serviceNumberEndUse;
+                    newRec.u_primary_plan_name = apiResponse.data[i].primaryPlan;
+                    if (!gs.nil(apiResponse.data[i].operationalStatus)) {
+                        newRec.u_operational_status_id = apiResponse.data[i].operationalStatus.id;
+                        newRec.u_operational_status = apiResponse.data[i].operationalStatus.name;
+                    }
+                    if (!gs.nil(apiResponse.data[i].serviceNumberType)) {
+                        newRec.u_service_number_type_id = apiResponse.data[i].serviceNumberType.id;
+                        newRec.u_service_number_type = apiResponse.data[i].serviceNumberType.name;
+                    }
+                    if (!gs.nil(apiResponse.data[i].carrier)) {
+                        newRec.u_carrier_id = apiResponse.data[i].carrier.id;
+                        newRec.u_carrier = apiResponse.data[i].carrier.name;
+                    }
+                    if (!gs.nil(apiResponse.data[i].billingStatus)) {
+                        newRec.u_billing_status_id = apiResponse.data[i].billingStatus.id;
+                        newRec.u_billing_status = apiResponse.data[i].billingStatus.name;
+                    }
+                    if (!gs.nil(apiResponse.data[i].user)) {
+                        newRec.u_employee_id = apiResponse.data[i].user.employeeId;
+                        var gr = new GlideRecordSecure('x_sakon_mobile_users');
+                        gr.addQuery('sakon_user_id', apiResponse.data[i].user.id);
+                        gr.query();
+                        while (gr.next()) {
+                            newRec.u_user_id = gr.sys_id;
+                        }
+                    }
+                    if (!gs.nil(apiResponse.data[i].status)) {
+                        newRec.u_service_status_id = apiResponse.data[i].status.id;
+                        newRec.u_status = apiResponse.data[i].status.name;
+                    }
+                    if (!gs.nil(apiResponse.data[i].allocationInfo)) {
+                        newRec.u_department = apiResponse.data[i].allocationInfo.department;
+                        newRec.u_cost_center = apiResponse.data[i].allocationInfo.costCenter;
+                        newRec.u_glcode = apiResponse.data[i].allocationInfo.glCode;
+                        newRec.u_accountcode = apiResponse.data[i].allocationInfo.accountCode;
+                        newRec.u_business_entity = apiResponse.data[i].allocationInfo.businessEntity;
+                        newRec.u_business_unit = apiResponse.data[i].allocationInfo.businessUnit;
+                        newRec.u_business_group = apiResponse.data[i].allocationInfo.businessGroup;
+                        newRec.u_business_location = apiResponse.data[i].allocationInfo.businessLocation;
+                    }
+                    newRec.insert();
+                }
+                logger.writeInfo(logSource, 'Iteration=' + iter + ' Inserted records to Service Lines Table');
+                skip = skip + top;
+                iter = iter + 1;
+            } while (skip < totalRec);
+
+            //Update Last_sync system property with current date(UTC)   
+			
+			var gt_servicesync =new GlideRecord('sys_properties');
+			gt_servicesync.addQuery('sys_id','558c8b512f0130101108837cf699b6dd');//x_sakon_mobile.service_last_sync--Property
+			gt_servicesync.query();
+			if(gt_servicesync.next()){
+			gt_servicesync.value=utcNow;
+			gt_servicesync.update();	
+			}
+		
+			
+            //gs.setProperty(currentScope + '.' + 'service_last_sync', utcNow);
+            logger.writeInfo(logSource, 'End - ' + logSource);
+
+        } catch (ex) {
+            logger.writeError(logSource, ex);
+            gs.eventQueue('x_sakon_mobile.service.lines.sync.failur', newRec);
+            throw ex;
+        }
+    },
+
+    type: 'ServiceLinesSyncScript'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-06-30 10:49:06</sys_created_on>
+        <sys_id>ae29ad752f8530101108837cf699b675</sys_id>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>ServiceLinesSyncScript</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_ae29ad752f8530101108837cf699b675</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-02-20 11:03:58</sys_updated_on>
+    </sys_script_include>
+</record_update>

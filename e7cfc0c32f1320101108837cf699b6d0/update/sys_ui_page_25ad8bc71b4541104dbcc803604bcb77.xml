@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[function apiKeyCheck() {
+    document.getElementById('lblApiKeySuccess').innerHTML = '';
+    document.getElementById('lblApiKeyError').innerHTML = '';
+    document.getElementById('lblApiKeyComments').innerHTML = '';
+    var debugInfo = '\nAPI key check - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getConfigurationData');
+    ga.addParam('system_prop_name', 'x_sakon_mobile.api_key');
+    ga.getXML(function(response) {
+        callback(response, debugInfo);
+    });
+
+    function callback(response, debugInfo) {
+        var answer = response.responseXML.documentElement.getAttribute("answer");
+        answer = JSON.parse(answer);
+        var apiKey = answer.value;
+        debugInfo += '\nApi key value : ' + (apiKey === "" || apiKey === null ? apiKey : apiKey.substring(0, 20));
+
+        if (apiKey.length > 0) {
+            document.getElementById('lblApiKeySuccess').innerHTML = 'Success';
+        } else {
+            document.getElementById('lblApiKeyError').innerHTML = 'Error';
+            $('#lblApiKeyComments').removeAttr('style');
+            $('#lblApiKeyComments').attr('style', 'color:red');
+        }
+        debugInfo += '\nApi Key Check : End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    }
+}
+
+function baseUrlCheck() {
+    document.getElementById('lblbaseUrlSuccess').innerHTML = '';
+    document.getElementById('lblbaseUrlError').innerHTML = '';
+    document.getElementById('lblbaseUrlComments').innerHTML = '';
+    var debugInfo = '\nBase Url Check - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getConfigurationData');
+    ga.addParam('system_prop_name', 'x_sakon_mobile.api_base_url');
+    ga.getXML(function(response) {
+        callback(response, debugInfo);
+    });
+
+    function callback(response, debugInfo) {
+        var answer = response.responseXML.documentElement.getAttribute("answer");
+        answer = JSON.parse(answer);
+        var baseUrl = answer.value;
+        debugInfo += '\nBase Url value : ' + baseUrl;
+        if (baseUrl.length > 0) {
+            document.getElementById('lblbaseUrlSuccess').innerHTML = 'Success';
+        } else {
+            document.getElementById('lblbaseUrlError').innerHTML = 'Error';
+            $('#lblbaseUrlComments').removeAttr('style');
+            $('#lblbaseUrlComments').attr('style', 'color:red');
+        }
+        debugInfo += '\nBase Url Check : End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    }
+}
+
+function marketplaceConnectivityCheck() {
+    document.getElementById('mrKtplCcSuccess').innerHTML = '';
+    document.getElementById('mrKtplCcError').innerHTML = '';
+    document.getElementById('lblMarketplaceComments').innerHTML = '';
+    var debugInfo = '\nMarketplace api connectivity check - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getConnectivityStatus');
+    ga.addParam('rest_message_name', 'Market place connectivity check');
+    ga.getXML(function(response) {
+        callback(response, debugInfo);
+    });
+
+    function callback(response, debugInfo) {
+        var answer = response.responseXML.documentElement.getAttribute("answer");
+        debugInfo += '\nMarketplace module ping response : ' + answer;
+        if (answer == null) {
+            document.getElementById('mrKtplCcError').innerHTML = 'Error';
+            $('#lblMarketplaceComments').removeAttr('style');
+            $('#lblMarketplaceComments').attr('style', 'color:red');
+        } else {
+            document.getElementById('mrKtplCcSuccess').innerHTML = 'Success';
+        }
+        debugInfo += '\nMarketplace  api connectivity check - End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    }
+}
+
+function servicedeskConnectivityCheck() {
+    document.getElementById('serDeskSuccess').innerHTML = '';
+    document.getElementById('serDeskError').innerHTML = '';
+    document.getElementById('lblservicedeskComments').innerHTML = '';
+    var debugInfo = '\nServicedesk api connectivity check - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getConnectivityStatus');
+    ga.addParam('rest_message_name', 'Servicedesk connectivity check');
+    ga.getXML(function(response) {
+        callback(response, debugInfo);
+    });
+
+    function callback(response, debugInfo) {
+        var answer = response.responseXML.documentElement.getAttribute("answer");
+        debugInfo += '\nServicedesk module ping response : ' + answer;
+        if (answer == null) {
+            document.getElementById('serDeskError').innerHTML = 'Error';
+            $('#lblservicedeskComments').removeAttr('style');
+            $('#lblservicedeskComments').attr('style', 'color:red');
+        } else {
+            document.getElementById('serDeskSuccess').innerHTML = 'Success';
+        }
+        debugInfo += '\nServicedesk  api connectivity check - End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    }
+}
+
+function inventoryConnectivityCheck() {
+    document.getElementById('inventoryCheckSuccess').innerHTML = '';
+    document.getElementById('inventoryCheckError').innerHTML = '';
+    document.getElementById('lblinventoryapiComments').innerHTML = '';
+    var debugInfo = '\nInventory api connectivity check - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getConnectivityStatus');
+    ga.addParam('rest_message_name', 'Inventory connectivity check');
+    ga.getXML(function(response) {
+        callback(response, debugInfo);
+    });
+
+    function callback(response, debugInfo) {
+        var answer = response.responseXML.documentElement.getAttribute("answer");
+        debugInfo += '\nInventory module ping response : ' + answer;
+        if (answer == null) {
+            document.getElementById('inventoryCheckError').innerHTML = 'Error';
+            $('#lblinventoryapiComments').removeAttr('style');
+            $('#lblinventoryapiComments').attr('style', 'color:red');
+        } else {
+            document.getElementById('inventoryCheckSuccess').innerHTML = 'Success';
+        }
+        debugInfo += '\nInventory  api connectivity check - End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    }
+}
+
+function userDirectoryConnectivityCheck() {
+    document.getElementById('usrDirtccSuccess').innerHTML = '';
+    document.getElementById('usrDirtccError').innerHTML = '';
+    document.getElementById('lbluserapiComments').innerHTML = '';
+    var debugInfo = '\nUsers Directory api connectivity check - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getConnectivityStatus');
+    ga.addParam('rest_message_name', 'Users directory connectivity check');
+    ga.getXML(function(response) {
+        callback(response, debugInfo);
+    });
+
+    function callback(response, debugInfo) {
+        var answer = response.responseXML.documentElement.getAttribute("answer");
+        debugInfo += '\nUsers Directory module ping response : ' + answer;
+        if (answer == null) {
+            document.getElementById('usrDirtccError').innerHTML = 'Error';
+            $('#lbluserapiComments').removeAttr('style');
+            $('#lbluserapiComments').attr('style', 'color:red');
+        } else {
+            document.getElementById('usrDirtccSuccess').innerHTML = 'Success';
+        }
+        debugInfo += '\nUsers Directory  api connectivity check - End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    }
+}
+
+function servicesSyncCheck() {
+    document.getElementById('lblServicesSyncSuccess').innerHTML = '';
+    document.getElementById('lblServicesSyncError').innerHTML = '';
+    document.getElementById('lblServiceSyncComments').innerHTML = '';
+    var debugInfo = '\nServices sync status check - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getServicesLastSyncDate');
+    ga.getXMLAnswer(function(response) {
+        answer = JSON.parse(response);
+        var dateDiff = getDaysDifferenceNow(answer.lastsyncdate);
+        if (dateDiff == 10000) {
+            $('#lblServiceSyncComments').removeAttr('style');
+            $('#lblServiceSyncComments').html("Sync process was never run.");
+            $('#lblServiceSyncComments').attr('style', 'color:red');
+        } else if (dateDiff > 2) {
+            $('#lblServiceSyncComments').removeAttr('style');
+            $('#lblServiceSyncComments').html("Last successful sync was " + Math.floor(dateDiff) + " days ago. Total services count: " + answer.count);
+            $('#lblServiceSyncComments').attr('style', 'color:red');
+        }
+        debugInfo += '\nServices last synced on: ' + answer.lastsyncdate;
+        debugInfo += '\nCount of services last synced : ' + answer.count;
+        if (answer == null) {
+            document.getElementById('lblServicesSyncError').innerHTML = 'Error';
+        } else if (dateDiff >= 2) {
+            document.getElementById('lblServicesSyncSuccess').innerHTML = 'Warning';
+            $('#lblServicesSyncSuccess').attr('style', 'color:orange');
+
+        } else {
+            document.getElementById('lblServicesSyncSuccess').innerHTML = 'Success';
+        }
+        debugInfo += '\nServices sync status check - End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    });
+}
+
+function devicesSyncCheck() {
+    document.getElementById('lblDevicesSyncSuccess').innerHTML = '';
+    document.getElementById('lblDevicesSyncError').innerHTML = '';
+    document.getElementById('lbldeviceSyncComments').innerHTML = '';
+    var debugInfo = '\nDevices sync status check - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getDevicesLastSyncDate');
+    ga.addParam('x_sakon_mobile_devices_table', 'phone_number');
+    ga.getXMLAnswer(function(answer) {
+        answer = JSON.parse(answer);
+        var dateDiff = getDaysDifferenceNow(answer.deviceslastsyncdate);
+        if (dateDiff == 10000) {
+            $('#lbldeviceSyncComments').removeAttr('style');
+            $('#lbldeviceSyncComments').html("Sync process was never run.");
+            $('#lbldeviceSyncComments').attr('style', 'color:red');
+        } else if (dateDiff > 2) {
+            $('#lbldeviceSyncComments').removeAttr('style');
+            $('#lbldeviceSyncComments').html("Last sync happened : " + Math.floor(dateDiff) + " days ago. Total devices count: " + answer.count);
+            $('#lbldeviceSyncComments').attr('style', 'color:red');
+        }
+        debugInfo += '\nDevices last synced on: ' + answer.deviceslastsyncdate;
+        debugInfo += '\nCount of devices last synced : ' + answer.count;
+
+        if (answer == null) {
+            document.getElementById('lblDevicesSyncError').innerHTML = 'Error';
+        } else if (dateDiff >= 2) {
+            document.getElementById('lblDevicesSyncError').innerHTML = 'Warning';
+            $('#lblDevicesSyncError').attr('style', 'color:orange');
+        } else {
+            document.getElementById('lblDevicesSyncSuccess').innerHTML = 'Success';
+        }
+        debugInfo += '\nDevices sync status check - End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    });
+}
+
+function marketplaceOrdersSyncCheck() {
+    document.getElementById('lblMarketplaceSyncSuccess').innerHTML = '';
+    document.getElementById('lblMarketplaceSyncError').innerHTML = '';
+    document.getElementById('lblMarketplaceSyncComments').innerHTML = '';
+    var debugInfo = '\nMarketplace sync status check - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getMarketplaceLastSyncDate');
+    ga.getXMLAnswer(function(answer) {
+        answer = JSON.parse(answer);
+        var daysDifference = getDaysDifferenceNow(answer.mrktplastsyncdate);
+        var isError = 0;
+        var isWarning = 0;
+        var message = '';
+        if (daysDifference == 10000) {
+            isWarning = 1;
+            message = 'Sync process was never run.';
+        } else if (daysDifference > 0) {
+            isWarning = 1;
+
+            message = "Last sync happened : " + Math.floor(daysDifference) + " days ago.";
+			alert(message);
+        } else {
+            var dateDiff = getHoursDifferenceNow(answer.mrktplastsyncdate);
+            if (dateDiff == 10000) {
+                isError = 1;
+                message = 'Sync process was never run.';
+            } else if (dateDiff > 2) {
+                isWarning = 1;
+                message = "Last sync happened : " + Math.floor(dateDiff) + " hours ago.";
+            }
+        }
+        debugInfo += '\nMarketplace last synced on: ' + answer.mrktplastsyncdate;
+       // debugInfo += '\nCount of devices last synced : ' + answer.count;//Srikanth-commented because not required.
+        if (answer == null) {
+            document.getElementById('lblMarketplaceSyncError').innerHTML = 'Error';
+        } else if (isError == 1) {
+            document.getElementById('lblMarketplaceSyncError').innerHTML = 'Error';
+            $('#lblMarketplaceSyncComments').removeAttr('style');
+            $('#lblMarketplaceSyncComments').html(message);
+            $('#lblMarketplaceSyncComments').attr('style', 'color:red');
+        } else if (isWarning == 1) {
+            document.getElementById('lblMarketplaceSyncError').innerHTML = 'Warning';
+            $('#lblMarketplaceSyncError').attr('style', 'color:orange');
+            $('#lblMarketplaceSyncComments').removeAttr('style');
+            $('#lblMarketplaceSyncComments').html(message);
+            $('#lblMarketplaceSyncComments').attr('style', 'color:red');
+        } else {
+            document.getElementById('lblMarketplaceSyncSuccess').innerHTML = 'Success';
+        }
+        debugInfo += '\nMarketplace sync status check - End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    });
+}
+
+function servicedeskTicketsSyncCheck() {
+    document.getElementById('lblTicketsLastSyncSuccess').innerHTML = '';
+    document.getElementById('lblTicketsLastSyncError').innerHTML = '';
+    document.getElementById('lblTicketslastsyncComments').innerHTML = '';
+    var debugInfo = '\n Servicedesk ticket last sync status check - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getTicketsLastSyncDate');
+    ga.getXMLAnswer(function(answer) {
+        answer = JSON.parse(answer);
+        var isError = 0;
+        var isWarning = 0;
+        var message = '';
+        var daysDifference = getDaysDifferenceNow(answer.ticketlastsyncdate);        
+        if (daysDifference == 10000) {
+            isWarning = 1;
+            $('#lblTicketslastsyncComments').removeAttr('style');
+            message = "Sync process was never run.";
+            $('#lblTicketslastsyncComments').attr('style', 'color:red');
+        } else if (daysDifference > 0) {
+            isWarning = 1;
+            message = "Last sync happened : " + Math.floor(daysDifference) + " days ago.";
+        } else {
+            var dateDiff = getHoursDifferenceNow(answer.ticketlastsyncdate);
+            if (dateDiff == 10000) {
+                isWarning = 1;
+                message = "Sync process was never run.";
+            } else if (dateDiff > 2) {
+                isWarning = 1;
+                message = "Last sync happened : " + Math.floor(dateDiff) + " hours ago.";
+            }
+        }
+
+        debugInfo += '\n Servicedesk tickets last synced on: ' + answer.ticketlastsyncdate;
+        //debugInfo += '\nCount of tickets last synced : ' + answer.count;//Srikanth commented because not required.
+        if (answer == null) {
+            document.getElementById('lblTicketsLastSyncError').innerHTML = 'Error';
+        } else if (isWarning == 1) {
+            document.getElementById('lblTicketsLastSyncError').innerHTML = 'Warning';
+            $('#lblTicketsLastSyncError').attr('style', 'color:orange');
+            $('#lblTicketslastsyncComments').removeAttr('style');
+            $('#lblTicketslastsyncComments').html(message);
+            $('#lblTicketslastsyncComments').attr('style', 'color:red');
+        } else {
+            document.getElementById('lblTicketsLastSyncSuccess').innerHTML = 'Success';
+        }
+        debugInfo += '\nServicedesk tickets Last sync status check - End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    });
+}
+
+function productConfigurationCheck() {
+    document.getElementById('lblSakonproductconfigurationcheckSuccess').innerHTML = '';
+    document.getElementById('lblSakonproductconfigurationcheckError').innerHTML = '';
+    document.getElementById('lblSakonproductconfigurationcheckComments').innerHTML = '';
+    var debugInfo = '\nSakon product configuration check - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getSakonCatalogCount');
+    ga.getXML(function(response) {
+        callback(response, debugInfo);
+    });
+
+    function callback(response, debugInfo) {
+        var answer = response.responseXML.documentElement.getAttribute("answer");
+        answer = JSON.parse(answer);
+
+        if (answer.rawCatalogCount == 0 || answer.sNowCatalogCount == 0) {
+            document.getElementById('lblSakonproductconfigurationcheckError').innerHTML = 'Error';
+            debugInfo += '\nRaw catalog items count: ' + answer.rawCatalogCount;
+            debugInfo += '\nServicenow catalog count: ' + answer.sNowCatalogCount;
+            $('#lblSakonproductconfigurationcheckComments').html("Raw catalog items count: " + answer.rawCatalogCount + '\r\nServicenow catalog count: ' + answer.sNowCatalogCount);
+            $('#lblSakonproductconfigurationcheckComments').removeAttr('style');
+            $('#lblSakonproductconfigurationcheckComments').attr('style', 'color:red');
+
+        } else {
+            document.getElementById('lblSakonproductconfigurationcheckSuccess').innerHTML = 'Success';
+            debugInfo += '\nRaw catalog items count: ' + answer.rawCatalogCount;
+            debugInfo += '\nServicenow catalog count: ' + answer.sNowCatalogCount;
+        }
+        debugInfo += '\nSakon product configuration check - End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    }
+}
+
+function selfserviceTicketsConfigurationCheck() {
+    document.getElementById('lblSelftestconfigurationcheckSuccess').innerHTML = '';
+    document.getElementById('lblSelftestconfigurationcheckError').innerHTML = '';
+    document.getElementById('lblSelftestconfigurationcheckComments').innerHTML = '';
+    var debugInfo = '\nSelf service tickets  configuration check  - Begin';
+    var ga = new GlideAjax('SakonSmokeTest');
+    ga.addParam('sysparm_name', 'getSelfserviceTicketsCount');
+    ga.getXML(function(response) {
+        callback(response, debugInfo);
+    });
+
+    function callback(response, debugInfo) {
+        var answer = response.responseXML.documentElement.getAttribute("answer");
+        answer = JSON.parse(answer);
+        if (answer.selfServiceTicketsCount == 0) {
+            document.getElementById('lblSelftestconfigurationcheckError').innerHTML = 'Error';
+            debugInfo += '\nSelf service tickets count: ' + answer.sServicescc;
+            $('#lblSelftestconfigurationcheckComments').html("\nSelf test catalog count: " + answer.sServicescc);
+            $('#lblSelftestconfigurationcheckComments').removeAttr('style');
+            $('#lblSelftestconfigurationcheckComments').attr('style', 'color:red');
+
+        } else {
+            document.getElementById('lblSelftestconfigurationcheckSuccess').innerHTML = 'Success';
+            debugInfo += '\nSelf service tickets count: ' + answer.selfServiceTicketsCount;
+        }
+        debugInfo += '\nSelf service tickets  configuration check - End\n';
+        document.getElementById('txtdebuginfo').innerHTML += debugInfo;
+    }
+}
+
+function getDaysDifferenceNow(date) {
+    
+	var syncDate = new Date(date.replace('T', ' ').replace('Z', ''));
+    if (syncDate.getFullYear() <= 1901) {
+        return 10000;
+    }
+    var now = new Date();
+    var utcNowDate = now.getUTCDate();
+    var syncDateDay = syncDate.getUTCDate();
+    var difference = (utcNowDate - syncDateDay);
+    return difference;
+	
+}
+
+function getHoursDifferenceNow(date) {
+    var syncDate = new Date(date.replace('T', ' ').replace('Z', '')); /* This is in UTC*/
+    if (syncDate.getFullYear() <= 1901) {
+        return 10000;
+    }
+    var now = new Date();
+    var utcNowHour = now.getUTCHours();
+    var syncDateHour = syncDate.getHours();
+    var difference = (utcNowHour - syncDateHour);
+    return difference;
+}
+
+function clearComments() {
+    document.getElementById('lblApiKeyComments').innerHTML = '';
+    document.getElementById('lblbaseUrlComments').innerHTML = '';
+    document.getElementById('lblMarketplaceComments').innerHTML = '';
+    document.getElementById('lblservicedeskComments').innerHTML = '';
+    document.getElementById('lblinventoryapiComments').innerHTML = '';
+    document.getElementById('lbluserapiComments').innerHTML = '';
+    document.getElementById('lblServiceSyncComments').innerHTML = '';
+    document.getElementById('lbldeviceSyncComments').innerHTML = '';
+    document.getElementById('lblMarketplaceSyncComments').innerHTML = '';
+    document.getElementById('lblTicketslastsyncComments').innerHTML = '';
+    document.getElementById('lblSakonproductconfigurationcheckComments').innerHTML = '';
+    document.getElementById('lblSelftestconfigurationcheckComments').innerHTML = '';
+}
+
+function runAllTests() {
+    clearComments();
+    apiKeyCheck();
+    baseUrlCheck();
+    marketplaceConnectivityCheck();
+    servicedeskConnectivityCheck();
+    inventoryConnectivityCheck();
+    userDirectoryConnectivityCheck();
+    servicesSyncCheck();
+    devicesSyncCheck();
+    marketplaceOrdersSyncCheck();
+    servicedeskTicketsSyncCheck();
+    productConfigurationCheck();
+    selfserviceTicketsConfigurationCheck();
+}]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_sakon_mobile_Sakon_smoke_test_page.do</endpoint>
+        <html><![CDATA[<html>
+   <head>
+      <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.6.0/bootstrap.min.js" integrity="sha384-pcvEcGlYdrNtJd6aI4JiTRS871fKCqehE+t2owDVimpVaShOkEpnEP/R1fw8fX7a" crossorigin="anonymous">
+</script>
+	  <script type = "text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" integrity="sha384-1m+9ku4RSrkK57DhGU4NHDxABoIZQhXt8KkImKbYrwZXEqHGx3Onaxq6LfV86ijO" crossorigin="anonymous"> </script>
+   </head>
+   <body>
+      <div class="container-fluid">
+      <div class="row ml-2">
+         <div class="col-md-12">
+            <div class="mt-2">
+               <table style="width:100%">
+                  <tr>
+                     <td>
+                        <h2><label>Sakon Mobile Smoke Test</label></h2>
+                     </td>
+                     <td style="text-align:right" class="mr-2">
+                        <button class="btn" onclick="runAllTests()" style="background-color:#1f8476;color:#ffffff;width:80px">Run Tests</button>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+            <div class="row">
+               <div class="col-md-4">
+                  <h4><label class="label-lg" style="font-weight:bold">Test Case
+                     </label>
+                  </h4>
+               </div>
+               <div class="col-md-2">
+                  <h4>  <label class="col-form-label-lg" style="font-weight:bold">Result
+                     </label>
+                  </h4>
+               </div>
+               <div class="col-md-2">
+                  <h4><label class="col-form-label-lg" style="font-weight:bold">Button
+                     </label>
+                  </h4>
+               </div>
+               <div class="col-md-4">
+                  <h4><label class="col-form-label-lg" style="font-weight:bold">Comments
+                     </label>
+                  </h4>
+               </div>
+            </div>
+            <hr style="margin-top:0px;margin-bottom:10px" />
+            <div class="row">
+               <div class="col-md-4">
+                  <div>
+                     <label class="col-form-label-lg" style="font-weight:bold;font-size:15px"> API key check.</label>
+                  </div>
+                  <div>
+                     <label class="col-form-label-md"> Check if the API key system property is configured.</label>
+                  </div>
+               </div>
+               <div class="col-md-2">
+                  <label id="lblApiKeySuccess" style="color:green">
+                  </label>
+                  <label id="lblApiKeyError" style="color:red">
+                  </label>
+               </div>
+               <div class="col-md-2">
+                  <button class="btn btn-sm" onclick="apiKeyCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+               </div>
+               <div class="col-md-4">
+                  <label class="col-form-label-sm" style="display:none" id="lblApiKeyComments"> Add a valid API key for x_sakon_mobile.api_key in system properties table.
+                  </label>
+               </div>
+            </div>
+            <hr style="margin-top:0px;margin-bottom:10px" />
+            <div class="row" style="margin-bottom:5px">
+               <div class="col-md-4">
+                  <div>
+                     <label class="col-form-label-sm" style="font-weight:bold;font-size:15px"> API Base url check</label>
+                  </div>
+                  <div>
+                     <label class="col-form-label-sm">Check for valid API base url in system properties is populated.</label>
+                  </div>
+               </div>
+               <div class="col-md-2">
+                  <label id="lblbaseUrlSuccess" style="color:green">
+                  </label>
+                  <label id="lblbaseUrlError" style="color:red">
+                  </label>
+               </div>
+               <div class="col-md-2">
+                  <button class="btn btn-sm" onclick="baseUrlCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+               </div>
+               <div class="col-md-4">
+                  <label class="col-form-label-sm" style="display:none" id="lblbaseUrlComments"> Add a valid base url for x_sakon_mobile.api_base_url property in system properties table.
+                  </label>
+               </div>
+            </div>
+            <hr style="margin-top:0px;margin-bottom:10px" />
+            <div class="row mt-3">
+               <div class="col-md-4">
+                  <div>
+                     <label class="col-form-label-sm" style="font-weight:bold;font-size:15px"> Marketplace API connectivity check.</label> 
+                  </div>
+                  <div>
+                     <label class="col-form-label-sm">Check if the Marketplace API is online and check if the current user has access to it.</label>
+                  </div>
+               </div>
+               <div class="col-md-2">
+                  <label id="mrKtplCcSuccess" style="color:green">
+                  </label>
+                  <label id="mrKtplCcError" style="color:red">
+                  </label>
+               </div>
+               <div class="col-md-2">
+                  <button class="btn btn-sm" onclick="marketplaceConnectivityCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+               </div>
+               <div class="col-md-4">
+                  <label class="col-form-label-sm" style="display:none" id="lblMarketplaceComments"> Check if the API base URL and the API key is proper. If URL and key are configured correctly then contact Sakon support to verify API status.</label>
+               </div>
+            </div>
+            <hr style="margin-top:0px;margin-bottom:10px" />
+            <div class="row mt-3">
+               <div class="col-md-4">
+                  <div>
+                     <label class="col-form-label-sm" style="font-weight:bold;font-size:15px"> Servicedesk API connectivity check.</label> 
+                  </div>
+                  <div>
+                     <label class="col-form-label-sm">Check if the Servicedesk API is online and check if the current user has access to it.</label>
+                  </div>
+               </div>
+               <div class="col-md-2">
+                  <label id="serDeskSuccess" style="color:green">
+                  </label>
+                  <label id="serDeskError" style="color:red">
+                  </label>
+               </div>
+               <div class="col-md-2">
+                  <button class="btn btn-sm" onclick="servicedeskConnectivityCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+               </div>
+               <div class="col-md-4">
+                  <label class="col-form-label-sm" style="display:none" id="lblservicedeskComments"> Check if the API base URL and the API key is proper. If URL and key are configured correctly then contact Sakon support to verify API status.</label>
+               </div>
+            </div>
+            <hr style="margin-top:0px;margin-bottom:10px" />
+           
+		   
+			  <div class="row mt-3">
+               <div class="col-md-4">
+                  <div>
+                     <label class="col-form-label-sm" style="font-weight:bold;font-size:15px"> Inventory API connectivity check.</label> 
+                  </div>
+                  <div>
+                     <label class="col-form-label-sm"> Check if the Inventory API is online and check if the current user has access to it.
+                     </label>
+                  </div>
+               </div>
+               <div class="col-md-2">
+                  <label id="inventoryCheckSuccess" style="color:green">
+                  </label>
+                  <label id="inventoryCheckError" style="color:red">
+                  </label>
+               </div>
+               <div class="col-md-2">
+                  <button class="btn btn-sm" onclick="inventoryConnectivityCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+               </div>
+               <div class="col-md-4">
+                  <label class="col-form-label-sm" style="display:none" id="lblinventoryapiComments"> Check if the API base URL and the API key is proper. If URL and key are configured correctly then contact Sakon support to verify API status.</label>
+               </div>
+            </div>
+            <hr style="margin-top:0px;margin-bottom:10px" />
+			 
+            <div class="row mb-2">
+               <div class="col-md-4">
+                  <div>
+                     <label class="col-form-label-sm" style="font-weight:bold;font-size:15px"> User API connectivity Check.</label>
+				   </div>
+				   <div>
+                        <label class="col-form-label-sm">  Check if the User API is online and check if the current user has access to it.</label>
+                     </div>
+                  </div>
+                  <div class="col-md-2">
+                     <label id="usrDirtccSuccess" style="color:green">
+                     </label>
+                     <label id="usrDirtccError" style="color:red">
+                     </label>
+                  </div>
+                  <div class="col-md-2">
+                     <button class="btn btn-sm" onclick="userDirectoryConnectivityCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+                  </div>
+                  <div class="col-md-4">
+                     <label class="col-form-label-sm" style="display:none" id="lbluserapiComments">Check if the API base URL and the API key is proper. If URL and key are configured correctly then contact Sakon support to verify API status.</label>
+                  </div>
+               </div>
+			 <hr style="margin-top:0px;margin-bottom:10px" />
+		    <div class="row mb-2">
+               <div class="col-md-4">
+                  <div>
+                     <label class="col-form-label-sm" style="font-weight:bold;font-size:15px"> Services sync check.</label>
+				   </div>
+				   <div>
+                        <label class="col-form-label-sm"> Check the sync status of the services and number of services fetched in last sync. </label>
+                     </div>
+                  </div>
+                  <div class="col-md-2">
+                     <label id="lblServicesSyncSuccess" style="color:green">
+                     </label>
+                     <label id="lblServicesSyncError" style="color:red">
+                     </label>
+                  </div>
+                  <div class="col-md-2">
+                     <button class="btn btn-sm" onclick="servicesSyncCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+                  </div>
+                  <div class="col-md-4">
+                     <label id="lblServiceSyncComments" class="col-form-label-sm" style="display:none"> </label>
+                  </div>
+               </div>
+			 <hr style="margin-top:0px;margin-bottom:10px" />
+			  <div class="row mb-2">
+               <div class="col-md-4">
+                  <div>
+                     <label class="col-form-label-sm" style="font-weight:bold;font-size:15px"> Devices sync check.</label>
+				   </div>
+				   <div>
+                        <label class="col-form-label-sm"> Check the sync status of the devices and number of devices fetched in last sync. </label>
+                     </div>
+                  </div>
+                  <div class="col-md-2">
+                     <label id="lblDevicesSyncSuccess" style="color:green">
+                     </label>
+                     <label id="lblDevicesSyncError" style="color:red">
+                     </label>
+                  </div>
+                  <div class="col-md-2">
+                     <button class="btn btn-sm" onclick="devicesSyncCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+                  </div>
+                  <div class="col-md-4">
+                     <label class="col-form-label-sm" style="display:none" id="lbldeviceSyncComments"> </label>
+                  </div>
+               </div>
+			          <hr style="margin-top:0px;margin-bottom:10px" />
+
+			  <div class="row mb-2">
+               <div class="col-md-4">
+                  <div>
+                     <label class="col-form-label-sm" style="font-weight:bold;font-size:15px"> Marketplace orders sync check.</label>
+				   </div>
+				   <div>
+                        <label class="col-form-label-sm"> Check the sync status of the marketplace orders. </label>
+                     </div>
+                  </div>
+                  <div class="col-md-2">
+                     <label id="lblMarketplaceSyncSuccess" style="color:green">
+                     </label>
+                     <label id="lblMarketplaceSyncError" style="color:red">
+                     </label>
+                  </div>
+                  <div class="col-md-2">
+                     <button class="btn btn-sm" onclick="marketplaceOrdersSyncCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+                  </div>
+                  <div class="col-md-4">
+                     <label class="col-form-label-sm" style="display:none" id="lblMarketplaceSyncComments"> </label>
+                  </div>
+               </div>
+			          <hr style="margin-top:0px;margin-bottom:10px" />
+
+			 <div class="row mb-2">
+               <div class="col-md-4">
+                  <div>
+                     <label class="col-form-label-sm" style="font-weight:bold;font-size:15px">  Servicedesk tickets sync check.</label>
+				  </div>
+				  <div>
+                        <label class="col-form-label-sm"> Check the sync status of the  servicedesk tickets last sync.</label>
+                  </div>
+               </div>
+				 <div class="col-md-2">
+					 <label id="lblTicketsLastSyncSuccess" style="color:green">
+					 </label>
+					 <label id="lblTicketsLastSyncError" style="color:red">
+					 </label>
+				 </div>
+				 <div class="col-md-2">
+					 <button class="btn btn-sm" onclick="servicedeskTicketsSyncCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+				 </div>
+				 <div class="col-md-4">
+					 <label class="col-form-label-sm" style="display:none" id="lblTicketslastsyncComments"> </label>
+				 </div>
+			 </div>
+			 <hr style="margin-top:0px;margin-bottom:10px" />
+			 <div class="row mb-2">
+				 <div class="col-md-4">
+					 <div>
+						 <label class="col-form-label-sm" style="font-weight:bold;font-size:15px">Sakon product configuration check.</label>
+					 </div>
+					 <div>
+						 <label class="col-form-label-sm"> Check the number of products synced from sakon and Number of catalog items in ServiceNOW. </label>
+					 </div>
+				 </div>
+				 <div class="col-md-2">
+					 <label id="lblSakonproductconfigurationcheckSuccess" style="color:green">
+					 </label>
+					 <label id="lblSakonproductconfigurationcheckError" style="color:red">
+					 </label>
+				 </div>
+				 <div class="col-md-2">
+					 <button class="btn btn-sm" onclick="productConfigurationCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+				 </div>
+				 <div class="col-md-4">
+					 <label class="col-form-label-sm" style="display:none" id="lblSakonproductconfigurationcheckComments"> </label>
+				 </div>
+			 </div>
+			 <hr style="margin-top:0px;margin-bottom:10px" />
+			 <div class="row mb-2">
+				 <div class="col-md-4">
+					 <div>
+						 <label class="col-form-label-sm" style="font-weight:bold;font-size:15px">Self service tickets configuration check</label>
+					 </div>
+					 <div>
+						 <label class="col-form-label-sm"> Check for number of self service tickets enabled for the organization. </label>
+					 </div>
+				 </div>
+				 <div class="col-md-2">
+					 <label id="lblSelftestconfigurationcheckSuccess" style="color:green">
+					 </label>
+					 <label id="lblSelftestconfigurationcheckError" style="color:red">
+					 </label>
+				 </div>
+				 <div class="col-md-2">
+					 <button class="btn btn-sm" onclick="selfserviceTicketsConfigurationCheck()" style="background-color:#1f8476;color:#ffffff;width:80px">Run</button>
+				 </div>
+				 <div class="col-md-4">
+					 <label class="col-form-label-sm" style="display:none" id="lblSelftestconfigurationcheckComments"> </label>
+				 </div>
+			 </div>
+			 <hr style="margin-top:0px;margin-bottom:10px" />
+		  </div>
+		  </div>
+         <hr style="margin-top:0px;margin-bottom:10px" />
+         <div class="row" >
+            <div class="col-md-12">
+               <div class="mt-2 mb-2">
+                  <h2>Debug Info</h2>
+               </div>
+               <div>
+                  <textarea class="form-control" id="txtdebuginfo" style="height:650px" readonly="true">
+                  </textarea>	   
+               </div>
+            </div>
+         </div>
+      </div>
+   </body>
+</html>]]></html>
+        <name>Sakon_smoke_test_page</name>
+        <processing_script><![CDATA[//mrktPlcLastSyncDate]]></processing_script>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-01-19 11:27:01</sys_created_on>
+        <sys_id>25ad8bc71b4541104dbcc803604bcb77</sys_id>
+        <sys_mod_count>495</sys_mod_count>
+        <sys_name>Sakon_smoke_test_page</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_ui_page_25ad8bc71b4541104dbcc803604bcb77</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-23 16:48:04</sys_updated_on>
+    </sys_ui_page>
+</record_update>

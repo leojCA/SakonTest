@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_fix">
+    <sys_script_fix action="INSERT_OR_UPDATE">
+        <before>false</before>
+        <description>Assign roles to Sakon Mobile Access group, Load data for Catalog Items Mapping table and Workflow Stage Mapping table</description>
+        <name>Sakon Mobile - Initial Setup</name>
+        <record_for_rollback>false</record_for_rollback>
+        <script><![CDATA[
+
+//Get SysID of "Sakon Mobile Access" group
+var grGroupMember = new GlideRecordSecure('sys_user_group');
+grGroupMember.addQuery('name', 'Sakon Mobile Access');
+grGroupMember.query();
+if (grGroupMember.next()) {
+    var groupSysID = grGroupMember.sys_id;
+}
+
+//Get SysID of "Sakon Mobile Admins" group
+var grUserGroup = new GlideRecordSecure('sys_user_group');
+grUserGroup.addQuery('name', 'Sakon Mobile Admins');
+grUserGroup.query();
+if (grUserGroup.next()) {
+    var adminGroupId = grUserGroup.sys_id;
+}
+
+//Get SysID of "Sakon Mobile User" role
+var grRole = new GlideRecordSecure('sys_user_role');
+grRole.addQuery('name', 'x_sakon_mobile.user');
+grRole.query();
+if (grRole.next()) {
+    var roleSysID = grRole.sys_id;
+}
+
+//Get SysID of "Sakon Mobile Admin" role
+var grAdminRole = new GlideRecordSecure('sys_user_role');
+var adminRoleSysID = '';
+grAdminRole.addQuery('name', 'x_sakon_mobile.admin');
+grAdminRole.query();
+while (grAdminRole.next()) {
+    adminRoleSysID = grAdminRole.sys_id;
+}
+
+//Associate "Sakon Mobile User" role to "Sakon Mobile Access" group
+var role = new GlideRecord('sys_group_has_role');
+role.addQuery('group', groupSysID);
+role.addQuery('role', roleSysID);
+role.query();
+if (!role.hasNext()) {
+    role.initialize();
+    role.group = groupSysID;
+    role.role = roleSysID;
+    role.inherits = true;
+    role.insert();
+}
+
+
+//Associate "Sakon Mobile Admin" role to "Sakon Mobile Admins" group
+var roleAdmin = new GlideRecord('sys_group_has_role');
+roleAdmin.addQuery('group', adminGroupId);
+roleAdmin.addQuery('role', adminRoleSysID);
+roleAdmin.query();
+gs.info('Query result: ' + !roleAdmin.hasNext());
+if (!roleAdmin.hasNext()) {
+    roleAdmin.initialize();
+    roleAdmin.group = adminGroupId;
+    roleAdmin.role = adminRoleSysID;
+    roleAdmin.inherits = true;
+    roleAdmin.insert();
+}
+
+var ucCatalogAccess = new GlideRecord('user_criteria');
+ucCatalogAccess.name = 'Sakon Catalog Access Control User Criteria2';
+ucCatalogAccess.group = adminGroupId + ',' + groupSysID;
+ucCatalogAccess.insert();
+
+//Populate Catalog Items Mapping table
+var currentScope = gs.getCurrentScopeName();
+var CatalogItem = [];
+if (gs.tableExists(currentScope + '_' + 'catalog_items_mapping')) {
+
+    ComponentID = [];
+    ComponentName = [];
+    CategoryName = [];
+    CategoryID = [];
+    SubCategoryID = [];
+    SubCategoryName = [];
+    CatalogItem.push('Add/Change Domestic Plan', 'Re-Activate Phone Number', 'Transfer of Liability (Corporate to Personal)', 'Replace Device', 'Transfer of Liability (Personal to Corporate)', 'Suspend Phone Number', 'Terminate Phone Number', 'Phone Number Change', 'Traveling? Add/Change International Service', 'Lost Stolen Device', 'Request');
+    ComponentID.push(15);
+    ComponentName.push('Mobilemanager');
+    CategoryName.push('Helpdesk');
+    CategoryID.push(252);
+    SubCategoryID.push(1838, 2034, 1850, 1936, 1851, 1833, 1831, 1852, 1839, 1836, 1830);
+    SubCategoryName.push('Add/Change Domestic Plan', 'Re-Activate Phone Number', 'Transfer of Liability (Corporate to Personal)', 'Replace Device', 'Transfer of Liability (Personal to Corporate)', 'Suspend Phone Number', 'Terminate Phone Number', 'Phone Number Change', 'Traveling? Add/Change International Service', 'Lost Stolen Device', 'Request');
+
+
+    gr_cat = new GlideRecord(currentScope + '_' + 'catalog_items_mapping');
+    for (var i = 0; i < CatalogItem.length; i++) {
+        var grCatItem = new GlideRecord('sc_cat_item');
+        grCatItem.addQuery('name', CatalogItem[i]);
+        grCatItem.query();
+        while (grCatItem.next()) {
+            //Check if the record already exists in Catalog Items Mapping table
+            gr_cat = new GlideRecord(currentScope + '_' + 'catalog_items_mapping');
+            gr_cat.addQuery('subcategory_id', SubCategoryID[i]);
+            gr_cat.query();
+            //if (gr.getRowCount() == 0) {
+			if (!gr_cat.next()) {
+                gr_cat.initialize();
+                gr_cat.catalog_item = grCatItem.sys_id;
+                gr_cat.component_id = ComponentID[0];
+                gr_cat.component_name = ComponentName[0];
+                gr_cat.category_name = CategoryName[0];
+                gr_cat.category_id = CategoryID[0];
+                gr_cat.subcategory_id = SubCategoryID[i];
+                gr_cat.subcategory_name = SubCategoryName[i];
+                gr_cat.insert();
+            }
+
+        }
+    }
+}
+
+
+//Populate Workflow Stage Mapping table
+
+if (gs.tableExists(currentScope + '_' + 'workflow_stage_mapping')) {
+    SakonStateID = [];
+    CategoryName = [];
+    SakonStateName = [];
+    SnowStateID = [];
+    SnowStateName = [];
+    SnowStageName = [];
+
+    CategoryName.push('Marketplace', 'Marketplace', 'Tickets', 'Tickets', 'Tickets', 'Tickets', 'Tickets', 'Tickets', 'Tickets', 'Tickets', 'Marketplace', 'Marketplace', 'Marketplace', 'Marketplace', 'Marketplace', 'Marketplace', 'Marketplace');
+    SakonStateID.push(1822, 271, 14, 15, 41, 1213, 327, 40, 42, 1214, 1009, 272, 1007, 1748, 1010, 332, 1006);
+
+    SakonStateName.push("Cancelled",
+        "CART",
+        "Closed-Fixed",
+        "Closed-Not Valid",
+        "Open-Accepted",
+        "Open-Customer Action",
+        "Open-Fixed",
+        "Open-New",
+        "Open-Tested",
+        "Open-Vendor Action",
+        "Payment Error",
+        "Pending Approvals",
+        "Pending Shipping",
+        "Processing",
+        "Rejected",
+        "Shipped",
+        "Workflow Error");
+
+    SnowStateName.push("Closed Incomplete",
+        "Open",
+        "Closed Complete",
+        "Closed Incomplete",
+        "Open",
+        "Open",
+        "Open",
+        "Open",
+        "Open",
+        "Open",
+        "Closed Incomplete",
+        "Open",
+        "Work in Progress",
+        "Work in Progress",
+        "Closed Incomplete",
+        "Closed Complete",
+        "Closed Incomplete");
+
+    SnowStageName.push("Request Cancelled",
+        "Waiting for Approval",
+        "Completed",
+        "Request Cancelled",
+        "Fulfillment",
+        "Fulfillment",
+        "Fulfillment",
+        "Fulfillment",
+        "Fulfillment",
+        "Fulfillment",
+        "Request Cancelled",
+        "Waiting for Approval",
+        "Fulfillment",
+        "Fulfillment",
+        "Request Cancelled",
+        "Completed",
+        "Request Cancelled");
+
+    SnowStateID.push(4, 1, 3, 4, 1, 1, 1, 1, 1, 1, 4, 1, 2, 2, 4, 3, 4);
+
+    //var grStage = new GlideRecord('x_sakon_mobile_workflow_stage_mapping');
+    for (var j = 0; j < SakonStateID.length; j++) {
+        var grStage = new GlideRecord(currentScope + '_' + 'workflow_stage_mapping');
+        grStage.addQuery('sakon_state_id', SakonStateID[j]);
+        grStage.query();
+        //if (grStage.getRowCount() == 0) {
+		if (!grStage.next()) {
+            grStage.initialize();
+            grStage.sakon_state_id = SakonStateID[j];
+            grStage.category = CategoryName[j];
+            grStage.servicenow_state_id = SnowStateID[j];
+            grStage.servicenow_state_name = SnowStateName[j];
+            grStage.sakon_state_name = SakonStateName[j];
+            grStage.servicenow_stage_name = SnowStageName[j];
+            grStage.insert();
+        }
+    }
+}
+]]></script>
+        <sys_class_name>sys_script_fix</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-09-29 06:40:56</sys_created_on>
+        <sys_id>41759dcf07323010ef9cff208c1ed02e</sys_id>
+        <sys_mod_count>66</sys_mod_count>
+        <sys_name>Sakon Mobile - Initial Setup</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_fix_41759dcf07323010ef9cff208c1ed02e</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-23 18:01:18</sys_updated_on>
+        <unloadable>false</unloadable>
+    </sys_script_fix>
+</record_update>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="equipment_type" label="Equipment Type" language="en" table="x_sakon_mobile_mdm_devices_table">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>equipment_type</element>
+            <help/>
+            <hint/>
+            <label>Equipment Type</label>
+            <language>en</language>
+            <name>x_sakon_mobile_mdm_devices_table</name>
+            <plural>Equipment Types</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-08-29 05:41:21</sys_created_on>
+            <sys_id>b0632d812fda3010afb0d0ccf699b69a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Equipment Type</sys_name>
+            <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+            <sys_update_name>sys_documentation_x_sakon_mobile_mdm_devices_table_equipment_type_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-08-29 05:41:21</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

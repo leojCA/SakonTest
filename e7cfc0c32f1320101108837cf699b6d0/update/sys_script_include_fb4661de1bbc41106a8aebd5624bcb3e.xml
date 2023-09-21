@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.CommonUtilities_ClientCallable</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>CommonUtilities_ClientCallable</name>
+        <script><![CDATA[var CommonUtilities_ClientCallable = Class.create();
+CommonUtilities_ClientCallable.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+    isUpgradeEligible: function() {
+        var today = new GlideDateTime();
+        var currentScope = gs.getCurrentScopeName();
+        var phone_number = this.getParameter("phone_number");
+        var answer = false;
+        var gr = new GlideRecordSecure(currentScope + '_' + 'service_lines');
+        gr.addQuery('phone_number', phone_number);
+        gr.query();
+        while (gr.next()) {
+            if (gr.upgrade_eligibility_date <= today) {
+                answer = true;
+            } else {
+                answer = false;
+            }
+        }
+        var result = {
+            "answer": answer
+        };
+        return JSON.stringify(answer);
+    },
+
+    //get existing carrier for phone number
+    getCarrier: function() {
+		var logger = new LogUtilities();
+        var logSource = 'CommonUtilities client callable Script Include - getCarrier';
+        var answer = '';
+        var currentScope = gs.getCurrentScopeName();
+        var phone_number = this.getParameter("phone_number");
+        var gr = new GlideRecordSecure(currentScope + '_' + 'service_lines');
+        gr.addQuery('phone_number', phone_number);
+        gr.query();
+        if (gr.next()) {
+            answer = gr.carrier.toString();
+        }
+		else{
+			logger.writeError('Phone number ' + phone_number + ' not found in service lines table.');
+		}
+        var result = {
+            "answer": answer
+        };
+        return JSON.stringify(answer);
+    },
+
+    //Check if the current catalog item is a device
+    isDevice: function() {
+        var answer;
+        var categorySysId;
+        var cat_item_sys_id = this.getParameter("cat_item_sys_id");
+
+        var grCategory = new GlideRecord('sc_category');
+        grCategory.addEncodedQuery('title=devices');
+        grCategory.query();
+        while (grCategory.next()) {
+            categorySysId = grCategory.sys_id.toString();
+        }
+
+        var grCatItem = new GlideRecord('sc_cat_item');
+        grCatItem.addQuery('category', categorySysId);
+        grCatItem.addQuery('sys_id', cat_item_sys_id);
+        grCatItem.query();
+        if (grCatItem.hasNext()) {
+            answer = true;
+        } else {
+            answer = false;
+        }
+
+        var result = {
+            "answer": answer
+        };
+        return JSON.stringify(answer);
+    },
+	
+	//Get phone numbers associated to the selected order for user
+    getMarketplacePhoneNumbers: function() {
+        var order_for = this.getParameter('order_for');
+        var commonUtilities = new CommonUtilities();
+        var emp_id = commonUtilities.getEmployeeIdByUserId(order_for);
+        var phoneNumbers = commonUtilities.getPhoneNumbersByEmployee(emp_id);
+        return phoneNumbers;
+    },
+	
+	isAdminGroupUser: function() {
+        var userSysId = this.getParameter('sys_user_id');
+        var commonUtils = new CommonUtilities();
+		var isAdmin = commonUtils.isAdmin(userSysId);
+		var result = {	
+			'isAdmin': isAdmin
+		};		
+		return JSON.stringify(result);
+    },
+	
+    type: 'CommonUtilities_ClientCallable'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-01-04 09:44:23</sys_created_on>
+        <sys_id>fb4661de1bbc41106a8aebd5624bcb3e</sys_id>
+        <sys_mod_count>43</sys_mod_count>
+        <sys_name>CommonUtilities_ClientCallable</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_fb4661de1bbc41106a8aebd5624bcb3e</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-24 04:45:23</sys_updated_on>
+    </sys_script_include>
+</record_update>

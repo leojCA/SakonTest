@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="" label="Catalog Items Mapping" language="en" table="x_sakon_mobile_catalog_items_mapping">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element/>
+            <help/>
+            <hint/>
+            <label>Catalog Items Mapping</label>
+            <language>en</language>
+            <name>x_sakon_mobile_catalog_items_mapping</name>
+            <plural>Catalog Items Mappings</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2021-09-09 09:24:21</sys_created_on>
+            <sys_id>e2ef36e01bea701096fe0f26624bcbc2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Catalog Items Mapping</sys_name>
+            <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+            <sys_update_name>sys_documentation_x_sakon_mobile_catalog_items_mapping__en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2021-09-09 09:24:21</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_module">
+    <sys_app_module action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <application display_value="Sakon Mobile">52e10e7c2f7320101108837cf699b651</application>
+        <assessment/>
+        <device_type/>
+        <filter/>
+        <hint>Self help page for configuration check</hint>
+        <homepage/>
+        <image/>
+        <link_type>DIRECT</link_type>
+        <map_page/>
+        <mobile_title>Smoke Test</mobile_title>
+        <mobile_view_name>Mobile</mobile_view_name>
+        <name/>
+        <order>170</order>
+        <override_menu_roles>false</override_menu_roles>
+        <query>x_sakon_mobile_Sakon smoke test page.do</query>
+        <report/>
+        <roles>x_sakon_mobile.admin</roles>
+        <sys_class_name>sys_app_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-04-05 10:18:40</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>68d6daa3976e8110264d3e2e6253afb6</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Smoke Test</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_app_module_68d6daa3976e8110264d3e2e6253afb6</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-04-06 16:54:40</sys_updated_on>
+        <timeline_page/>
+        <title>Smoke Test</title>
+        <uncancelable>false</uncancelable>
+        <view_name/>
+        <window_name>Sakon Mobile Smoke Test</window_name>
+    </sys_app_module>
+</record_update>

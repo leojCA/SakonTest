@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.APIUtilities</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>APIUtilities</name>
+        <script><![CDATA[var APIUtilities = Class.create();
+APIUtilities.prototype = {
+    initialize: function() {},
+
+    getData: function(RESTMessageName, HttpMethod, Top, Skip, Filter, ID) {
+        try {
+            var logSource = 'APIUtilities Script Include';
+            var logger = new LogUtilities();
+            logger.writeInfo(logSource, 'Start - ' + logSource);
+            var currentScope = gs.getCurrentScopeName();
+            var response = '';
+            var responseBody = '';
+            var httpStatus = '';
+            var apiKey = gs.getProperty(currentScope + '.' + 'api_key');
+            var apiBaseUrl = gs.getProperty(currentScope + '.' + 'api_base_url');
+
+            //Build REST Message from parameters
+            var r = new sn_ws.RESTMessageV2(RESTMessageName, HttpMethod);
+
+            //Set the parameters for REST message
+            r.setQueryParameter('$top', Top);
+            r.setQueryParameter('$skip', Skip);
+			if(Filter)
+				r.setQueryParameter('$filter', Filter);
+
+            //Set the variables for REST message
+            r.setStringParameterNoEscape('api_key', apiKey);
+            r.setStringParameterNoEscape('api_baseurl', apiBaseUrl);
+			
+			//For GetComments - Tickets
+            if (ID > 0) {
+                r.setStringParameterNoEscape('id', ID);
+            }
+
+            //Rest URL with parameters
+            var reqEndPoint = r.getEndpoint() + '?$top=' + Top + '&$skip=' + Skip + '&$filter=' + Filter;
+          //  var reqBody = r.getRequestBody();
+            logger.writeInfo(logSource,  HttpMethod + ' - Request Endpoint: ' + reqEndPoint);
+            
+
+            //Execute the REST message
+            response = r.execute();
+
+            //Check for response code 
+            responseBody = response.getBody();
+            httpStatus = response.getStatusCode();
+
+            if (httpStatus == '200') {
+                var res = JSON.parse(responseBody);
+                logger.writeInfo(logSource, HttpMethod + ' - API Response Status: ' + httpStatus);
+                logger.writeInfo(logSource, HttpMethod + ' - API Response Body: ' + responseBody.slice(0, 1000));
+            } else {
+                res = responseBody;
+                logger.writeWarning(logSource,  HttpMethod + ' - API Response Status: ' + httpStatus);
+                logger.writeWarning(logSource,  HttpMethod + ' - API Response Body: ' + responseBody);
+            }
+            logger.writeInfo(logSource,  HttpMethod +  ' - End - ' + logSource);
+            return res;
+
+        } catch (ex) {
+            logger.writeError(logSource,  HttpMethod +  + ' - Error Message: ' + ex);
+            throw ex;
+        }
+
+    },
+    postData: function(RESTMessageName, HttpMethod, RequestBody, SakonID) {
+        var logSource = 'APIUtilities Script Include - postData';
+        var logger = new LogUtilities();
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+        var currentScope = gs.getCurrentScopeName();
+        var response = '';
+        var responseBody = '';
+        var httpStatus = '';
+        var apiKey = gs.getProperty(currentScope + '.' + 'api_key');
+        var apiBaseUrl = gs.getProperty(currentScope + '.' + 'api_base_url');
+
+        //Build REST Message from parameters
+        var r = new sn_ws.RESTMessageV2(RESTMessageName, HttpMethod);
+        //Set the variables for REST message
+        r.setStringParameterNoEscape('api_key', apiKey);
+        r.setStringParameterNoEscape('api_baseurl', apiBaseUrl);
+        if (SakonID > 0) {
+            r.setStringParameterNoEscape('sakonID', SakonID);
+        }
+        var requestBody = RequestBody;
+        r.setRequestBody(requestBody);
+
+        //Execute the REST message
+        response = r.execute();
+
+        //Check for response code 
+        responseBody = response.getBody();
+        httpStatus = response.getStatusCode();
+
+        if (httpStatus == '200' && responseBody.length) {
+            logger.writeInfo(logSource,  HttpMethod + ' - API Response Status: ' + httpStatus + ' Response length: ' + responseBody.length);
+            logger.writeInfo(logSource,  HttpMethod + ' -API Response Body: ' + responseBody.slice(0, 1000));
+        } else {
+            logger.writeWarning(logSource,  HttpMethod + ' -API Response Status: ' + httpStatus + ' Response length: ' + responseBody.length);
+            logger.writeWarning(logSource,  HttpMethod + ' -API Response Body: ' + responseBody);
+        }
+        var res = [httpStatus, responseBody];
+        logger.writeInfo(logSource,  HttpMethod + ' - End - ' + logSource);
+        return res;
+
+    },
+
+    deleteData: function(RESTMessageName, HttpMethod, SakonID) {
+        var logSource = 'APIUtilities Script Include - deleteData';
+        var logger = new LogUtilities();
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+        var currentScope = gs.getCurrentScopeName();
+        var response = '';
+        var responseBody = '';
+        var httpStatus = '';
+        var apiKey = gs.getProperty(currentScope + '.' + 'api_key');
+        var apiBaseUrl = gs.getProperty(currentScope + '.' + 'api_base_url');
+
+        //Build REST Message from parameters
+        var r = new sn_ws.RESTMessageV2(RESTMessageName, HttpMethod);
+        //Set the variables for REST message
+        r.setStringParameterNoEscape('api_key', apiKey);
+        r.setStringParameterNoEscape('api_baseurl', apiBaseUrl);
+        if (SakonID > 0) {
+            r.setStringParameterNoEscape('sakonID', SakonID);
+        }
+        //Execute the REST message
+        response = r.execute();
+
+        //Check for response code 
+        responseBody = response.getBody();
+        httpStatus = response.getStatusCode();
+
+        if (httpStatus == '200' && responseBody.length) {
+            logger.writeInfo(logSource, HttpMethod + ' - API Response Status: ' + httpStatus + ' Response length: ' + responseBody.length);
+            logger.writeInfo(logSource, HttpMethod + ' - API Response Body: ' + responseBody.slice(0, 1000));
+        } else {
+            logger.writeWarning(logSource, HttpMethod + ' - API Response Status: ' + httpStatus + ' Response length: ' + responseBody.length);
+            logger.writeWarning(logSource, HttpMethod + ' - API Response Body: ' + responseBody);
+        }
+        var res = httpStatus;
+        logger.writeInfo(logSource, HttpMethod + ' - End - ' + logSource);
+        return res;
+    },
+
+    type: 'APIUtilities'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-06-30 10:51:44</sys_created_on>
+        <sys_id>819aed352f8530101108837cf699b600</sys_id>
+        <sys_mod_count>48</sys_mod_count>
+        <sys_name>APIUtilities</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_819aed352f8530101108837cf699b600</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-10-10 07:38:09</sys_updated_on>
+    </sys_script_include>
+</record_update>

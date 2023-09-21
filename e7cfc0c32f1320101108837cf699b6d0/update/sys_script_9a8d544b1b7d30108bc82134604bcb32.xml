@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>true</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>sys_user_grmember</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition table="sys_user_grmember">group=27c34a262fd530101108837cf699b618^ORgroup=87c1a2922fa730109e6d70682799b656^EQ<item display_table="sys_user_group" display_value="Sakon Mobile Access" endquery="false" field="group" goto="false" newquery="false" operator="=" or="false" value="27c34a262fd530101108837cf699b618"/>
+            <item display_table="sys_user_group" display_value="Sakon Mobile Admins" endquery="false" field="group" goto="false" newquery="false" operator="=" or="true" value="87c1a2922fa730109e6d70682799b656"/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </filter_condition>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Sakon Mobile Add Users to Queue DELETE</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous) {
+
+    var sakonMobileAccessGroupId = new CommonUtilities().getGroupId("Sakon Mobile Access");
+    var sakonMobileAdminGroupId = new CommonUtilities().getGroupId("Sakon Mobile Admins");
+    var isPartOfSakonAccessGroup = new UserUtilities().isMemberOfAccessGroup(current.user);
+    var isPartOfSakonAdminGroup = new UserUtilities().isMemberOfAdminGroup(current.user);
+
+    if (current.group != sakonMobileAccessGroupId && current.group != sakonMobileAdminGroupId) {
+        return;
+    }
+
+    if (isPartOfSakonAccessGroup || isPartOfSakonAdminGroup) {
+        return;
+    }
+
+    var userID;
+    var today = new GlideDateTime();
+    var currentScope = gs.getCurrentScopeName();
+    var userSysID = current.user;
+    var SyncCounter = gs.getProperty(currentScope + '.' + 'user_sync_retry_count');
+    var now = new GlideDateTime();
+
+    var user_sys_id = current.user;
+    var grUser = new GlideRecord('sys_user');
+    grUser.addQuery('sys_id', user_sys_id);
+    grUser.query();
+    while (grUser.next()) {
+        userID = grUser.user_name;
+    }
+
+    //Add an entry for delete action in Sync Queue table
+    var gr_delete = new GlideRecordSecure(currentScope + '_' + 'entity_sync_queue');
+    gr_delete.initialize();
+    gr_delete.servicenow_entity_id = userID;
+    gr_delete.sakon_entity_id = new UserUtilities().getSakonIDFromUserID(userID);
+    gr_delete.entity_type = 'User';
+    gr_delete.sync_status = 0;
+    gr_delete.retry_count_setting = SyncCounter;
+    gr_delete.sync_counter = 0;
+    gr_delete.last_retry_datetime = today;
+    gr_delete.insert_datetime = today;
+    gr_delete.modified_datetime = today;
+    gr_delete.sync_type = 'DELETE';
+    gr_delete.sakon_sync_action = 'DELETE';
+    
+	gr_delete.insert();
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-08-10 09:21:18</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>9a8d544b1b7d30108bc82134604bcb32</sys_id>
+        <sys_mod_count>26</sys_mod_count>
+        <sys_name>Sakon Mobile Add Users to Queue DELETE</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_9a8d544b1b7d30108bc82134604bcb32</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-20 05:54:17</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=9a8d544b1b7d30108bc82134604bcb32"/>
+</record_update>

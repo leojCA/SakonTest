@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties_category_m2m">
+    <sys_properties_category_m2m action="INSERT_OR_UPDATE">
+        <category display_value="Sakon Mobile Properties">748c38d42f000110b2ccfd1df699b66a</category>
+        <order>400</order>
+        <property display_value="x_sakon_mobile.api_sync" name="x_sakon_mobile.api_sync">b94e67852f4930101108837cf699b653</property>
+        <sys_class_name>sys_properties_category_m2m</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-21 18:53:05</sys_created_on>
+        <sys_id>a52ef8182f000110b2ccfd1df699b6fb</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>x_sakon_mobile.api_sync.Sakon Mobile Properties</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_properties_category_m2m_a52ef8182f000110b2ccfd1df699b6fb</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-11-21 19:19:21</sys_updated_on>
+    </sys_properties_category_m2m>
+</record_update>

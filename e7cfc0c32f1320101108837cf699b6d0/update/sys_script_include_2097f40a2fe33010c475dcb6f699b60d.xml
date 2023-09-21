@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_sakon_mobile.CommonUtilities</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>CommonUtilities</name>
+        <script><![CDATA[var CommonUtilities = Class.create();
+CommonUtilities.prototype = {
+  
+	initialize: function() {},
+
+    //Check if the user is a member of Sakon Mobile Admins Group
+    getQuery: function(user_sys_id, entity, module) {        
+        var logger = new LogUtilities();
+        var logSource = 'CommonUtilities Script Include - isMemberOfAdminGroup';
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+        var emp_id;
+        var group_id;
+        var phoneNumbers;
+        var queryParamter;
+        var emp_id_field;
+        emp_id_field = gs.getProperty(gs.getCurrentScopeName() + '.' + 'employee_id_field');
+        //Get the employee id using sys id of the user
+        var grUser = new GlideRecord('sys_user');
+        grUser.addQuery('sys_id', user_sys_id);
+        grUser.query();
+        while (grUser.next()) {
+            emp_id = grUser.getDisplayValue(emp_id_field);
+        }
+        var grGroup = new GlideRecord('sys_user_group');
+        grGroup.addQuery('name', 'Sakon Mobile Admins');
+        grGroup.query();
+        while (grGroup.next()) {
+            group_id = grGroup.sys_id;
+        }
+
+        var grGroupMember = new GlideRecord('sys_user_grmember');
+        grGroupMember.addQuery('group', group_id);
+        grGroupMember.addQuery('user', user_sys_id);
+        grGroupMember.query();
+        //var count = grGroupMember.getRowCount();
+        if (grGroupMember.next()) {
+            logger.writeInfo(logSource, 'Logged in user is an admin - ' + emp_id);
+            logger.writeInfo(logSource, 'End - ' + logSource);
+            return '';
+        } else {
+            logger.writeInfo(logSource, 'Logged in user is a non-admin - ' + emp_id);
+            phoneNumbers = this.getMyReportees(user_sys_id, emp_id, entity, module);			
+            var finalNumbers = phoneNumbers.toString();
+            if (entity == 'number') {
+                queryParamter = 'phone_numberIN';
+            } else if (entity == 'device') {
+                queryParamter = 'imeiIN';
+            }
+            logger.writeInfo(logSource, 'End - ' + logSource);			
+            return queryParamter + finalNumbers;
+        }
+    },
+
+    //Get all the reportees if the user is a manager
+    getMyReportees: function(sys_id, emp_id, entity, module) {
+        var logger = new LogUtilities();
+        var logSource = 'CommonUtilities Script Include - getMyReportees';
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+        var users = [];
+        var phoneNumbers = [];
+        var devices = [];
+        var query;
+		var emp_id_field;
+		
+        var grUsers = new GlideRecord('sys_user');
+        emp_id_field = gs.getProperty(gs.getCurrentScopeName() + '.' + 'employee_id_field');
+        query = 'manager=' + sys_id + '^OR' + emp_id_field + '=' + emp_id;
+        grUsers.addEncodedQuery(query);
+        grUsers.query();
+        while (grUsers.next()) {
+            users.push(grUsers.getValue(emp_id_field).toString());
+        }
+        logger.writeInfo(logSource, 'Users and Reportees ' + users);
+        if (entity == 'number') {
+            phoneNumbers = this.getHierarchicalPhoneNumbers(users, module);
+            return phoneNumbers;
+        } else if (entity == 'device') {
+            devices = this.getHierarchicalDevices(users);
+            return devices;
+        }
+        logger.writeInfo(logSource, 'End - ' + logSource);
+    },
+
+    //Get phone numbers for each user
+    getHierarchicalPhoneNumbers: function(users, module) {
+        var currentScope = gs.getCurrentScopeName();
+        var logger = new LogUtilities();
+        var logSource = 'CommonUtilities Script Include - getHierarchicalPhoneNumbers';
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+        var phoneNumbers = [];
+        for (var i = 0; i < users.length; i++) {
+            var serviceline = new GlideRecordSecure(currentScope + '_' + 'service_lines');			
+            serviceline.addQuery("employee_id", users[i]);
+            if (module.toString().toLowerCase() === 'marketplace') {
+                serviceline.addQuery("status", 'active');
+            }
+            serviceline.query();
+            while (serviceline.next()) {
+                phoneNumbers.push(serviceline.phone_number.toString());
+            }
+        }
+        //var finalAns = phoneNumbers;
+        logger.writeInfo(logSource, 'Phone Numbers Retrieved ' + phoneNumbers);
+        logger.writeInfo(logSource, 'End - ' + logSource);
+        return phoneNumbers;
+    },
+
+    //Get devices associated with a user
+    getHierarchicalDevices: function(users) {
+        var currentScope = gs.getCurrentScopeName();
+        var logger = new LogUtilities();
+        var logSource = 'CommonUtilities Script Include - getHierarchicalDevices';
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+        var devices = [];
+        for (var i = 0; i < users.length; i++) {
+            var grDevice = new GlideRecordSecure(currentScope + '_' + 'devices_table');
+            grDevice.addQuery("employee_id", users[i]);
+            grDevice.query();
+            while (grDevice.next()) {
+                devices.push(grDevice.imei.toString());
+            }
+        }
+        var finalAns = devices;
+        logger.writeInfo(logSource, 'Devices Retrieved ' + finalAns);
+        logger.writeInfo(logSource, 'End - ' + logSource);
+        return finalAns;
+    },
+
+    //Get available Marketplace Order Types for a catalog item
+    getOrderTypes: function(cat_item_id) {
+        var logger = new LogUtilities();
+        var logSource = 'CommonUtilities Script Include - getOrderTypes';
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+        var currentScope = gs.getCurrentScopeName();
+        var orderTypes = [];
+        var price = [];
+        var query;
+        var grCatItem = new GlideRecordSecure(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+        grCatItem.addQuery('servicenow_catalog_item_id', cat_item_id);
+        grCatItem.addQuery('is_active', 'true');
+        grCatItem.query();
+        while (grCatItem.next()) {
+            orderTypes.push(grCatItem.order_type.toString());
+            price.push(grCatItem.price.toString());
+        }
+        logger.writeInfo(logSource, 'Order Types Retrieved ' + orderTypes);
+        orderTypes = new global.ArrayUtil().unique(orderTypes);
+        price = new global.ArrayUtil().unique(price);
+        query = 'order_typeIN' + orderTypes + '^servicenow_catalog_item_id=' + cat_item_id;
+        return query;
+    },
+
+    //Get available Marketplace Network Providers for a catalog item
+    getNetworkProviders: function(cat_item_id, order_type) {
+        var logger = new LogUtilities();
+        var logSource = 'CommonUtilities Script Include - getNetworkProviders';
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+        var currentScope = gs.getCurrentScopeName();
+        var networkProviders = [];
+        var price = [];
+        var query;
+        var grCatItem = new GlideRecordSecure(currentScope + '_' + 'sakon_marketplace_catalog_items_table');
+        grCatItem.addQuery('servicenow_catalog_item_id', cat_item_id);
+        grCatItem.addQuery('order_type', order_type);
+        grCatItem.addQuery('is_active', 'true');
+        grCatItem.query();
+        while (grCatItem.next()) {
+            networkProviders.push(grCatItem.network_provider.toString());
+            price.push(grCatItem.price.toString());
+        }
+        logger.writeInfo(logSource, 'Network Providers Retrieved ' + networkProviders);
+        query = 'network_providerIN' + networkProviders + '^priceIN' + price + '^servicenow_catalog_item_id=' + cat_item_id + '^order_typeIN' + order_type;
+        return query;
+    },
+
+    //Check if the catalog item is a device
+    isDevice: function(cat_item_sys_id) {
+        var categorySysId;
+        var grCategory = new GlideRecord('sc_category');
+        grCategory.addEncodedQuery('title=devices');
+        grCategory.query();
+        while (grCategory.next()) {
+            categorySysId = grCategory.sys_id.toString();
+        }
+
+        var grCatItem = new GlideRecord('sc_cat_item');
+        grCatItem.addQuery('category', categorySysId);
+        grCatItem.addQuery('sys_id', cat_item_sys_id);
+        grCatItem.query();
+
+        if (grCatItem.hasNext()) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    //Check if the catalog item is part of Sakon Catalog - Devices/Accessories	
+    isSakonCatItem: function(cat_item) {
+        var devicesCategorySysId;
+        var accessoriesCategorySysId;
+
+        devicesCategorySysId = new SakonMobileMapCatalogItems().getDevicesCategorySysID();
+        accessoriesCategorySysId = new SakonMobileMapCatalogItems().getAccessoriesCategorySysID();
+
+        var grCatItem = new GlideRecord('sc_cat_item');
+        grCatItem.addQuery('category', devicesCategorySysId).addOrCondition('category', accessoriesCategorySysId);
+        grCatItem.addQuery('name', cat_item);
+        grCatItem.query();
+        if (grCatItem.hasNext()) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    getEmployeeIdByUserId: function(user_id) {
+        var emp_id_field = gs.getProperty(gs.getCurrentScopeName() + '.' + 'employee_id_field');
+        var grUser = new GlideRecord('sys_user');
+        grUser.addQuery('sys_id', user_id);
+        grUser.query();
+        while (grUser.next()) {
+            emp_id = grUser.getDisplayValue(emp_id_field);
+        }
+        return emp_id;
+    },
+
+    getPhoneNumbersByEmployee: function(employee_id) {
+        var logger = new LogUtilities();
+        var logSource = 'CommonUtilities Script Include - getPhoneNumbersByEmployee';
+        logger.writeInfo(logSource, 'Start - ' + logSource);
+        var servicelines = new GlideRecordSecure(gs.getCurrentScopeName() + '_' + 'service_lines');
+        servicelines.addQuery("employee_id", employee_id);
+        servicelines.addQuery("status", 'active');
+        servicelines.query();
+        var phoneNumbers = [];
+        while (servicelines.next()) {
+            phoneNumbers.push(servicelines.phone_number.toString());
+        }
+        logger.writeInfo(logSource, 'Phone numbers associated: ' + phoneNumbers);
+        return phoneNumbers.toString();
+    },
+
+    //Get UTC date time in zulu format to use in api filter.
+    getUTCDateTime: function() {
+        var formattedDate = new GlideDateTime().toString().replace(' ', 'T') + 'Z';
+        return formattedDate;
+    },
+		
+	isAdmin: function(user_id){
+        var groupSysId = this.getGroupId('Sakon Mobile Admins');
+        //Check if logged in user is part of Sakon Mobile Admins group
+        var gr = new GlideRecord('sys_user_grmember');
+        gr.addQuery('group', groupSysId);
+        gr.addQuery('user', user_id);
+        gr.query();
+		if(gr.next()){
+			return 'true';
+		}
+		else{
+			return 'false';
+		}
+	},
+	
+	getGroupId: function(group_name){		
+		var group_id = '';
+		var grGroup = new GlideRecord('sys_user_group');
+        grGroup.addQuery('name', group_name);
+        grGroup.query();
+        if (grGroup.next()) {
+            group_id = grGroup.sys_id;
+        }
+		return group_id;
+	},
+	
+    getPhoneNumbersQueryForMP: function(user) {
+    
+    },
+	
+	getSakonMobileScopeSysId: function(){
+		return 'e7cfc0c32f1320101108837cf699b6d0';
+	},
+
+    type: 'CommonUtilities'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2021-11-02 08:22:47</sys_created_on>
+        <sys_id>2097f40a2fe33010c475dcb6f699b60d</sys_id>
+        <sys_mod_count>255</sys_mod_count>
+        <sys_name>CommonUtilities</sys_name>
+        <sys_package display_value="Sakon Mobile v2" source="x_sakon_mobile">e7cfc0c32f1320101108837cf699b6d0</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Sakon Mobile v2">e7cfc0c32f1320101108837cf699b6d0</sys_scope>
+        <sys_update_name>sys_script_include_2097f40a2fe33010c475dcb6f699b60d</sys_update_name>
+        <sys_updated_by>Shaik.Pullsaida</sys_updated_by>
+        <sys_updated_on>2023-03-24 04:39:32</sys_updated_on>
+    </sys_script_include>
+</record_update>
